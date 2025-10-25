@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="730px" preserveAspectRatio="none" style="width:553px;height:730px;background:#FFFFFF;" version="1.1" viewBox="0 0 553 730" width="553px" zoomAndPan="magnify"><defs/><g><!--MD5=[1576371e4dff294b3a6e69578d6afc20]
+class graph_nodes--><g id="elem_graph_nodes"><rect codeLine="1" fill="#F1F1F1" height="96.8906" id="graph_nodes" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="120" x="93" y="7"/><ellipse cx="108" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M112.1094,29 L104.3906,29 L104.3906,16.6094 L112.1094,16.6094 L112.1094,18.7656 L106.8438,18.7656 L106.8438,21.4375 L111.6094,21.4375 L111.6094,23.5938 L106.8438,23.5938 L106.8438,26.8438 L112.1094,26.8438 L112.1094,29 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88" x="122" y="27.8467">graph nodes</text><line style="stroke:#181818;stroke-width:0.5;" x1="94" x2="212" y1="39" y2="39"/><ellipse cx="104" cy="52.6484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="113" y="55.9951">id (PK)</text><line style="stroke:#181818;stroke-width:1.0;" x1="94" x2="212" y1="63.2969" y2="63.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="99" y="80.292">map_x</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="99" y="96.5889">map_y</text></g><!--MD5=[ca6d0eb4ecb20613e3f867fb1438f595]
+class graph_edges--><g id="elem_graph_edges"><rect codeLine="8" fill="#F1F1F1" height="113.1875" id="graph_edges" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="120" x="7" y="189"/><ellipse cx="22" cy="205" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M26.1094,211 L18.3906,211 L18.3906,198.6094 L26.1094,198.6094 L26.1094,200.7656 L20.8438,200.7656 L20.8438,203.4375 L25.6094,203.4375 L25.6094,205.5938 L20.8438,205.5938 L20.8438,208.8438 L26.1094,208.8438 L26.1094,211 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88" x="36" y="209.8467">graph edges</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="126" y1="221" y2="221"/><ellipse cx="18" cy="234.6484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="27" y="237.9951">id (PK)</text><line style="stroke:#181818;stroke-width:1.0;" x1="8" x2="126" y1="245.2969" y2="245.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101" x="13" y="262.292">node_a_id (FK)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102" x="13" y="278.5889">node_b_id (FK)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="59" x="13" y="294.8857">distance</text></g><!--MD5=[24e00e1afed7f7be6495a0c6b5f73cf4]
+class locations--><g id="elem_locations"><rect codeLine="16" fill="#F1F1F1" height="129.4844" id="locations" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="155" x="182.5" y="181"/><ellipse cx="224.95" cy="197" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M229.0594,203 L221.3406,203 L221.3406,190.6094 L229.0594,190.6094 L229.0594,192.7656 L223.7938,192.7656 L223.7938,195.4375 L228.5594,195.4375 L228.5594,197.5938 L223.7938,197.5938 L223.7938,200.8438 L229.0594,200.8438 L229.0594,203 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="245.05" y="201.8467">locations</text><line style="stroke:#181818;stroke-width:0.5;" x1="183.5" x2="336.5" y1="213" y2="213"/><ellipse cx="193.5" cy="226.6484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="202.5" y="229.9951">id (PK)</text><line style="stroke:#181818;stroke-width:1.0;" x1="183.5" x2="336.5" y1="237.2969" y2="237.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="39" x="188.5" y="254.292">name</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="77" x="188.5" y="270.5889">description</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30" x="188.5" y="286.8857">type</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143" x="188.5" y="303.1826">closest_node_id (FK)</text></g><!--MD5=[3835c41c6c66614013ee4625906c7097]
+class events--><g id="elem_events"><rect codeLine="25" fill="#F1F1F1" height="145.7813" id="events" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="116" x="137" y="387"/><ellipse cx="168.65" cy="403" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M172.7594,409 L165.0406,409 L165.0406,396.6094 L172.7594,396.6094 L172.7594,398.7656 L167.4938,398.7656 L167.4938,401.4375 L172.2594,401.4375 L172.2594,403.5938 L167.4938,403.5938 L167.4938,406.8438 L172.7594,406.8438 L172.7594,409 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47" x="186.35" y="407.8467">events</text><line style="stroke:#181818;stroke-width:0.5;" x1="138" x2="252" y1="419" y2="419"/><ellipse cx="148" cy="432.6484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="157" y="435.9951">id (PK)</text><line style="stroke:#181818;stroke-width:1.0;" x1="138" x2="252" y1="443.2969" y2="443.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="85" x="143" y="460.292">event_name</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="77" x="143" y="476.5889">description</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="143" y="492.8857">location_id (FK)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="143" y="509.1826">start_time</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64" x="143" y="525.4795">end_time</text></g><!--MD5=[1be8aaf5234ed73e7d5ef928f6a19e36]
+class classes--><g id="elem_classes"><rect codeLine="35" fill="#F1F1F1" height="113.1875" id="classes" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="116" x="288" y="403.5"/><ellipse cx="314.7" cy="419.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M318.8094,425.5 L311.0906,425.5 L311.0906,413.1094 L318.8094,413.1094 L318.8094,415.2656 L313.5438,415.2656 L313.5438,417.9375 L318.3094,417.9375 L318.3094,420.0938 L313.5438,420.0938 L313.5438,423.3438 L318.8094,423.3438 L318.8094,425.5 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="58" x="331.3" y="424.3467">Courses</text><line style="stroke:#181818;stroke-width:0.5;" x1="289" x2="403" y1="435.5" y2="435.5"/><ellipse cx="299" cy="449.1484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="308" y="452.4951">id (PK)</text><line style="stroke:#181818;stroke-width:1.0;" x1="289" x2="403" y1="459.7969" y2="459.7969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="90" x="294" y="476.792">course_code</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="39" x="294" y="493.0889">name</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="294" y="509.3857">location_id (FK)</text></g><!--MD5=[8413f8248b2da7966d2de021109ec289]
+class users--><g id="elem_users"><rect codeLine="43" fill="#F1F1F1" height="129.4844" id="users" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="85" x="445.5" y="395.5"/><ellipse cx="466.8" cy="411.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M470.9094,417.5 L463.1906,417.5 L463.1906,405.1094 L470.9094,405.1094 L470.9094,407.2656 L465.6438,407.2656 L465.6438,409.9375 L470.4094,409.9375 L470.4094,412.0938 L465.6438,412.0938 L465.6438,415.3438 L470.9094,415.3438 L470.9094,417.5 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="39" x="482.2" y="416.3467">users</text><line style="stroke:#181818;stroke-width:0.5;" x1="446.5" x2="529.5" y1="427.5" y2="427.5"/><ellipse cx="456.5" cy="441.1484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="465.5" y="444.4951">id (PK)</text><line style="stroke:#181818;stroke-width:1.0;" x1="446.5" x2="529.5" y1="451.7969" y2="451.7969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="39" x="451.5" y="468.792">name</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36" x="451.5" y="485.0889">email</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="67" x="451.5" y="501.3857">password</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="73" x="451.5" y="517.6826">student_id</text></g><!--MD5=[fa45dd8a0e33b815234a5f815d412aa8]
+class user_classes--><g id="elem_user_classes"><rect codeLine="52" fill="#F1F1F1" height="129.4844" id="user_classes" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="122" x="285" y="594"/><ellipse cx="300" cy="610" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M304.1094,616 L296.3906,616 L296.3906,603.6094 L304.1094,603.6094 L304.1094,605.7656 L298.8438,605.7656 L298.8438,608.4375 L303.6094,608.4375 L303.6094,610.5938 L298.8438,610.5938 L298.8438,613.8438 L304.1094,613.8438 L304.1094,616 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="90" x="314" y="614.8467">user_classes</text><line style="stroke:#181818;stroke-width:0.5;" x1="286" x2="406" y1="626" y2="626"/><ellipse cx="296" cy="639.6484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="305" y="642.9951">id (PK)</text><line style="stroke:#181818;stroke-width:1.0;" x1="286" x2="406" y1="650.2969" y2="650.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81" x="291" y="667.292">user_id (FK)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="85" x="291" y="683.5889">class_id (FK)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88" x="291" y="699.8857">day_of_week</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="291" y="716.1826">time_slot</text></g><!--MD5=[50ab8944c6d68458f45c66fbe689190b]
+class user_trips--><g id="elem_user_trips"><rect codeLine="61" fill="#F1F1F1" height="129.4844" id="user_trips" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="104" x="442" y="594"/><ellipse cx="458.8" cy="610" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M462.9094,616 L455.1906,616 L455.1906,603.6094 L462.9094,603.6094 L462.9094,605.7656 L457.6438,605.7656 L457.6438,608.4375 L462.4094,608.4375 L462.4094,610.5938 L457.6438,610.5938 L457.6438,613.8438 L462.9094,613.8438 L462.9094,616 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="473.2" y="614.8467">user_trips</text><line style="stroke:#181818;stroke-width:0.5;" x1="443" x2="545" y1="626" y2="626"/><ellipse cx="453" cy="639.6484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44" x="462" y="642.9951">id (PK)</text><line style="stroke:#181818;stroke-width:1.0;" x1="443" x2="545" y1="650.2969" y2="650.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81" x="448" y="667.292">user_id (FK)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="448" y="683.5889">start_location</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88" x="448" y="699.8857">end_location</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69" x="448" y="716.1826">path_date</text></g><!--MD5=[e6a0ca53e1f24bd55bd6d6e69f105a0f]
+link graph_nodes to graph_edges--><g id="link_graph_nodes_graph_edges"><path codeLine="73" d="M85.96,88.79 C68.85,100.5 52.59,115.51 43,134 C35.57,148.32 35.39,164.83 38.56,180.65 " fill="none" id="graph_nodes-graph_edges" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="38.6573" x2="46.3387" y1="181.0651" y2="187.468"/><line style="stroke:#181818;stroke-width:1.0;" x1="38.6573" x2="34.6613" y1="181.0651" y2="190.232"/><line style="stroke:#181818;stroke-width:1.0;" x1="38.6573" x2="40.5" y1="181.0651" y2="188.85"/><ellipse cx="37.2753" cy="175.2264" fill="none" rx="4" ry="4" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="87.2614" x2="91.6494" y1="83.1394" y2="89.8286"/><line style="stroke:#181818;stroke-width:1.0;" x1="84.7529" x2="89.1409" y1="84.7849" y2="91.4741"/><line style="stroke:#181818;stroke-width:1.0;" x1="86.1108" x2="92.8" y1="88.678" y2="84.29"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="65" x="44" y="147.0669">node_a_id</text></g><!--MD5=[e6a0ca53e1f24bd55bd6d6e69f105a0f]
+link graph_nodes to graph_edges--><g id="link_graph_nodes_graph_edges"><path codeLine="74" d="M130.95,111.89 C125.58,124.81 119.73,138.45 114,151 C109.44,160.97 104.42,171.44 99.41,181.61 " fill="none" id="graph_nodes-graph_edges-1" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="99.3248" x2="101.1451" y1="181.7932" y2="191.6261"/><line style="stroke:#181818;stroke-width:1.0;" x1="99.3248" x2="90.3949" y1="181.7932" y2="186.2939"/><line style="stroke:#181818;stroke-width:1.0;" x1="99.3248" x2="95.77" y1="181.7932" y2="188.96"/><ellipse cx="101.991" cy="176.4181" fill="none" rx="4" ry="4" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="128.8158" x2="136.2096" y1="106.5596" y2="109.6142"/><line style="stroke:#181818;stroke-width:1.0;" x1="127.6703" x2="135.0642" y1="109.3323" y2="112.3869"/><line style="stroke:#181818;stroke-width:1.0;" x1="130.9854" x2="134.04" y1="111.7839" y2="104.39"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="65" x="122" y="147.0669">node_b_id</text></g><!--MD5=[d6d93dc928bc77d34f021203c797385e]
+link graph_nodes to locations--><g id="link_graph_nodes_locations"><path codeLine="77" d="M184.38,111.63 C195.4,131 207.94,153.03 219.6,173.52 " fill="none" id="graph_nodes-locations" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="219.7247" x2="228.8954" y1="173.7362" y2="177.7236"/><line style="stroke:#181818;stroke-width:1.0;" x1="219.7247" x2="218.4646" y1="173.7362" y2="183.6564"/><line style="stroke:#181818;stroke-width:1.0;" x1="219.7247" x2="223.68" y1="173.7362" y2="180.69"/><ellipse cx="216.7583" cy="168.5208" fill="none" rx="4" ry="4" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="178.7807" x2="185.7346" y1="109.8846" y2="105.9293"/><line style="stroke:#181818;stroke-width:1.0;" x1="180.2639" x2="187.2178" y1="112.4922" y2="108.537"/><line style="stroke:#181818;stroke-width:1.0;" x1="184.2353" x2="180.28" y1="111.3838" y2="104.43"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="102" x="208" y="147.0669">closest_node_id</text></g><!--MD5=[65fe68b43333305be27dfc957a047a79]
+link locations to events--><g id="link_locations_events"><path codeLine="80" d="M220.49,317.57 C217.28,325.01 214.37,332.57 212,340 C208.1,352.27 205.09,365.54 202.77,378.61 " fill="none" id="locations-events" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="202.7252" x2="207.3284" y1="378.8188" y2="387.6964"/><line style="stroke:#181818;stroke-width:1.0;" x1="202.7252" x2="195.4916" y1="378.8188" y2="385.7236"/><line style="stroke:#181818;stroke-width:1.0;" x1="202.7252" x2="201.41" y1="378.8188" y2="386.71"/><ellipse cx="203.7116" cy="372.9005" fill="none" rx="4" ry="4" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="218.514" x2="225.8144" y1="312.2044" y2="315.476"/><line style="stroke:#181818;stroke-width:1.0;" x1="217.2871" x2="224.5875" y1="314.9421" y2="318.2137"/><line style="stroke:#181818;stroke-width:1.0;" x1="220.5284" x2="223.8" y1="317.4904" y2="310.19"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="68" x="213" y="353.0669">location_id</text></g><!--MD5=[b63d87bd4e79d2195bb382b4698c669d]
+link locations to classes--><g id="link_locations_classes"><path codeLine="83" d="M288.93,317.99 C299.13,343.18 310.5,371.29 320.4,395.75 " fill="none" id="locations-classes" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="320.4193" x2="328.9819" y1="395.8041" y2="400.9695"/><line style="stroke:#181818;stroke-width:1.0;" x1="320.4193" x2="317.8581" y1="395.8041" y2="405.4705"/><line style="stroke:#181818;stroke-width:1.0;" x1="320.4193" x2="323.42" y1="395.8041" y2="403.22"/><ellipse cx="318.1688" cy="390.2421" fill="none" rx="4" ry="4" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="283.5924" x2="291.0083" y1="315.4683" y2="312.4676"/><line style="stroke:#181818;stroke-width:1.0;" x1="284.7176" x2="292.1335" y1="318.2493" y2="315.2486"/><line style="stroke:#181818;stroke-width:1.0;" x1="288.8007" x2="285.8" y1="317.6759" y2="310.26"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="68" x="304" y="353.0669">location_id</text></g><!--MD5=[5dea8e22f6c89b61530903b3ea0e70dd]
+link users to user_classes--><g id="link_users_user_classes"><path codeLine="86" d="M440.6,526.59 C426.54,546.05 411.09,567.43 396.83,587.16 " fill="none" id="users-user_classes" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="396.7318" x2="396.8998" y1="587.3102" y2="597.3088"/><line style="stroke:#181818;stroke-width:1.0;" x1="396.7318" x2="387.1802" y1="587.3102" y2="590.2712"/><line style="stroke:#181818;stroke-width:1.0;" x1="396.7318" x2="392.04" y1="587.3102" y2="593.79"/><ellipse cx="400.2506" cy="582.4504" fill="none" rx="4" ry="4" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="439.8152" x2="446.2999" y1="520.8599" y2="525.5448"/><line style="stroke:#181818;stroke-width:1.0;" x1="438.0583" x2="444.543" y1="523.2916" y2="527.9766"/><line style="stroke:#181818;stroke-width:1.0;" x1="440.715" x2="445.4" y1="526.4447" y2="519.96"/></g><!--MD5=[ec9f6a57c59ba01840e8fe079ec0ce40]
+link classes to user_classes--><g id="link_classes_user_classes"><path codeLine="87" d="M346,524.56 C346,544.05 346,565.63 346,585.63 " fill="none" id="classes-user_classes" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="346" x2="352" y1="585.8" y2="593.8"/><line style="stroke:#181818;stroke-width:1.0;" x1="346" x2="340" y1="585.8" y2="593.8"/><line style="stroke:#181818;stroke-width:1.0;" x1="346" x2="346" y1="585.8" y2="593.8"/><ellipse cx="346" cy="579.8" fill="none" rx="4" ry="4" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="342" x2="350" y1="520.52" y2="520.52"/><line style="stroke:#181818;stroke-width:1.0;" x1="342" x2="350" y1="523.52" y2="523.52"/><line style="stroke:#181818;stroke-width:1.0;" x1="346" x2="346" y1="524.52" y2="516.52"/></g><!--MD5=[5d16e52a29657af1727539ceb3028741]
+link users to user_trips--><g id="link_users_user_trips"><path codeLine="90" d="M490.19,532.7 C490.71,549.91 491.28,568.29 491.8,585.51 " fill="none" id="users-user_trips" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="491.803" x2="498.0569" y1="585.8641" y2="593.6672"/><line style="stroke:#181818;stroke-width:1.0;" x1="491.803" x2="486.0631" y1="585.8641" y2="594.0528"/><line style="stroke:#181818;stroke-width:1.0;" x1="491.803" x2="492.06" y1="585.8641" y2="593.86"/><ellipse cx="491.6102" cy="579.8672" fill="none" rx="4" ry="4" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="486.0634" x2="494.0597" y1="528.6497" y2="528.4066"/><line style="stroke:#181818;stroke-width:1.0;" x1="486.1546" x2="494.1509" y1="531.6484" y2="531.4052"/><line style="stroke:#181818;stroke-width:1.0;" x1="490.1832" x2="489.94" y1="532.5263" y2="524.53"/></g><!--MD5=[d682bc807bfbf96d1256d81c99ad866a]
+@startuml
+entity "graph nodes" as graph_nodes {
+  + id (PK)
+  - -
+  map_x
+  map_y
+}
+
+entity "graph edges" as graph_edges {
+  + id (PK)
+  - -
+  node_a_id (FK)
+  node_b_id (FK)
+  distance 
+}
+
+entity locations {
+  + id (PK)
+  - -
+  name
+  description
+  type
+  closest_node_id (FK)
+}
+
+entity events {
+  + id (PK)
+  - -
+  event_name
+  description
+  location_id (FK)
+  start_time
+  end_time
+}
+
+entity "Courses" as classes {
+   + id (PK)
+   - -
+   course_code
+   name
+   location_id (FK)
+}
+
+entity users {
+  + id (PK)
+  - -
+  name
+  email
+  password
+  student_id
+}
+
+entity user_classes {
+  + id (PK)
+  - -
+  user_id (FK)
+  class_id (FK)
+  day_of_week
+  time_slot
+}
+
+entity user_trips {
+  + id (PK)
+  - -
+  user_id (FK)
+  start_location
+  end_location
+  path_date
+}
+
+' - - - - - - - - - - - - - - - - RELATIONSHIPS - - - - - - - - - - - - - - - -
+
+' graph_edges → graph_nodes (two FKs)
+graph_nodes ||- -o{ graph_edges : node_a_id
+graph_nodes ||- -o{ graph_edges : node_b_id
+
+' locations → graph_nodes
+graph_nodes ||- -o{ locations : closest_node_id
+
+' events → locations
+locations ||- -o{ events : location_id
+
+' classes → locations
+locations ||- -o{ classes : location_id
+
+' users ↔ classes (via user_classes)
+users ||- -o{ user_classes
+classes ||- -o{ user_classes
+
+' users → user_trips
+users ||- -o{ user_trips
+@enduml
+
+@startuml
+entity "graph nodes" as graph_nodes {
+  + id (PK)
+  - -
+  map_x
+  map_y
+}
+
+entity "graph edges" as graph_edges {
+  + id (PK)
+  - -
+  node_a_id (FK)
+  node_b_id (FK)
+  distance 
+}
+
+entity locations {
+  + id (PK)
+  - -
+  name
+  description
+  type
+  closest_node_id (FK)
+}
+
+entity events {
+  + id (PK)
+  - -
+  event_name
+  description
+  location_id (FK)
+  start_time
+  end_time
+}
+
+entity "Courses" as classes {
+   + id (PK)
+   - -
+   course_code
+   name
+   location_id (FK)
+}
+
+entity users {
+  + id (PK)
+  - -
+  name
+  email
+  password
+  student_id
+}
+
+entity user_classes {
+  + id (PK)
+  - -
+  user_id (FK)
+  class_id (FK)
+  day_of_week
+  time_slot
+}
+
+entity user_trips {
+  + id (PK)
+  - -
+  user_id (FK)
+  start_location
+  end_location
+  path_date
+}
+
+
+graph_nodes ||- -o{ graph_edges : node_a_id
+graph_nodes ||- -o{ graph_edges : node_b_id
+
+graph_nodes ||- -o{ locations : closest_node_id
+
+locations ||- -o{ events : location_id
+
+locations ||- -o{ classes : location_id
+
+users ||- -o{ user_classes
+classes ||- -o{ user_classes
+
+users ||- -o{ user_trips
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 17:01:30 UTC 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>
