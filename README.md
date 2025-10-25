@@ -79,7 +79,3 @@ To get the project running:
 ### 2. Frontend Setup (React)
 1.  Navigate to the client directory and install dependencies: `npm install`
 2.  Start the React development server: `npm start` (or `npm run dev`)
-
----
-
-What part of the development process would you like to explore next? We could start building the core React component for the map interface or dive into the PHP logic for Dijkstra's algorithm.
