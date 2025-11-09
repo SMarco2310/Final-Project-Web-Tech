@@ -1,81 +1,149 @@
-## Campus Navigator System
+# 🧭 Campus Navigation App
 
-# Campus Navigator System
-
-## 🗺️ Project Overview
-
-The **Campus Navigator System** is an intelligent, full-stack web application designed to transform the campus navigation experience from a static map into a personalized and efficient routing tool. By combining a dedicated **Graph Data Structure** with user personalization features, the system provides not only the shortest path between two points but also contextual navigation to the user's specific classes, events, and frequently visited locations.
-
-This project utilizes a decoupled architecture, leveraging a **React** front-end for a responsive map interface and a robust **PHP (Laravel)** API for complex back-end logic, including pathfinding and secure user data management.
+A smart web application designed to help students and visitors easily navigate around campus.
+It provides building information, route directions, real-time location tracking, and event updates — all within an interactive campus map.
 
 ---
 
-## ✨ Core Features
+## 🚀 Overview
 
-The application delivers functionality across three main areas:
+The **Campus Navigation App** helps users find their way around the university using location data, live tracking, and route guidance.
+It can also display ongoing **campus events**, provide **feedback channels**, and collect **usage analytics** for continuous improvement.
 
-### 1. Intelligent Routing & Mapping
-* **Campus Map Integration:** Uses **React-Leaflet** to display a custom, non-geographic map overlay of the campus infrastructure.
-* **Intelligent Pathfinding:** Utilizes a **Graph Data Model** (`graph_nodes`, `graph_edges`) in the database to enable the server-side implementation of **Dijkstra's Algorithm**, providing precise shortest-path directions.
-* **Search Functionality:** A powerful search bar allows users to quickly locate buildings, rooms, and points of interest for routing.
-* **Map Event Listener:** Enables users to select start and end points directly on the map via click/tap interaction.
-
-### 2. User Personalization and Profile
-* **Secure Authentication:** Implements a robust system for user signup and login to protect personalized data.
-* **Personalized Navigation:** Provides routing specifically to the user's **classes and events** based on their schedule.
-* **Previous Trips:** A profile feature allowing users to view a history of their calculated routes.
-* **Favorite Locations:** Users can save frequently visited locations for quick access and personalized map markers.
-
-### 3. Content and Administration
-* **Event Listing:** Displays a centralized list of upcoming campus events, with routing links to their locations.
-* **Location Data Management:** Centralized storage of all points of interest, buildings, and rooms.
+This project integrates mapping technologies (like **Google Maps API** or **Leaflet.js**) with a robust backend powered by **Spring Boot / Node.js** to deliver fast and reliable results.
 
 ---
 
-## 🛠️ Technology Stack
+## 🎯 Features
 
-This project uses a modern, industry-standard stack to ensure performance, scalability, and maintainability.
-
-| Component | Technology | Key Role in Project |
-| :--- | :--- | :--- |
-| **Frontend (Client)** | **React** | Renders the component-based UI, manages map state, and handles user interactions. |
-| **Mapping Library** | **React-Leaflet** | Displays the map, manages a custom coordinate system, and draws the routes (Polylines). |
-| **Backend (API)** | **PHP (Laravel)** | Handles authentication, database modeling, and executes the core shortest-path algorithm. |
-| **Database** | **MySQL/PostgreSQL** | Stores all application data, including the critical **Graph Data Structure** (Nodes and Edges). |
-| **Algorithm** | **Dijkstra's Algorithm** | The primary logic for efficient pathfinding on the campus graph. |
+- **Interactive Campus Map** – Displays buildings, facilities, and routes between locations.
+- **Search and Directions** – Find the shortest or most accessible path between two points.
+- **Live Location Tracking** – View user or shuttle movement in real time (via GPS).
+- **Event Highlights** – See upcoming campus activities, programs, and announcements.
+- **Feedback and Reports** – Allow users to report incorrect paths or suggest updates.
+- **User Authentication** – Secure login (SSO integration or custom JWT-based system).
 
 ---
 
-## 🏗️ System Architecture
+## 🗄️ Database Design
 
-The application employs a clear **Model-View-Controller (MVC)** pattern on the back-end and a **Component-Based** architecture on the front-end, communicating via a RESTful API. 
+Below are the core entities used in the backend system:
 
-1.  **Data Persistence:** The **Database** stores the graph structure (`graph_nodes`, `graph_edges`) and user data.
-2.  **Business Logic:** The **Laravel API** receives requests (e.g., "Find route from A to B"). It queries the graph data, runs the pathfinding algorithm, and secures personalized data based on the user's authentication token.
-3.  **Presentation:** The **React Client** receives the calculated route (a sequence of coordinates in JSON), renders it on the Leaflet map, and provides the interactive user interface.
+```
+entity "users" as users {
+  + id (PK)
+  --
+  name
+  email
+  password_hash
+  role
+  created_at
+}
 
-## 🗃️ Database Schema Summary
+entity "locations" as locations {
+  + id (PK)
+  --
+  name
+  type
+  latitude
+  longitude
+  description
+}
 
-The schema is built to support the navigation core and personalization features:
+entity "routes" as routes {
+  + id (PK)
+  --
+  start_location_id (FK)
+  end_location_id (FK)
+  distance
+  duration
+}
 
-| Component | Key Tables | Purpose |
-| :--- | :--- | :--- |
-| **Navigation** | `graph_nodes`, `graph_edges` | Defines the actual paths for the shortest-path algorithm. |
-| **Content Link** | `locations` | Links user-facing names (e.g., "Science Hall") to the nearest `graph_node` for routing. |
-| **Personalization**| `users`, `user_classes`, `user_favorites`, `user_trips` | Stores authenticated user data, class schedules, and records trip history. |
+entity "feedback_reports" as feedback_reports {
+  + id (PK)
+  --
+  user_id (FK)
+  message
+  location_id (FK)
+  created_at
+}
+
+entity "usage_logs" as usage_logs {
+  + id (PK)
+  --
+  user_id (FK)
+  action
+  timestamp
+  details
+}
+
+entity "events" as events {
+  + id (PK)
+  --
+  title
+  description
+  date
+  time
+  location_id (FK)
+  image_url
+}
+```
 
 ---
 
-## ⚙️ Local Development Setup
+## ⚙️ Tech Stack
 
-To get the project running:
+**Frontend:**
 
-### 1. Backend Setup (Laravel)
-1.  Clone the repository and install PHP dependencies: `composer install`
-2.  Configure database credentials in the `.env` file.
-3.  Run migrations to create all necessary tables: `php artisan migrate`
-4.  Start the API server: `php artisan serve`
+- React.js
+- Tailwind CSS for styling
+- Google Maps API for map rendering
 
-### 2. Frontend Setup (React)
-1.  Navigate to the client directory and install dependencies: `npm install`
-2.  Start the React development server: `npm start` (or `npm run dev`)
+**Backend:**
+
+- Node.js with Express
+- RESTful APIs for routes, locations, and events
+- JWT authentication
+- MySQL database
+
+**Other Integrations:**
+
+- Google Maps API (for directions & geocoding)
+- WebSocket for live tracking
+- Camu SSO (optional) for user authentication
+
+---
+
+## 🧩 How Dijkstra’s Algorithm Fits In
+
+If the app uses **custom mapping data** (not Google’s built-in navigation),
+Dijkstra’s Algorithm is applied on the backend to calculate the **shortest path** between two campus locations.
+
+Example workflow:
+
+1. The frontend sends a route request (start ID, end ID).
+2. The backend retrieves the graph (nodes = locations, edges = paths).
+3. Dijkstra’s algorithm runs to find the optimal route.
+4. The result (ordered list of coordinates) is sent back to the frontend for map display.
+
+If using **Google Maps API**, that step can be skipped — the API handles routing.
+
+---
+
+## 🔐 Authentication
+
+- Supports **JWT-based login** or optional **Camu SSO integration** (if available).
+- Tokens protect routes and API endpoints.
+- Admins have extended privileges for managing data and events.
+
+## 🧠 Future Enhancements
+
+- Voice-guided directions.
+- Integration with university event management API.
+
+---
+
+## 👨🏽‍💻 Author
+
+**Ammes** — Student & aspiring software/AI engineer
+Passionate about intelligent systems, backend development, and real-world software design.
