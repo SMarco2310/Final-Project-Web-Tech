@@ -85,6 +85,7 @@ It also includes an optional **AI Assistance** tool that helps users automatical
 findmystuff/
 │
 ├── backend/
+    ├── prisma/
     ├── src/
         ├── controllers/
         ├── models/
@@ -94,8 +95,6 @@ findmystuff/
         ├── server.js
         └── config/
 ├── Document/
-    ├── pages
-    └── database
 │
 └── frontend/
     ├── src/

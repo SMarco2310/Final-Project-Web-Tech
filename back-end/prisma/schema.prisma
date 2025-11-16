@@ -15,4 +15,63 @@ datasource db {
 }
 
 
-//  I will be adding the mdels here
+//  I will be adding the models here
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  name        String?   @db.VarChar(255)
+  student_id  Int?      @unique
+  password    String
+  phone       String?
+  role     String? @default("USER") // User role, e.g., "ADMIN", "USER"
+  created_at  DateTime  @default(now())
+  items       Item[]    // 1 user has many items
+  claims      Claim[]   @relation("UserClaims")
+}
+
+model Location {
+  id          Int     @id @default(autoincrement())
+  lat         Int
+  lon         Int
+  name        String
+  description String?
+  items       Item[]   // 1 location has many items
+}
+
+model Item {
+  id          Int        @id @default(autoincrement())
+  user_id     Int?
+  location_id Int?
+  category String? // category of the item, e.g., "BOOK", "ELECTRONICS", "CLOTHING"
+  name        String
+  description String?    @db.VarChar(255)
+  status String? //item status, e.g., "CLAIMED", "LOST", "FOUND"
+  created_at  DateTime   @default(now())
+
+  images      Image[]
+  claims      Claim[]
+
+  User        User?      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  Location    Location?  @relation(fields: [location_id], references: [id])
+}
+
+model Image {
+  id        Int    @id @default(autoincrement())
+  url       String
+  item_id   Int
+
+  item      Item   @relation(fields: [item_id], references: [id], onDelete: Cascade)
+}
+
+model Claim {
+  id          Int      @id @default(autoincrement())
+  item_id     Int
+  claimer_id  Int?
+  status   String? @default("PENDING") // Claim status, e.g., "PENDING", "APPROVED", "REJECTED"
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  item        Item      @relation(fields: [item_id], references: [id], onDelete: Cascade)
+  claimer     User?     @relation("UserClaims", fields: [claimer_id], references: [id])
+}
