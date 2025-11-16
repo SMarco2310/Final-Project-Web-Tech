@@ -85,13 +85,14 @@ It also includes an optional **AI Assistance** tool that helps users automatical
 findmystuff/
 │
 ├── backend/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   ├── utils/
-│   ├── server.js
-│   └── config/
+    ├── src/
+        ├── controllers/
+        ├── models/
+        ├── routes/
+        ├── middleware/
+        ├── utils/
+        ├── server.js
+        └── config/
 ├── Document/
     ├── pages
     └── database
