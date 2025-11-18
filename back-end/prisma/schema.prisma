@@ -14,6 +14,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// I used ai to restructure the schema : 16/11/2025
+
 
 //  I will be adding the models here
 
