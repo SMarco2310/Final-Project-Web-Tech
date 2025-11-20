@@ -1,20 +1,15 @@
 import express from "express";
-import dotenv from "dotenv";
-import authMiddleware from "../middleware/authMiddleware.js";
+import authenticate from "../middleware/authMiddleware.js";
 import {
   registerUser,
   loginUser,
-  logoutUser,
-  getUser,
   getProfile,
-} from "../controllers/authController.js";
+} from "../controllers/userControllers.js";
 
-dotenv.config();
+const authRouter = express.Router();
 
-const router = express.Router();
+authRouter.post("/register", registerUser);
+authRouter.post("/login", loginUser);
+authRouter.get("/profile/:id", authenticate, getProfile);
 
-router.post("/register", registerUser);
-router.post("/login", loginUser);
-router.get("/logout", logoutUser);
-router.get("/me", authMiddleware, getUser);
-router.get("/profile", authMiddleware, getProfile);
+export default authRouter;

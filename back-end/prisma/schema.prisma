@@ -20,7 +20,7 @@ datasource db {
 //  I will be adding the models here
 
 model User {
-  id          Int       @id @default(autoincrement())
+  id          String       @id @default(uuid())
   email       String    @unique
   name        String?   @db.VarChar(255)
   student_id  Int?      @unique
@@ -43,7 +43,7 @@ model Location {
 
 model Item {
   id          Int        @id @default(autoincrement())
-  user_id     Int?
+  user_id     String?
   location_id Int?
   category String? // category of the item, e.g., "BOOK", "ELECTRONICS", "CLOTHING"
   name        String
@@ -69,7 +69,7 @@ model Image {
 model Claim {
   id          Int      @id @default(autoincrement())
   item_id     Int
-  claimer_id  Int?
+  claimer_id  String?
   status   String? @default("PENDING") // Claim status, e.g., "PENDING", "APPROVED", "REJECTED"
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
