@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-
+import imageRouter from "./src/routes/imageRoutes.js";
 import itemRouter from "./src/routes/itemRoutes.js";
 import authRouter from "./src/routes/authRoutes.js";
 import { PrismaClient } from "@prisma/client";
@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/item", itemRouter);
+app.use("/api/image", imageRouter);
 
 // this need to be at the very end of the file
 app.listen(PORT, () => {

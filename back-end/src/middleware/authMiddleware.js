@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const authenticate = (req, res, next) => {
+export const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) return res.sendStatus(401);
 
@@ -18,14 +17,12 @@ const authenticate = (req, res, next) => {
 };
 
 // Admin-only check
-const authorizeAdmin = (req, res, next) => {
+export const authorizeAdmin = (req, res, next) => {
   if (req.user.role !== "ADMIN") return res.sendStatus(403);
   next();
 };
 // User-only check
-const authorizeUser = (req, res, next) => {
+export const authorizeUser = (req, res, next) => {
   if (req.user.role !== "USER") return res.sendStatus(403);
   next();
 };
-
-export { authenticate, authorizeAdmin, authorizeUser };

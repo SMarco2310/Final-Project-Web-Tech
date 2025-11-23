@@ -2,7 +2,6 @@ import prisma from "../config/prismaClient.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { Role } from "../utils/utlis.js";
 import { validateEmail, validatePassword, getRole } from "../utils/utlis.js";
 
 dotenv.config();
@@ -17,7 +16,7 @@ dotenv.config();
 
 //  create user
 
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   const { name, email, student_id, password, phone, role } = req.body;
   if (validateEmail(email) && validatePassword(password)) {
     const hashed_password = await bcrypt.hash(password, 12);
@@ -73,7 +72,7 @@ const registerUser = async (req, res) => {
 
 //  Login
 
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await prisma.user.findUnique({
@@ -122,7 +121,7 @@ const loginUser = async (req, res) => {
 
 //  Load Profile
 
-const getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await prisma.user.findUnique({
@@ -164,5 +163,3 @@ const getProfile = async (req, res) => {
     });
   }
 };
-
-export default { registerUser, loginUser, getProfile };
