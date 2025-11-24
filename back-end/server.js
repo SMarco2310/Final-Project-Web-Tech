@@ -3,8 +3,7 @@ import dotenv from "dotenv";
 import imageRouter from "./src/routes/imageRoutes.js";
 import itemRouter from "./src/routes/itemRoutes.js";
 import authRouter from "./src/routes/authRoutes.js";
-import { PrismaClient } from "@prisma/client";
-
+import { prisma } from "./generated/prisma/client.js";
 dotenv.config();
 
 const app = express();

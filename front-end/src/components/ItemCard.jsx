@@ -1,6 +1,6 @@
 export default function ItemCard({ item }) {
   return (
-    <div className="bg-[#0E1A2B] min-w-68 max-w-68 max-h-lg p-1 pl-0 pr-0 pt-0 rounded-2xl m-1.5 relative shadow-2xl">
+    <div className="bg-[#0E1A2B] min-w-68 max-w-68 max-h-lg p-1 pl-0 pr-0 pt-0 rounded-2xl relative shadow-2xl">
       <span
         className={`text-xs w-14 text-center font-semibold m-2  p-1 rounded-full absolute right-1 ${item.status === "Lost" ? "bg-red-800/50 text-red-200" : item.status === "Found" ? "bg-green-800/50 text-green-200" : "bg-amber-800/50 text-amber-200"}`}
       >

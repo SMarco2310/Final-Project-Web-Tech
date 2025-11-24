@@ -4,7 +4,7 @@ export default function Footer() {
       <p className="w-fit">
         &copy; 2025 Lost & Found Inc. All rights reserved.
       </p>
-      <p className="flex justify-between w-fit gap-6 ">
+      <p className="flex justify-between w-fit gap-6 mr-5 ">
         <a href="/about">About Us</a>
         <a href="/faq">FAQ</a>
         <a href="/contact">Contact Support</a>
