@@ -5,24 +5,32 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx prisma generate && nodemon server.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "typeorm": "node --loader ts-node/esm ./node_modules/typeorm/cli.js",
+    "migration:generate": "npm run typeorm -- migration:generate src/migrations/migration -d ./src/config/dataSource.js --outputJs",
+    "migration:run": "npm run typeorm -- migration:run -d src/config/dataSource.js",
+    "migration:revert": "npm run typeorm -- migration:revert -d src/config/dataSource.js"
   },
   "keywords": [],
   "author": "SMarco2310",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^7.0.0",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.8.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "mysql2": "^3.15.3",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.27"
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "nodemon": "^3.1.11",
-    "prisma": "^7.0.0"
+    "ts-node": "^10.9.2",
+    "typeorm-ts-node-commonjs": "^0.3.20"
   }
 }

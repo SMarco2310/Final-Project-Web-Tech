@@ -8,7 +8,7 @@ const upload = multer();
 
 const handler = async (req, res) => {
   try {
-    const { file, metadata } = req.body;
+    const { file } = req.body;
 
     const result = await cloudinary.uploader.upload(file, {
       resource_type: "image",

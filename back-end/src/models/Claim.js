@@ -1,18 +1,54 @@
-class Claim {
-  constructor(id, item_id, claimer_id, status, created_at, updated_at) {
-    this.id = id;
-    this.item_id = item_id;
-    this.claimer_id = claimer_id;
-    this.status = STATUS.PENDING;
-    this.created_at = new Date();
-    this.updated_at = new Date();
-  }
-}
+import { EntitySchema } from "typeorm";
 
-const STATUS = {
+export const STATUS = {
   PENDING: "pending",
   APPROVED: "approved",
   REJECTED: "rejected",
 };
 
-export default { Claim, STATUS };
+export const ClaimEntity = new EntitySchema({
+  name: "Claim",
+  tableName: "claims",
+  columns: {
+    id: {
+      type: "int",
+      primary: true,
+      generated: true,
+    },
+    item_id: {
+      type: "int",
+    },
+    claimer_id: {
+      type: "uuid",
+    },
+    status: {
+      type: "enum",
+      default: STATUS.PENDING,
+      enum: Object.values(STATUS),
+    },
+    createdAt: {
+      type: "datetime",
+      createDate: true,
+    },
+    updatedAt: {
+      type: "datetime",
+      updateDate: true,
+    },
+  },
+  relations: {
+    item: {
+      type: "many-to-one",
+      target: "Item",
+      joinColumn: { name: "item_id" },
+      inverseSide: "claims",
+      onDelete: "CASCADE",
+    },
+    claimer: {
+      type: "many-to-one",
+      target: "User",
+      joinColumn: { name: "claimer_id" },
+      inverseSide: "claims",
+      onDelete: "CASCADE",
+    },
+  },
+});
