@@ -25,7 +25,7 @@ const StyledWrapper = styled.div`
     position: relative;
     background: var(--bg);
     padding: 3px;
-    border-radius: 0.75rem; /* rounded-xl */
+    border-radius: 1.2rem; /* rounded-xl */
     border: 1px solid #1e293b;
     overflow: hidden;
     width: fit-content;
@@ -62,10 +62,10 @@ const StyledWrapper = styled.div`
 
   .glass-glider {
     position: absolute;
-    top: 3px;
-    bottom: 3px;
+    top: 4px;
+    bottom: 4px;
     width: calc(50% - 3px);
-    border-radius: 0.6rem; /* Slightly less than container for nesting */
+    border-radius: 0.9rem; /* Slightly less than container for nesting */
     z-index: 1;
     background: var(--glider-bg);
     transition:

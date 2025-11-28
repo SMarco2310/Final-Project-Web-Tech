@@ -1,152 +1,129 @@
-// import styled from "styled-components";
-// export default function CustomSelect({ option }) {
-//   return (
-//     <StyledWrapper>
-//       <div className="select">
-//         <div
-//           className="selected"
-//           data-default={option.name}
-//           data-one="option-1"
-//           data-two="option-2"
-//           data-three="option-3"
-//         >
-//           <svg
-//             xmlns="http://www.w3.org/2000/svg"
-//             height="1em"
-//             viewBox="0 0 512 512"
-//             className="arrow"
-//           >
-//             <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-//           </svg>
-//         </div>
-//         <div className="options">
-//           <div title={option.name}>
-//             <input
-//               id={option.name}
-//               name={option.name}
-//               type="radio"
-//               defaultChecked
-//             />
-//             <label className="option" htmlFor="all" data-txt={option.name} />
-//           </div>
-//           {option.options.map()}
-//           <div title="option-1">
-//             <input id="option-1" name="option" type="radio" />
-//             <label className="option" htmlFor="option-1" data-txt="option-1" />
-//           </div>
-//           <div title="option-2">
-//             <input id="option-2" name="option" type="radio" />
-//             <label className="option" htmlFor="option-2" data-txt="option-2" />
-//           </div>
-//           <div title="option-3">
-//             <input id="option-3" name="option" type="radio" />
-//             <label className="option" htmlFor="option-3" data-txt="option-3" />
-//           </div>
-//         </div>
-//       </div>
-//     </StyledWrapper>
-//   );
-// }
+import { useState } from "react";
+import styled from "styled-components";
+import { ChevronDown } from "lucide-react";
 
-// const StyledWrapper = styled.div`
-//   .select {
-//     width: fit-content;
-//     cursor: pointer;
-//     position: relative;
-//     transition: 300ms;
-//     color: white;
-//     overflow: hidden;
-//   }
+export default function CustomSelect({ label, options, value, onChange }) {
+    const [isOpen, setIsOpen] = useState(false);
 
-//   .selected {
-//     background-color: #1e2939;
-//     padding: 5px;
-//     margin-bottom: 3px;
-//     border-radius: 5px;
-//     position: relative;
-//     z-index: 100000;
-//     font-size: 15px;
-//     padding: 10px;
-//     border-radius: 14px;
-//     display: flex;
-//     align-items: center;
-//     width: fit-content;
-//     justify-content: space-between;
-//   }
+    const handleSelect = (optionValue) => {
+        onChange(optionValue);
+        setIsOpen(false);
+    };
 
-//   .arrow {
-//     position: relative;
-//     right: 0px;
-//     height: 10px;
-//     /*transform: rotate(-90deg);*/
-//     width: 25px;
-//     fill: white;
-//     z-index: 100000;
-//     transition: 300ms;
-//   }
+    return (
+        <StyledWrapper>
+            <div
+                className="select"
+                onMouseEnter={() => setIsOpen(true)}
+                onMouseLeave={() => setIsOpen(false)}
+            >
+                <div className="selected">
+                    <span>{value || label}</span>
+                    <ChevronDown
+                        className={`arrow ${isOpen ? "rotated" : ""}`}
+                        size={16}
+                    />
+                </div>
+                <div className={`options ${isOpen ? "open" : ""}`}>
+                    <div
+                        className={`option ${value === "" ? "active" : ""}`}
+                        onClick={() => handleSelect("")}
+                    >
+                        {label}
+                    </div>
+                    {options.map((opt) => (
+                        <div
+                            key={opt}
+                            className={`option ${value === opt ? "active" : ""}`}
+                            onClick={() => handleSelect(opt)}
+                        >
+                            {opt.charAt(0).toUpperCase() + opt.slice(1)}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </StyledWrapper>
+    );
+}
 
-//   .options {
-//     display: flex;
-//     flex-direction: column;
-//     border-radius: 5px;
-//     padding: 5px;
-//     background-color: #2a2f3b;
-//     position: relative;
-//     top: -100px;
-//     opacity: 0;
-//     transition: 300ms;
-//   }
+const StyledWrapper = styled.div`
+  .select {
+    width: fit-content;
+    cursor: pointer;
+    position: relative;
+    color: white;
+    font-family: inherit;
+  }
 
-//   .select:hover > .options {
-//     opacity: 1;
-//     top: 0;
-//   }
+  .selected {
+    background-color: #1e293b;
+    padding: 0.75rem 1.25rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-width: 140px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid #334155;
+    transition: all 0.3s ease;
+  }
 
-//   .select:hover > .selected .arrow {
-//     transform: rotate(0deg);
-//   }
+  .selected:hover {
+    background-color: #334155;
+    border-color: #475569;
+  }
 
-//   .option {
-//     border-radius: 5px;
-//     padding: 5px;
-//     transition: 300ms;
-//     background-color: #2a2f3b;
-//     width: 150px;
-//     font-size: 15px;
-//   }
-//   .option:hover {
-//     background-color: #323741;
-//   }
+  .arrow {
+    transition: transform 0.3s ease;
+    color: #94a3b8;
+  }
 
-//   .options input[type="radio"] {
-//     display: none;
-//   }
+  .arrow.rotated {
+    transform: rotate(180deg);
+  }
 
-//   .options label {
-//     display: inline-block;
-//   }
-//   .options label::before {
-//     content: attr(data-txt);
-//   }
+  .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #1e293b;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #334155;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 50;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
 
-//   .options input[type="radio"]:checked + label {
-//     display: none;
-//   }
+  .options.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
 
-//   .options input[type="radio"]#all:checked + label {
-//     display: none;
-//   }
+  .option {
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    color: #cbd5e1;
+    font-weight: 500;
+  }
 
-//   .select:has(.options input[type="radio"]#all:checked) .selected::before {
-//     content: attr(data-default);
-//   }
-//   .select:has(.options input[type="radio"]#option-1:checked) .selected::before {
-//     content: attr(data-one);
-//   }
-//   .select:has(.options input[type="radio"]#option-2:checked) .selected::before {
-//     content: attr(data-two);
-//   }
-//   .select:has(.options input[type="radio"]#option-3:checked) .selected::before {
-//     content: attr(data-three);
-//   }
-// `;
+  .option:hover {
+    background-color: #334155;
+    color: white;
+  }
+
+  .option.active {
+    background-color: #3b82f6;
+    color: white;
+  }
+`;

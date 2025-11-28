@@ -2,9 +2,9 @@ import { MapPin, Calendar } from "lucide-react";
 
 export default function ItemCard({ item }) {
   const statusColors = {
-    Lost: "bg-red-500/20 text-red-300",
-    Found: "bg-green-500/20 text-green-300",
-    Claimed: "bg-amber-500/20 text-amber-300",
+    Lost: "bg-red-500/50 text-red-100",
+    Found: "bg-green-500/50 text-green-100",
+    Claimed: "bg-amber-500/50 text-amber-100",
   };
 
   return (
