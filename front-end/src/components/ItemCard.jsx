@@ -1,34 +1,43 @@
-export default function ItemCard({ item }) {
-  return (
-    <div className="bg-[#0E1A2B] min-w-68 max-w-68 max-h-lg p-1 pl-0 pr-0 pt-0 rounded-2xl relative shadow-2xl">
-      <span
-        className={`text-xs w-14 text-center font-semibold m-2  p-1 rounded-full absolute right-1 ${item.status === "Lost" ? "bg-red-800/50 text-red-200" : item.status === "Found" ? "bg-green-800/50 text-green-200" : "bg-amber-800/50 text-amber-200"}`}
-      >
-        {item.status}
-      </span>
-      <img
-        src={item.image}
-        alt={item.name}
-        className="w-full h-50 object-fit mb-4 rounded-tr-2xl rounded-tl-2xl"
-      />
-      <div className="m-2 h-28 pt-2">
-        <h2 className="text-xl font-bold mb-2 text-white">{item.name}</h2>
-        <p className="text-gray-400 mb-6 text-xs">{item.description}</p>
+import { MapPin, Calendar } from "lucide-react";
 
-        <p className="text-gray-400 flex text-xs pt-3 items-center">
-          <img
-            src="location_icon.png"
-            alt="Library Logo"
-            className="w-4 h-4 mr-1 ml-1"
-          />
-          {item.location} |
-          <img
-            src="calendar_icon.png"
-            alt="User Logo"
-            className="w-4 h-4 mr-1 ml-1"
-          />{" "}
-          {item.date}{" "}
-        </p>
+export default function ItemCard({ item }) {
+  const statusColors = {
+    Lost: "bg-red-500/20 text-red-300",
+    Found: "bg-green-500/20 text-green-300",
+    Claimed: "bg-amber-500/20 text-amber-300",
+  };
+
+  return (
+    <div className="bg-[#1e293b] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1">
+      <div className="relative h-48 overflow-hidden">
+        <span
+          className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${statusColors[item.status] || "bg-gray-500/20 text-gray-300"
+            }`}
+        >
+          {item.status}
+        </span>
+        <img
+          src={item.image}
+          alt={item.name}
+          className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+        />
+      </div>
+
+      <div className="p-4 flex flex-col flex-1">
+        <h2 className="text-xl font-bold mb-2 text-white line-clamp-1">{item.name}</h2>
+        <p className="text-gray-400 text-sm mb-4 line-clamp-2 flex-1">{item.description}</p>
+
+        <div className="flex items-center mt-auto pt-4 border-t border-gray-700/30 text-xs text-gray-400">
+          <div className="flex items-center truncate">
+            <MapPin className="w-4 h-4 mr-1 text-blue-400 shrink-0" />
+            <span className="truncate">{item.location}</span>
+          </div>
+          <span className="mx-2 text-gray-600">|</span>
+          <div className="flex items-center shrink-0">
+            <Calendar className="w-4 h-4 mr-1 text-blue-400 shrink-0" />
+            <span>{item.date}</span>
+          </div>
+        </div>
       </div>
     </div>
   );

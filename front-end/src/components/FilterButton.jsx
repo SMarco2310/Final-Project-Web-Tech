@@ -4,12 +4,10 @@ export default function FilterButton() {
   return (
     <StyledWrapper>
       <div className="glass-radio-group">
-        <input type="radio" name="plan" id="glass-silver" defaultChecked />
-        <label htmlFor="glass-silver">Silver</label>
-        <input type="radio" name="plan" id="glass-gold" />
-        <label htmlFor="glass-gold">Gold</label>
-        <input type="radio" name="plan" id="glass-platinum" />
-        <label htmlFor="glass-platinum">Platinum</label>
+        <input type="radio" name="sort" id="sort-recent" defaultChecked />
+        <label htmlFor="sort-recent">Most Recent</label>
+        <input type="radio" name="sort" id="sort-oldest" />
+        <label htmlFor="sort-oldest">Oldest</label>
         <div className="glass-glider" />
       </div>
     </StyledWrapper>
@@ -18,18 +16,17 @@ export default function FilterButton() {
 
 const StyledWrapper = styled.div`
   .glass-radio-group {
-    --bg: #1e2939;
-    --text: #e5e5e5;
+    --bg: #0f172a; /* Darker background for container */
+    --text: #9ca3af; /* Gray text for unselected */
+    --selected-text: #ffffff;
+    --glider-bg: #1e293b; /* Slightly lighter background for selected pill */
+    
     display: flex;
     position: relative;
     background: var(--bg);
-    padding: 5px;
-    border-radius: 1rem;
-    /*backdrop-filter: blur(12px);*/
-    /*box-shadow:
-      inset 1px 1px 4px rgba(255, 255, 255, 0.2),
-      inset -1px -1px 6px rgba(0, 0, 0, 0.3),
-      0 4px 12px rgba(0, 0, 0, 0.15);*/
+    padding: 4px;
+    border-radius: 9999px; /* Full pill shape */
+    border: 1px solid #1e293b;
     overflow: hidden;
     width: fit-content;
   }
@@ -43,9 +40,9 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 80px;
+    min-width: 110px;
     font-size: 14px;
-    padding: 0.8rem 1.6rem;
+    padding: 0.6rem 1.2rem;
     cursor: pointer;
     font-weight: 600;
     letter-spacing: 0.3px;
@@ -56,50 +53,34 @@ const StyledWrapper = styled.div`
   }
 
   .glass-radio-group label:hover {
-    color: white;
+    color: #e5e5e5;
   }
 
   .glass-radio-group input:checked + label {
-    color: #fff;
+    color: var(--selected-text);
   }
 
   .glass-glider {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    width: calc(100% / 3.1);
-    border-radius: 1.5rem;
+    top: 4px;
+    bottom: 4px;
+    width: calc(50% - 4px);
+    border-radius: 9999px; /* Full pill shape */
     z-index: 1;
+    background: var(--glider-bg);
     transition:
-      transform 0.5s cubic-bezier(0.37, 1.95, 0.66, 0.56),
-      background 0.4s ease-in-out,
-      box-shadow 0.4s ease-in-out;
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      background 0.3s ease-in-out;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   }
 
-  /* Silver */
-  #glass-silver:checked ~ .glass-glider {
+  /* Most Recent */
+  #sort-recent:checked ~ .glass-glider {
     transform: translateX(0%);
-    background: gray;
-    /*box-shadow:
-      0 0 18px rgba(192, 192, 192, 0.5),
-      0 0 10px rgba(255, 255, 255, 0.4) inset;*/
   }
 
-  /* Gold */
-  #glass-gold:checked ~ .glass-glider {
+  /* Oldest */
+  #sort-oldest:checked ~ .glass-glider {
     transform: translateX(100%);
-    background: gray;
-    /*box-shadow:
-      0 0 18px rgba(255, 215, 0, 0.5),
-      0 0 10px rgba(255, 235, 150, 0.4) inset;*/
-  }
-
-  /* Platinum */
-  #glass-platinum:checked ~ .glass-glider {
-    transform: translateX(200%);
-    background: gray;
-    /*box-shadow:
-      0 0 18px rgba(160, 216, 255, 0.5),
-      0 0 10px rgba(200, 240, 255, 0.4) inset;*/
   }
 `;

@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import AuthLayouts from "./Layouts/AuthLayouts";
 import GalleryPage from "./pages/GalleryPage";
 import GalleryLayout from "./Layouts/GalleryLayout";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         </Route>
         <Route path="/" element={<GalleryLayout />}>
           <Route path="/Gallery" element={<GalleryPage />} />
+          <Route path="/NotFound" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </Router>
