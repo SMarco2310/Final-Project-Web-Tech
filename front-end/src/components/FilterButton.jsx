@@ -24,8 +24,8 @@ const StyledWrapper = styled.div`
     display: flex;
     position: relative;
     background: var(--bg);
-    padding: 4px;
-    border-radius: 9999px; /* Full pill shape */
+    padding: 3px;
+    border-radius: 0.75rem; /* rounded-xl */
     border: 1px solid #1e293b;
     overflow: hidden;
     width: fit-content;
@@ -40,9 +40,9 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 110px;
-    font-size: 14px;
-    padding: 0.6rem 1.2rem;
+    min-width: 90px;
+    font-size: 12px;
+    padding: 0.4rem 1rem;
     cursor: pointer;
     font-weight: 600;
     letter-spacing: 0.3px;
@@ -62,10 +62,10 @@ const StyledWrapper = styled.div`
 
   .glass-glider {
     position: absolute;
-    top: 4px;
-    bottom: 4px;
-    width: calc(50% - 4px);
-    border-radius: 9999px; /* Full pill shape */
+    top: 3px;
+    bottom: 3px;
+    width: calc(50% - 3px);
+    border-radius: 0.6rem; /* Slightly less than container for nesting */
     z-index: 1;
     background: var(--glider-bg);
     transition:
