@@ -8,7 +8,6 @@ export default function SearchBar() {
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
   const [location, setLocation] = useState("");
-
   return (
     <div className="w-full flex flex-col gap-4">
       <div id="search-bar" className="relative w-full">
@@ -26,7 +25,10 @@ export default function SearchBar() {
         />
       </div>
 
-      <div id="filter-bar" className="w-full flex flex-wrap gap-4 justify-between items-center">
+      <div
+        id="filter-bar"
+        className="w-full flex flex-wrap gap-4 justify-between items-center"
+      >
         <div className="flex flex-wrap gap-2 z-50">
           <CustomSelect
             label="Category"
@@ -47,8 +49,9 @@ export default function SearchBar() {
             onChange={setLocation}
           />
         </div>
-
-        <FilterButton />
+        <div className="md:mt-2 h-12 md:justify-center w-full md:w-auto">
+          <FilterButton />
+        </div>
       </div>
     </div>
   );

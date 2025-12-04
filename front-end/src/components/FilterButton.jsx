@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
+
+// TODO: Add functionality to sort by recent or oldest
+
 export default function FilterButton() {
+
   return (
     <StyledWrapper>
       <div className="glass-radio-group">
@@ -16,10 +20,10 @@ export default function FilterButton() {
 
 const StyledWrapper = styled.div`
   .glass-radio-group {
-    --bg: #0f172a; /* Darker background for container */
+    --bg:#1e293b; /* Darker background for container */
     --text: #9ca3af; /* Gray text for unselected */
     --selected-text: #ffffff;
-    --glider-bg: #1e293b; /* Slightly lighter background for selected pill */
+    --glider-bg: #0f172a; /* Slightly lighter background for selected pill */
     
     display: flex;
     position: relative;
@@ -29,6 +33,10 @@ const StyledWrapper = styled.div`
     border: 1px solid #1e293b;
     overflow: hidden;
     width: fit-content;
+    min-height: 48px; /* Match h-12 (3rem) */
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
 
   .glass-radio-group input {

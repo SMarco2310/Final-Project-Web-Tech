@@ -66,7 +66,6 @@ const StyledWrapper = styled.div`
     min-width: 140px;
     font-weight: 600;
     font-size: 14px;
-    border: 1px solid #334155;
     transition: all 0.3s ease;
   }
 
@@ -93,7 +92,6 @@ const StyledWrapper = styled.div`
     border-radius: 1rem;
     padding: 0.5rem;
     margin-top: 0.5rem;
-    border: 1px solid #334155;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
@@ -119,11 +117,16 @@ const StyledWrapper = styled.div`
 
   .option:hover {
     background-color: #334155;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
     color: white;
   }
 
   .option.active {
-    background-color: #3b82f6;
+    //  chnage this color for the active option
+    background-color: #0f172a;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
     color: white;
   }
 `;
