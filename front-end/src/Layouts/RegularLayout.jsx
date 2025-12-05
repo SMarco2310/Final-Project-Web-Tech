@@ -9,7 +9,7 @@ export default function RegularLayout() {
       <header className="w-full bg-gray-900/80 backdrop-blur-md border-b border-white/10 fixed top-0 z-100 p-6">
         <nav className="container mx-auto flex justify-between items-center">
           <Link className="inline-block" to="/">
-            <h1 className="text-2xl w-fit font-bold text-white p-0.5 items-center">
+            <h1 className="text-2xl w-fit font-bold text-white p-0.5 items-left">
               FindMyStuff
             </h1>
           </Link>

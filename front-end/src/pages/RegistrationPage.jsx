@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { User, Mail, Lock, Phone, Briefcase, GraduationCap, Eye, EyeOff } from "lucide-react";
+
 export default function RegistrationPage() {
   const [isVisible, setIsVisible] = useState(false);
   const handleToggle = () => {
@@ -12,14 +14,14 @@ export default function RegistrationPage() {
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("");
   const [studentId, setStudentId] = useState("");
-  // const [error, setError] = useState("");
-  // const [success, setSuccess] = useState("");
 
-  // const [mobileView, setMobileView] = useState(false);
+  const inputClasses = "w-full bg-gray-800/50 border border-gray-600 text-white rounded-xl h-12 pl-10 pr-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all";
+  const labelClasses = "block text-sm font-bold mb-2 text-gray-200";
+  const iconClasses = "absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400";
 
   return (
-    <div className="flex flex-col md:flex-row w-full h-full min-h-[calc(100vh-80px)] items-center justify-center p-4 gap-8">
-      <div className="hidden md:flex flex-1 w-full max-w-lg items-center justify-center">
+    <div className="flex flex-col md:flex-row w-full h-full min-h-[calc(100vh-80px)] items-center justify-center p-4 gap-2">
+      <div className="hidden md:flex flex-1 w-full max-w-xl items-center justify-center">
         <img
           src="login_image.png"
           alt="Background Image"
@@ -27,218 +29,178 @@ export default function RegistrationPage() {
         />
       </div>
       <div className="w-full md:flex-1 max-w-xl p-8 bg-[#1e293b]/50 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/10 mx-auto">
-        <h2 className="text-3xl font-bold pb-1.5 text-neutral-50">
+        <h2 className="text-3xl font-bold pb-1.5 text-white">
           Create an Account!
         </h2>
-        <p className="mb-6 text-xs text-neutral-50">
+        <p className="mb-6 text-sm text-gray-400">
           Find what you've lost, return what you've found
         </p>
 
-        <form className="flex flex-col">
-          <label
-            className="text-neutral-50 text-xs font-bold ml-1 mb-1 w-fit"
-            htmlFor="name"
-          >
-            Full Name
-          </label>
-          <div className="relative w-full mb-5">
-            <img
-              src="person_icon.png"
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-70"
-            />
-            <input
-              className="w-full bg-gray-800 border border-gray-500 text-gray-300 rounded-2xl h-12 pl-12 pr-4 placeholder-gray-500 focus:outline-none focus:border-gray-500 max-w-md"
-              type="text"
-              id="name"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              aria-autocomplete="true"
-              placeholder="Enter your name"
-              required
-            />
-          </div>
-          <label
-            className="text-neutral-50 text-xs font-bold ml-1 mb-1 w-fit"
-            htmlFor="email"
-          >
-            Email
-          </label>
-          <div className="relative w-full mb-5">
-            <img
-              src="person_icon.png"
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-70"
-            />
-            <input
-              className="w-full bg-gray-800 border border-gray-500 text-gray-300 rounded-2xl h-12 pl-12 pr-4 placeholder-gray-500 focus:outline-none focus:border-gray-500 max-w-md"
-              type="email"
-              id="email"
-              name="email"
-              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              aria-autocomplete="true"
-              placeholder="john.doe@example.com"
-              required
-            />
-          </div>
-          <label
-            className="text-neutral-50 text-xs font-bold ml-1 mb-1 w-fit"
-            htmlFor="studentId"
-          >
-            Student ID
-          </label>
-          <div className="relative w-full mb-5">
-            <img
-              src="person_icon.png"
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-70"
-            />
-            <input
-              className="w-full bg-gray-800 border border-gray-500 text-gray-300 rounded-2xl h-12 pl-12 pr-4 placeholder-gray-500 focus:outline-none focus:border-gray-500 max-w-md"
-              type="text"
-              id="studentId"
-              name="studentId"
-              pattern="^\d{4}\d{4}$"
-              value={studentId}
-              onChange={(e) => setStudentId(e.target.value)}
-              aria-autocomplete="true"
-              placeholder="XXXX2025"
-              required
-            />
-          </div>
-          <label
-            className=" text-neutral-50 text-xs font-bold ml-1 mb-1 w-fit"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <div className="relative max-w-md mb-3">
-            <img
-              src="lock_icon.png"
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-70"
-            />
-            <input
-              className="w-full bg-gray-800 border border-gray-500 text-gray-300 rounded-2xl h-12 pl-12 pr-12 placeholder-gray-500 focus:outline-none focus:border-gray-500"
-              type={isVisible ? "text" : "password"}
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              // work on the pattern
-              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\-]{8,}$"
-              placeholder="Enter your password"
-              required
-            />
-            <button
-              onClick={handleToggle}
-              className="absolute right-3 top-1/2 -translate-y-1/2"
-            >
-              <img
-                src={isVisible ? "eye_closed_icon.png" : "eye_open_icon.png"}
-                className="w-5 h-5 opacity-70"
+        <form className="flex flex-col gap-4">
+          <div>
+            <label className={labelClasses} htmlFor="name">
+              Full Name
+            </label>
+            <div className="relative">
+              <User className={iconClasses} />
+              <input
+                className={inputClasses}
+                type="text"
+                id="name"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your name"
+                required
               />
-            </button>
+            </div>
           </div>
-          <label
-            className="text-neutral-50 text-xs font-bold ml-1 mb-1 w-fit"
-            htmlFor="email"
-          >
-            Confirm Password
-          </label>
-          <div className="relative max-w-md mb-5">
-            <img
-              src="lock_icon.png"
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-70"
-            />
-            <input
-              className="w-full bg-gray-800 border border-gray-500 text-gray-300 rounded-2xl h-12 pl-12 pr-4 placeholder-gray-500 focus:outline-none focus:border-gray-500"
-              type="email"
-              id="email"
-              name="email"
-              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              aria-autocomplete="true"
-              placeholder="Confirm Password"
-              required
-            />
-            <button
-              onClick={handleToggle}
-              className="absolute right-3 top-1/2 -translate-y-1/2"
-            >
-              <img
-                src={isVisible ? "eye_closed_icon.png" : "eye_open_icon.png"}
-                className="w-5 h-5 opacity-70"
+
+          <div>
+            <label className={labelClasses} htmlFor="email">
+              Email
+            </label>
+            <div className="relative">
+              <Mail className={iconClasses} />
+              <input
+                className={inputClasses}
+                type="email"
+                id="email"
+                name="email"
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="john.doe@example.com"
+                required
               />
-            </button>
+            </div>
           </div>
-          <label
-            className="text-neutral-50 text-xs font-bold ml-1 mb-1 w-fit"
-            htmlFor="phone"
-          >
-            Phone Number
-          </label>
-          <div className="relative w-full mb-5">
-            <img
-              src="phone_icon.png"
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-70"
-            />
-            <input
-              className="w-full bg-gray-800 border border-gray-500 text-gray-300 rounded-2xl h-12 pl-12 pr-4 placeholder-gray-500 focus:outline-none focus:border-gray-500 max-w-md"
-              type="phone"
-              id="phone"
-              name="phone"
-              pattern="^[0-9]{10}$"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              aria-autocomplete="true"
-              placeholder="1234567890"
-              required
-            />
+
+          <div>
+            <label className={labelClasses} htmlFor="studentId">
+              Student ID
+            </label>
+            <div className="relative">
+              <GraduationCap className={iconClasses} />
+              <input
+                className={inputClasses}
+                type="text"
+                id="studentId"
+                name="studentId"
+                pattern="^\d{4}\d{4}$"
+                value={studentId}
+                onChange={(e) => setStudentId(e.target.value)}
+                placeholder="XXXX2025"
+                required
+              />
+            </div>
           </div>
-          <label
-            className="text-neutral-50 text-xs font-bold ml-1 mb-1 w-fit"
-            htmlFor="role"
-          >
-            Role
-          </label>
-          <div className="relative w-full mb-5">
-            <img
-              src="person_icon.png"
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-70"
-            />
-            <select
-              className="w-full bg-gray-800 border border-gray-500 text-gray-300 rounded-2xl h-12 pl-12 pr-4 focus:outline-none focus:border-gray-500 max-w-md "
-              type="text"
-              id="role"
-              name="role"
-              pattern=""
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              aria-autocomplete="true"
-              required
-            >
-              <option className="text-gray-300" value="student">
-                Student
-              </option>
-              <option className="text-gray-300" value="teacher">
-                Teacher
-              </option>
-              <option className="text-gray-300" value="admin">
-                Admin
-              </option>
-            </select>
+
+          <div>
+            <label className={labelClasses} htmlFor="password">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className={iconClasses} />
+              <input
+                className={`${inputClasses} pr-12`}
+                type={isVisible ? "text" : "password"}
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\-]{8,}$"
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                type="button"
+                onClick={handleToggle}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+              >
+                {isVisible ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
+
+          <div>
+            <label className={labelClasses} htmlFor="confirmPassword">
+              Confirm Password
+            </label>
+            <div className="relative">
+              <Lock className={iconClasses} />
+              <input
+                className={`${inputClasses} pr-12`}
+                type={isVisible ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm Password"
+                required
+              />
+              <button
+                type="button"
+                onClick={handleToggle}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+              >
+                {isVisible ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label className={labelClasses} htmlFor="phone">
+              Phone Number
+            </label>
+            <div className="relative">
+              <Phone className={iconClasses} />
+              <input
+                className={inputClasses}
+                type="tel"
+                id="phone"
+                name="phone"
+                pattern="^[0-9]{10}$"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="1234567890"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className={labelClasses} htmlFor="role">
+              Role
+            </label>
+            <div className="relative">
+              <Briefcase className={iconClasses} />
+              <select
+                className={`${inputClasses} appearance-none`}
+                id="role"
+                name="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
+              >
+                <option value="" disabled>Select Role</option>
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </div>
+
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl h-12 text-xs mb-3 max-w-md"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-900/20 mt-2"
             type="submit"
           >
             Create Account
           </button>
         </form>
-        <p className="text-center text-xs mt-3 text-neutral-50">
+        <p className="text-center text-sm mt-6 text-gray-400">
           Already have an account?{" "}
-          <Link className="text-blue-500 hover:text-blue-700" to="/register">
+          <Link className="text-blue-400 hover:text-blue-300 font-bold transition-colors" to="/login">
             Log in
           </Link>
         </p>

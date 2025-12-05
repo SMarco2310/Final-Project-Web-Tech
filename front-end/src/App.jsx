@@ -8,6 +8,7 @@ import RegularLayout from "./Layouts/RegularLayout";
 import ItemPage from "./pages/ItemPage";
 import ClaimFormPage from "./pages/ClaimFormPage";
 import ReportFormPage from "./pages/ReportFormPage";
+import ProfilePage from "./pages/ProfilePage";
 function App() {
   return (  
     <Router>
@@ -26,7 +27,9 @@ function App() {
           <Route path="/NotFound" element={<NotFoundPage />} />
           <Route path="/Claim:id" element={<ClaimFormPage />} />
           <Route path="/Report" element={<ReportFormPage />} />
+          <Route path="/Profile" element={<ProfilePage />} />
         </Route>
+
       </Routes>
     </Router>
   );
