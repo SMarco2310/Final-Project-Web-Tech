@@ -1,17 +1,19 @@
 import styled from "styled-components";
-
+import { useId } from "react";
 
 // TODO: Add functionality to sort by recent or oldest
 
-export default function FilterButton() {
+export default function FilterButton({ text1, text2, w }) {
+  const id = useId();
+  const name = `sort-${id}`;
 
   return (
     <StyledWrapper>
-      <div className="glass-radio-group">
-        <input type="radio" name="sort" id="sort-recent" defaultChecked />
-        <label htmlFor="sort-recent">Most Recent</label>
-        <input type="radio" name="sort" id="sort-oldest" />
-        <label htmlFor="sort-oldest">Oldest</label>
+      <div className={`glass-radio-group ${w || ""}`}>
+        <input type="radio" name={name} id={`${id}-recent`} defaultChecked />
+        <label htmlFor={`${id}-recent`}>{text1}</label>
+        <input type="radio" name={name} id={`${id}-oldest`} />
+        <label htmlFor={`${id}-oldest`}>{text2}</label>
         <div className="glass-glider" />
       </div>
     </StyledWrapper>
@@ -20,11 +22,11 @@ export default function FilterButton() {
 
 const StyledWrapper = styled.div`
   .glass-radio-group {
-    --bg:#1e293b; /* Darker background for container */
+    --bg: #1e293b; /* Darker background for container */
     --text: #9ca3af; /* Gray text for unselected */
     --selected-text: #ffffff;
     --glider-bg: #0f172a; /* Slightly lighter background for selected pill */
-    
+
     display: flex;
     position: relative;
     background: var(--bg);
@@ -32,9 +34,23 @@ const StyledWrapper = styled.div`
     border-radius: 1.2rem; /* rounded-xl */
     border: 1px solid #1e293b;
     overflow: hidden;
-    width: fit-content;
+    /* Default width behavior if no class provided, but allow override */
+    /* width: fit-content;  <-- Removed to let w prop control it, or default to block/flex behavior */
     min-height: 48px; /* Match h-12 (3rem) */
-    @media (max-width: 768px) {
+    max-width: 100%;
+  }
+
+  /* If no width class is provided, we might want a default. 
+     But since it's a flex container, it will shrink to content by default if inline-flex, 
+     or take full width if flex. 
+     Let's keep it simple and rely on the w prop or parent. 
+     If we want the original behavior of 'fit-content' when no w is passed: */
+  .glass-radio-group:not([class*="w-"]) {
+    width: fit-content;
+  }
+  
+  @media (max-width: 768px) {
+    .glass-radio-group {
       width: 100%;
     }
   }
@@ -82,13 +98,13 @@ const StyledWrapper = styled.div`
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   }
 
-  /* Most Recent */
-  #sort-recent:checked ~ .glass-glider {
+  /* First option checked */
+  .glass-radio-group input:nth-of-type(1):checked ~ .glass-glider {
     transform: translateX(0%);
   }
 
-  /* Oldest */
-  #sort-oldest:checked ~ .glass-glider {
+  /* Second option checked */
+  .glass-radio-group input:nth-of-type(2):checked ~ .glass-glider {
     transform: translateX(100%);
   }
 `;

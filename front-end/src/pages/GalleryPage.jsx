@@ -85,8 +85,8 @@ export default function GalleryPage() {
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-bold text-white">Lost & Found Items</h1>
-        <p className="text-gray-400 text-lg">
+        <h1 className="text-6xl font-semibold text-white">Lost & Found Items</h1>
+        <p className="text-gray-400 text-xl">
           Browse through items that have been recently reported. Use the filters
           to narrow your search.
         </p>

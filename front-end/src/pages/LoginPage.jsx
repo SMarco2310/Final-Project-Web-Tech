@@ -12,14 +12,14 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col md:flex-row w-full h-full min-h-[calc(100vh-80px)] items-center justify-center p-4 gap-8">
-      <div className="flex-1 w-full max-w-lg flex items-center justify-center">
+      <div className="hidden md:flex flex-1 w-full max-w-lg items-center justify-center">
         <img
           src="login_image.png"
           alt="Illustration of lost and found items"
           className="w-full h-auto max-h-[500px] object-contain rounded-3xl drop-shadow-2xl"
         />
       </div>
-      <div className="flex-1 w-full max-w-md p-8 bg-[#1e293b]/50 backdrop-blur-sm rounded-3xl shadow-2xl">
+      <div className="w-full md:flex-1 max-w-md p-8 bg-[#1e293b]/50 backdrop-blur-sm rounded-3xl shadow-2xl">
         <h2 className="text-3xl font-bold pb-2 text-white">
           Welcome Back!
         </h2>

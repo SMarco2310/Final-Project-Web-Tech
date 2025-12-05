@@ -2,8 +2,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import { ChevronDown } from "lucide-react";
 
-export default function CustomSelect({ label, options, value, onChange }) {
+export default function CustomSelect({ label, options, value, onChange, w }) {
     const [isOpen, setIsOpen] = useState(false);
+  
 
     const handleSelect = (optionValue) => {
         onChange(optionValue);
@@ -13,7 +14,8 @@ export default function CustomSelect({ label, options, value, onChange }) {
     return (
         <StyledWrapper>
             <div
-                className="select"
+                id="select"
+                className={w}
                 onMouseEnter={() => setIsOpen(true)}
                 onMouseLeave={() => setIsOpen(false)}
             >
@@ -47,8 +49,7 @@ export default function CustomSelect({ label, options, value, onChange }) {
 }
 
 const StyledWrapper = styled.div`
-  .select {
-    width: fit-content;
+   #select {
     cursor: pointer;
     position: relative;
     color: white;
