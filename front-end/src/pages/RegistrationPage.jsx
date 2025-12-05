@@ -18,15 +18,15 @@ export default function RegistrationPage() {
   // const [mobileView, setMobileView] = useState(false);
 
   return (
-    <div className="flex flex-1/2">
-      <div className="flex-1 w-lg h-full m-3 p-6 mt-80 items-center flex flex-col justify-center">
+    <div className="flex flex-col md:flex-row w-full h-full min-h-[calc(100vh-80px)] items-center justify-center p-4 gap-8">
+      <div className="hidden md:flex flex-1 w-full max-w-lg items-center justify-center">
         <img
           src="login_image.png"
           alt="Background Image"
-          className="w- h-full rounded-4xl "
+          className="w-full h-auto max-h-[500px] object-contain rounded-3xl drop-shadow-2xl"
         />
       </div>
-      <div className=" flex-1 max-w-xl h-full m-3 p-6 mt-50">
+      <div className="w-full md:flex-1 max-w-xl p-8 bg-[#1e293b]/50 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/10 mx-auto">
         <h2 className="text-3xl font-bold pb-1.5 text-neutral-50">
           Create an Account!
         </h2>

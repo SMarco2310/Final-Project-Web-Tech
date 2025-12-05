@@ -5,29 +5,42 @@
 // - Update item
 // - Delete item
 
-import prisma from "../config/prismaClient.js";
+import AppDataSource from "../config/dataSource.js";
+import { UserEntity } from "../models/User.js";
+import { LocationEntity } from "../models/Location.js";
+import { ItemEntity } from "../models/Item.js";
+import { ImageEntity } from "../models/Image.js";
+const itemRepo = AppDataSource.getRepository(ItemEntity);
+const userRepo = AppDataSource.getRepository(UserEntity);
+const locationRepo = AppDataSource.getRepository(LocationEntity);
+const imageRepo = AppDataSource.getRepository(ImageEntity);
 
 // this return all the items
 
 export const getAllItems = async (req, res) => {
   try {
-    const items = await prisma.item.findMany({
-      where: {
-        status: {
-          in: ["LOST", "FOUND"],
-        },
-      },
-      include: {
-        images: true,
-        user: {
-          include: {
-            name: true,
-            email: true,
-            phone: true,
-          },
-        },
-      },
-    }); // model should be lowercase in Prisma Client
+    const items = await itemRepo
+      .createQueryBuilder("item")
+      .leftJoinAndSelect("item.images", "images")
+      .leftJoinAndSelect("item.user", "user")
+      .leftJoinAndSelect("item.location", "location")
+      .select([
+        "item.id",
+        "item.title",
+        "item.category",
+        "item.description",
+        "item.status",
+        "item.createdAt",
+
+        "images", // selecting whole object is allowed
+        "location",
+
+        "user.id",
+        "user.name",
+        "user.email",
+        "user.phone",
+      ])
+      .getMany();
 
     res.status(200).json({
       ok: true,
@@ -51,22 +64,29 @@ export const getAllItems = async (req, res) => {
 export const getItemById = async (req, res) => {
   const { item_id } = req.params;
   try {
-    const item = await prisma.item.findUnique({
-      where: {
-        id: item_id,
-      },
-      include: {
-        images: true,
-        // make decision on whether to include the claims or not
-        user: {
-          include: {
-            name: true,
-            email: true,
-            phone: true,
-          },
-        },
-      },
-    });
+    const item = await itemRepo
+      .createQueryBuilder("item")
+      .leftJoinAndSelect("item.images", "images")
+      .leftJoinAndSelect("item.user", "user")
+      .leftJoinAndSelect("item.location", "location")
+      .where("item.id = :id", { id: item_id })
+      .select([
+        "item.id",
+        "item.title",
+        "item.description",
+        "item.status",
+        "item.created_at",
+
+        "images",
+        "location",
+
+        "user.id",
+        "user.name",
+        "user.email",
+        "user.phone",
+      ])
+      .getOne();
+
     res.status(200).json({
       ok: true,
       status: 200,
@@ -86,30 +106,43 @@ export const getItemById = async (req, res) => {
 //  this create an item
 
 export const createItem = async (req, res) => {
-  const { user_id, location_id, category, name, description, status, images } =
+  const { user_id, location_id, category, title, description, status, images } =
     req.body;
-  // this tranfrorms the list of string url into a list of url object
-  const images_url = images.map((url) => ({ url: url }));
+
   try {
-    await prisma.item.create({
-      data: {
-        user_id: user_id,
-        location_id: location_id,
-        category: category,
-        name: name,
-        description: description,
-        status: status,
-        images: {
-          createMany: {
-            data: images_url,
-          },
-        },
-      },
+    //Load related entities
+    const user = await userRepo.findOneBy({ id: user_id });
+    const location = await locationRepo.findOneBy({ id: location_id });
+
+    if (!user || !location) {
+      return res.status(400).json({
+        ok: false,
+        message: "User or Location not found",
+      });
+    }
+
+    //Create Item entity
+    const item = itemRepo.create({
+      category,
+      title,
+      description,
+      status,
+      user, // assign relation
+      location, // assign relation
     });
-    res.status(200).json({
+
+    // Save Item first to get its id
+    await itemRepo.save(item);
+
+    //Handle images (one-to-many)
+    const imageEntities = images.map((url) => ({ url, item }));
+    await imageRepo.save(imageEntities);
+
+    res.status(201).json({
       ok: true,
-      status: 200,
+      status: 201,
       message: "Item created successfully!",
+      item,
     });
   } catch (err) {
     console.error("Error in create_item: ", err);
@@ -126,35 +159,39 @@ export const createItem = async (req, res) => {
 export const deleteItem = async (req, res) => {
   const { item_id } = req.params;
   const { user_id } = req.user;
-  const item = await prisma.item.findUnique({
-    where: {
+  try {
+    const item = await itemRepo.findOneBy({
       id: item_id,
-    },
-  });
-  if (!item) {
-    return res.status(404).json({
+      user: { id: user_id },
+    });
+    if (!item) {
+      return res.status(404).json({
+        ok: false,
+        status: 404,
+        message: "Item not found",
+      });
+    }
+    if (item.user.id !== user_id || !req.user.isAdmin) {
+      return res.status(403).json({
+        ok: false,
+        status: 403,
+        message: "Unauthorized",
+      });
+    }
+    await itemRepo.delete(item_id);
+    res.status(200).json({
+      ok: true,
+      status: 200,
+      message: "Item deleted successfully!",
+    });
+  } catch (err) {
+    console.error("Error in delete_item: ", err);
+    res.status(500).json({
       ok: false,
-      status: 404,
-      message: "Item not found",
+      status: 500,
+      message: "Server error while deleting item",
     });
   }
-  if (item.user_id !== user_id && !req.user.isAdmim) {
-    return res.status(403).json({
-      ok: false,
-      status: 403,
-      message: "Unauthorized",
-    });
-  }
-  await prisma.item.delete({
-    where: {
-      id: item_id,
-    },
-  });
-  res.status(200).json({
-    ok: true,
-    status: 200,
-    message: "Item deleted successfully!",
-  });
 };
 
 //  have to come up with the logic for when the item is claimed to remove it from the list

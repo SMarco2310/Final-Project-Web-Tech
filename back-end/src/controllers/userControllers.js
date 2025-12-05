@@ -1,9 +1,9 @@
-import prisma from "../config/prismaClient.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { validateEmail, validatePassword, getRole } from "../utils/utlis.js";
-
+import AppDataSource from "../config/dataSource.js";
+import { UserEntity } from "../models/User.js";
 dotenv.config();
 
 // TODO: User Controller
@@ -14,17 +14,15 @@ dotenv.config();
 // - Load Profile
 // - Login User
 
+const userRepo = AppDataSource.getRepository(UserEntity);
 //  create user
 
 export const registerUser = async (req, res) => {
   const { name, email, student_id, password, phone, role } = req.body;
   if (validateEmail(email) && validatePassword(password)) {
-    const hashed_password = await bcrypt.hash(password, 12);
     try {
-      const user = await prisma.user.findUnique({
-        where: {
-          email: email,
-        },
+      const user = await userRepo.findOneBy({
+        email: email,
       });
       if (user) {
         return res.status(400).json({
@@ -33,24 +31,33 @@ export const registerUser = async (req, res) => {
           message: "A user with this email already exist",
         });
       }
-      const newUser = await prisma.user.create({
-        data: {
-          email,
-          name,
-          student_id,
-          password: hashed_password,
-          phone,
-          role: getRole(role),
-        },
-      });
-      const user_id = newUser.id;
-      const token = jwt.sign({ user_id, role }, process.env.SECRET_KEY);
+      const hashed_password = await bcrypt.hash(password, 12);
+      const processedRole = getRole(role);
 
-      res.status(200).json({
+      const newUser = userRepo.create({
+        email,
+        name,
+        student_id,
+        password: hashed_password,
+        phone,
+        role: processedRole,
+      });
+
+      await userRepo.save(newUser);
+
+      const token = jwt.sign(
+        { user_id: newUser.id, role: processedRole },
+        process.env.SECRETE_KEY,
+        {
+          expiresIn: "7d",
+        },
+      );
+
+      res.status(201).json({
         ok: true,
         token: token,
-        user_id: user_id,
-        status: 200,
+        user_id: newUser.id,
+        status: 201,
         message: "new user created successfully!!",
       });
     } catch (err) {
@@ -75,25 +82,27 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: email,
-      },
+    const user = await userRepo.findOneBy({
+      email: email,
     });
     if (!user) {
-      console.log("Error:", `User with email: ${email} doesn't exist`);
+      console.error("Error:", `User with email: ${email} doesn't exist`);
       return res.status(400).json({
         ok: false,
         status: 400,
         message: "This user doesn't exist",
       });
     }
-    if (user && (await bcrypt.compare(password, user.password))) {
+    const passwordMatch = bcrypt.compare(password, user.password);
+    if (user && passwordMatch) {
       const user_id = user.id;
       const user_role = getRole(user.role);
       const token = jwt.sign(
         { user_id, role: user_role },
-        process.env.SECRET_KEY,
+        process.env.SECRETE_KEY,
+        {
+          expiresIn: "7d",
+        },
       );
       res.status(200).json({
         ok: true,
@@ -124,34 +133,34 @@ export const loginUser = async (req, res) => {
 export const getProfile = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: id,
-      },
-      includes: {
-        items: true,
-        claims: true,
-      },
-    });
+    const user = await userRepo
+      .createQueryBuilder("user")
+      .leftJoinAndSelect("user.items", "items")
+      .leftJoinAndSelect("user.claims", "claims")
+      .where("user.id = :id", { id })
+      .select([
+        "user.id",
+        "user.email",
+        "user.name",
+        "user.student_id",
+        "user.phone",
+        "user.createdAt",
+
+        "claims",
+        "items",
+      ])
+      .getOne();
     if (user) {
       res.status(200).json({
         ok: true,
-        data: {
-          email: user.email,
-          name: user.name,
-          student_id: user.student_id,
-          phone: user.phone,
-          items: user.items,
-          claims: user.claims,
-          created_at: user.created_at,
-        },
+        user,
         message: "User profile successfully Loaded!",
       });
     } else {
-      res.status(400 || 403).json({
+      res.status(404).json({
         ok: false,
-        status: 400 || 403,
-        message: "Bad Request" || "Unauthorized Request",
+        status: 404,
+        message: "User Not Found",
       });
     }
   } catch (err) {

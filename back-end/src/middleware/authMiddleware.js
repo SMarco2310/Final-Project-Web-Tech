@@ -8,7 +8,7 @@ export const authenticate = (req, res, next) => {
   if (!token) return res.sendStatus(401);
 
   try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const decoded = jwt.verify(token, process.env.SECRETE_KEY);
     req.user = decoded; // contains id & role
     next();
   } catch (err) {

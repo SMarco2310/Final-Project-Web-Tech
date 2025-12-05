@@ -2,7 +2,7 @@
 // - a function to validate email and password
 //
 
-import Role from "../models/User.js";
+import { Role } from "../models/User.js";
 export const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
