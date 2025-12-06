@@ -7,7 +7,7 @@ export default function ProfileItems({ item }) {
     };
 
     return (
-        <div className="w-full p-6 flex flex-col-reverse md:flex-row justify-between items-start md:items-center border-b border-slate-700/50 last:border-b-0 gap-6">
+        <div className="w-full p-6 flex flex-row justify-between items-center border-b border-slate-700/50 last:border-b-0 gap-6">
             <div className="flex flex-col gap-3 flex-1">
                 <div className="flex items-center gap-3">
                     <span
@@ -28,7 +28,7 @@ export default function ProfileItems({ item }) {
                 </button>
             </div>
 
-            <div className="w-full md:w-40 shrink-0">
+            <div className="w-40 shrink-0">
                 <img src={item.image} alt={item.name} className="w-full h-28 object-cover rounded-xl" />
             </div>
         </div>
