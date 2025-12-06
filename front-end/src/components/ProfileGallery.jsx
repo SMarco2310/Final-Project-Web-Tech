@@ -13,9 +13,9 @@ export default function ProfileGallery({ items }) {
     });
 
     return (
-        <div className="w-auto h-auto my-10 mx-20 border-2 border-slate-700/50 rounded-xl overflow-hidden">
+        <div className="w-full h-auto border border-slate-700/50 rounded-3xl overflow-hidden bg-[#0f172a]">
             <TabsSwitchFilter activeTab={activeTab} setActiveTab={setActiveTab} />
-            <div>
+            <div className="flex flex-col">
                 {filteredItems.map((item) => (
                     <ProfileItems key={item.id} item={item} />
                 ))}
