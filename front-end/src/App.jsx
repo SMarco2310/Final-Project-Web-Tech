@@ -10,7 +10,7 @@ import ClaimFormPage from "./pages/ClaimFormPage";
 import ReportFormPage from "./pages/ReportFormPage";
 import ProfilePage from "./pages/ProfilePage";
 function App() {
-  return (  
+  return (
     <Router>
       <Routes>
         <Route path="/" element={<AuthLayouts />}>
@@ -23,7 +23,7 @@ function App() {
         </Route> */}
         <Route path="/" element={<RegularLayout />}>
           <Route path="/Gallery" element={<GalleryPage />} />
-          <Route path="/Item:id" element={<ItemPage />} />
+          <Route path="/Item" element={<ItemPage />} />
           <Route path="/NotFound" element={<NotFoundPage />} />
           <Route path="/Claim:id" element={<ClaimFormPage />} />
           <Route path="/Report" element={<ReportFormPage />} />
