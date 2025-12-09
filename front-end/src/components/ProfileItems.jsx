@@ -9,9 +9,9 @@ export default function ProfileItems({ item }) {
 
         <div className="w-full h-auto py-4 flex md: border-b  border-slate-700/50">
             <div className="w-1/2 flex flex-col mx-10 mt-5 " >
-                <div className="flex gap-2 align-middle">
+                <div className="flex gap-2 align-middle items-center mb-2">
                     <span
-                        className={`pt-1 pb-1 px-4 py-1 rounded-full text-sm font-bold backdrop-blur-md mb-3 w-fit ${statusColors[item.status] || "bg-gray-500/20 text-gray-300"
+                        className={`pt-1 pb-1 px-4 rounded-full text-sm font-bold backdrop-blur-md mb-3 w-fit ${statusColors[item.status] || "bg-gray-500/20 text-gray-300"
                             }`}
                     >
                         {item.status}

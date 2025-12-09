@@ -22,26 +22,26 @@ export default function ItemPage() {
     };
 
     const statusColors = {
-        Lost: "bg-red-500/20 text-red-400",
-        Found: "bg-emerald-500/20 text-emerald-400",
-        Claimed: "bg-amber-500/20 text-amber-400",
-    };
+    Lost: "bg-red-600/40 text-red-100",
+    Found: "bg-green-500/40 text-green-100",
+    Claimed: "bg-amber-500/40 text-amber-100",
+  };
 
     return (
         <div className="min-h-screen bg-[#0f172a] text-slate-300 p-8 flex justify-center font-sans">
-            <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left Column: Images */}
+            <div className="max-w-7xl w-full grid md:grid-rows-2 lg:grid-cols-3 gap-8">
+
                 <div className="lg:col-span-2 flex flex-col gap-4">
-                    <div className="w-full aspect-[4/3] bg-[#1e293b] rounded-2xl overflow-hidden shadow-lg">
+                    <div className="w-full aspect-4/3 bg-[#1e293b] rounded-2xl overflow-hidden shadow-lg">
                         <img
                             src={item.images[0]}
                             alt={item.name}
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                         />
                     </div>
-                    <div className="grid grid-cols-4 gap-4">
+                    <div className="grid grid-cols-5 gap-4">
                         {item.images.map((image, index) => (
-                            <div key={index} className={`aspect-square rounded-xl overflow-hidden cursor-pointer border-2 ${index === 0 ? 'border-blue-500' : 'border-transparent hover:border-slate-500'} transition-all`}>
+                            <div key={index} className={`aspect-square rounded-xl overflow-hidden cursor-pointer opacity-80 hover:opacity-100 transition-all`}>
                                 <img
                                     src={image}
                                     className="w-full h-full object-cover"
@@ -52,11 +52,8 @@ export default function ItemPage() {
                     </div>
                 </div>
 
-                {/* Right Column: Details */}
-                <div className="flex flex-col gap-6">
-
-                    {/* Header Card */}
-                    <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-slate-700/50">
+                <div className="flex flex-col gap-8 w-full">
+                    <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg">
                         <h1 className="text-3xl font-bold text-white mb-3">{item.name}</h1>
                         <span className={`px-3 py-1 rounded-full text-sm font-medium inline-block mb-4 ${statusColors[item.status] || "bg-gray-800 text-gray-300"}`}>
                             {item.status}
@@ -66,8 +63,7 @@ export default function ItemPage() {
                         </p>
                     </div>
 
-                    {/* Details Card */}
-                    <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-slate-700/50">
+                    <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg">
                         <h2 className="text-xl font-bold text-white mb-4">Details</h2>
                         <div className="grid grid-cols-2 gap-y-6 gap-x-4">
                             <div>
@@ -85,8 +81,7 @@ export default function ItemPage() {
                         </div>
                     </div>
 
-                    {/* Location Card */}
-                    <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-slate-700/50">
+                    <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg">
                         <h2 className="text-xl font-bold text-white mb-4">Location</h2>
                         <div className="flex items-start gap-3 mb-4 text-slate-300">
                             <MapPin className="w-5 h-5 text-blue-400 mt-0.5 shrink-0" />
@@ -106,8 +101,7 @@ export default function ItemPage() {
                         </div>
                     </div>
 
-                    {/* User & Action Card */}
-                    <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-slate-700/50">
+                    <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg">
                         <div className="flex items-center gap-4 mb-6">
                             <img src={item.user.image} alt={item.user.name} className="w-12 h-12 rounded-full object-cover border-2 border-slate-600" />
                             <div>
@@ -116,7 +110,7 @@ export default function ItemPage() {
                             </div>
                         </div>
 
-                        <button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors mb-4 shadow-lg shadow-blue-900/20">
+                        <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors mb-4 shadow-lg shadow-blue-900/20">
                             <LucideShieldCheck className="w-5 h-5" />
                             Claim This Item
                         </button>

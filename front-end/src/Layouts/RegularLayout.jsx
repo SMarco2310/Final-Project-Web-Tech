@@ -20,12 +20,12 @@ export default function RegularLayout() {
           ) : (
             <div className="flex items-center gap-2">
               <Link to="/login" className="text-white hover:text-gray-300">
-                <button className="bg-blue-500/80 text-white px-4 py-2 rounded-2xl">
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-2xl">
                   Login
                 </button>
               </Link>
               <Link to="/register" className="text-white hover:text-gray-300">
-                <button className="bg-blue-500/80 text-white px-4 py-2 rounded-2xl">
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-2xl">
                   Sign Up
                 </button>
               </Link>
