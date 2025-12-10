@@ -6,6 +6,9 @@ import cors from "cors"; // Recommended: See Best Practices below
 import imageRouter from "./src/routes/imageRoutes.js";
 import itemRouter from "./src/routes/itemRoutes.js";
 import authRouter from "./src/routes/authRoutes.js";
+import claimRouter from "./src/routes/claimRoutes.js";
+import chatRouter from "./src/routes/chatRoutes.js";
+import messageRouter from "./src/routes/messageRoutes.js";
 
 // FIX: Import the singleton instance from your config file
 import "reflect-metadata";
@@ -32,6 +35,9 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/item", itemRouter);
 app.use("/api/image", imageRouter);
+app.use("/api/claims", claimRouter);
+app.use("/api/chats", chatRouter);
+app.use("/api/messages", messageRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

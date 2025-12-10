@@ -1,4 +1,5 @@
 import { ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function ItemDetailsSidebar() {
     return (
@@ -20,16 +21,11 @@ export default function ItemDetailsSidebar() {
 
                 <button className="mt-4 w-full py-2 px-4 bg-gray-800 hover:bg-gray-700 text-blue-400 rounded-xl transition-colors text-sm font-medium flex items-center justify-center gap-2">
                     View Item Details
-                    <ExternalLink size={16} />
+                    <Link to="/item">
+                        <ExternalLink size={16} />
+                    </Link>
                 </button>
             </div>
-
-            {/* <div className="border-t border-white/10 pt-6">
-                <h3 className="text-lg font-bold text-white mb-4">Shared Files</h3>
-                <div className="text-center py-8 text-gray-500 text-sm bg-gray-800/50 rounded-xl border border-dashed border-gray-700">
-                    No files have been shared yet.
-                </div>
-            </div> */}
         </div>
     );
 }

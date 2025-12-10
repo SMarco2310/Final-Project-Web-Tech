@@ -27,7 +27,7 @@ export default function MessageInput({ onSendMessage }) {
             <button
                 type="submit"
                 disabled={!message.trim()}
-                className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 <Send size={20} />
             </button>
