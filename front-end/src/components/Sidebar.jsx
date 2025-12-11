@@ -1,4 +1,3 @@
-import React from 'react';
 import { LayoutDashboard, FileText, Package, Users, UserCircle, Search, ChartBarIcon } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -10,19 +9,12 @@ export default function Sidebar() {
         { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
         { icon: FileText, label: 'Claims', path: '/dashboard/claims' },
         { icon: ChartBarIcon, label: 'Messages', path: '/dashboard/messages' },
-        { icon: Users, label: 'Users', path: '/dashboard/users' },
     ];
 
     return (
-        <div className="w-64 bg-gray-900 border-r border-white/10 flex flex-col h-screen fixed left-0 top-0">
-            <div className="p-6 flex items-center gap-3">
-                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                    <Search className="text-white" size={20} />
-                </div>
-                <h1 className="text-xl font-bold text-white">FoundIt</h1>
-            </div>
+        <div className="w-64 bg-gray-900 border-r border-white/10 flex flex-col h-screen fixed left-0 top-0 ">
 
-            <nav className="flex-1 px-4 py-4 space-y-2">
+            <nav className="flex-1 px-4 py-4 space-y-2 mt-21">
                 {navItems.map((item) => (
                     <Link
                         key={item.path}

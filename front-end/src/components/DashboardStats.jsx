@@ -7,6 +7,8 @@ export default function DashboardStats({ itemsFound, itemsClaimed }) {
             <div>
                 <h2 className="text-lg font-semibold text-white mb-4">Items Found ({itemsFound.length})</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    {/* work on this today after learning for the exam */}
                     {itemsFound.map((item) => (
                         <div key={item.id} className="bg-gray-900 rounded-2xl overflow-hidden border border-white/10 hover:border-blue-500/50 transition-colors group">
                             <div className="aspect-video w-full bg-gray-800 relative overflow-hidden">

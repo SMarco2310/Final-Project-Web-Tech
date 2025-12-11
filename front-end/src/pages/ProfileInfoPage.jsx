@@ -24,7 +24,6 @@ export default function ProfileInfoPage() {
             </div>
 
             <div className="bg-gray-900 rounded-3xl border border-white/10 p-8">
-                {/* Header Section */}
                 <div className="flex items-center gap-6 mb-8 border-b border-white/10 pb-8">
                     <div className="w-24 h-24 rounded-full bg-orange-100 overflow-hidden">
                         <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
@@ -35,7 +34,6 @@ export default function ProfileInfoPage() {
                     </div>
                 </div>
 
-                {/* Details Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                     <div>
                         <label className="block text-sm text-gray-500 mb-1">First Name</label>
@@ -55,7 +53,6 @@ export default function ProfileInfoPage() {
                     </div>
                 </div>
 
-                {/* Bio Section */}
                 <div>
                     <label className="block text-sm text-gray-500 mb-1">Bio</label>
                     <p className="text-gray-300 leading-relaxed">
