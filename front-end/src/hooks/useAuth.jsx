@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    const API_URL = 'http://localhost:4000/api';
+    const API_URL = 'http://localhost:3000/api';
 
     useEffect(() => {
         const initAuth = async () => {
