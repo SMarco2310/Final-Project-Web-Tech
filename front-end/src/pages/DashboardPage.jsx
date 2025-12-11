@@ -27,20 +27,20 @@ export default function DashboardPage() {
         }
     ];
 
-    const itemsClaimed = [
+    const LostItems = [
         {
             id: 1,
             name: "Vintage Sunglasses",
             image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=1000",
             date: "2023-10-15",
-            status: "Returned"
+            status: "Lost"
         },
         {
             id: 2,
             name: "Blue Water Bottle",
             image: "https://images.unsplash.com/photo-1602143407151-011141950038?auto=format&fit=crop&q=80&w=1000",
             date: "2023-11-02",
-            status: "Validated"
+            status: "Lost"
         }
     ];
 
