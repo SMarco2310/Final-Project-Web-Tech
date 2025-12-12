@@ -15,34 +15,38 @@ import DashboardPage from "./pages/DashboardPage";
 import ProfileInfoPage from "./pages/ProfileInfoPage";
 import MessagesPage from "./pages/MessagesPage";
 import ClaimsPage from "./pages/ClaimsPage";
+import { AuthProvider } from "./hooks/useAuth";
+
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<AuthLayouts />}>
-          <Route path="/Login" element={<LoginPage />} />
-          <Route path="/Register" element={<RegistrationPage />} />
-        </Route>
-        <Route path="/" element={<RegularLayout />}>
-          <Route path="/Gallery" element={<GalleryPage />} />
-          <Route path="/Item" element={<ItemPage />} />
-          <Route path="/NotFound" element={<NotFoundPage />} />
-          <Route path="/Claim" element={<ClaimFormPage />} />
-          <Route path="/Report" element={<ReportFormPage />} />
-          <Route path="/Profile" element={<ProfilePage />} />
-        </Route>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<AuthLayouts />}>
+            <Route path="/Login" element={<LoginPage />} />
+            <Route path="/Register" element={<RegistrationPage />} />
+          </Route>
+          <Route path="/" element={<RegularLayout />}>
+            <Route path="/Gallery" element={<GalleryPage />} />
+            <Route path="/Item" element={<ItemPage />} />
+            <Route path="/NotFound" element={<NotFoundPage />} />
+            <Route path="/Claim" element={<ClaimFormPage />} />
+            <Route path="/Report" element={<ReportFormPage />} />
+            <Route path="/Profile" element={<ProfilePage />} />
+          </Route>
 
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<DashboardPage />} />
-          <Route path="ProfileInfo" element={<ProfileInfoPage />} />
-          <Route path="messages" element={<MessagesPage />} />
-          <Route path="claims" element={<ClaimsPage />} />
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<DashboardPage />} />
+            <Route path="ProfileInfo" element={<ProfileInfoPage />} />
+            <Route path="messages" element={<MessagesPage />} />
+            <Route path="claims" element={<ClaimsPage />} />
 
-          <Route path="chat/:id" element={<ChatPage />} />
+            <Route path="chat/:id" element={<ChatPage />} />
 
-        </Route>
+          </Route>
 
-      </Routes>
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }

@@ -9,7 +9,7 @@ import authRouter from "./src/routes/authRoutes.js";
 import claimRouter from "./src/routes/claimRoutes.js";
 import chatRouter from "./src/routes/chatRoutes.js";
 import messageRouter from "./src/routes/messageRoutes.js";
-
+import aiRouter from "./src/routes/aiRoutes.js";
 // FIX: Import the singleton instance from your config file
 import "reflect-metadata";
 dotenv.config();
@@ -38,6 +38,7 @@ app.use("/api/image", imageRouter);
 app.use("/api/claims", claimRouter);
 app.use("/api/chats", chatRouter);
 app.use("/api/messages", messageRouter);
+app.use("/api/ai", aiRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -104,7 +104,10 @@ export default function ItemPage() {
                     </div>
 
                     <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg">
-                        <div className="flex items-center gap-4 mb-6">
+                        <div
+                            className="flex items-center gap-4 mb-6 cursor-pointer hover:bg-slate-700/50 p-2 rounded-xl transition-colors -mx-2"
+                            onClick={() => navigate("/Profile")}
+                        >
                             <img src={item.user.image} alt={item.user.name} className="w-12 h-12 rounded-full object-cover border-2 border-slate-600" />
                             <div>
                                 <h3 className="text-white font-bold">{item.user.name}</h3>

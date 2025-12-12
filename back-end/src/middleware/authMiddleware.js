@@ -26,3 +26,9 @@ export const authorizeUser = (req, res, next) => {
   if (req.user.role !== "USER") return res.sendStatus(403);
   next();
 };
+
+// Check if the user is the owner of the item
+export const authorizeItemOwner = (req, res, next) => {
+  if (req.user.id !== req.params.id) return res.sendStatus(403);
+  next();
+};
