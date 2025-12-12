@@ -27,7 +27,7 @@ export default function DashboardPage() {
         }
     ];
 
-    const LostItems = [
+    const itemsLost = [
         {
             id: 1,
             name: "Vintage Sunglasses",
@@ -41,6 +41,16 @@ export default function DashboardPage() {
             image: "https://images.unsplash.com/photo-1602143407151-011141950038?auto=format&fit=crop&q=80&w=1000",
             date: "2023-11-02",
             status: "Lost"
+        }
+    ];
+
+    const itemsClaimed = [
+        {
+            id: 1,
+            name: "MacBook Pro",
+            image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=1000",
+            date: "2023-12-01",
+            status: "Claimed"
         }
     ];
 
@@ -81,7 +91,7 @@ export default function DashboardPage() {
                 </button>
             </div>
 
-            <DashboardStats itemsFound={itemsFound} itemsClaimed={itemsClaimed} />
+            <DashboardStats itemsFound={itemsFound} itemsClaimed={itemsClaimed} itemsLost={itemsLost} />
         </div>
     );
 }

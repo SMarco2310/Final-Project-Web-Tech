@@ -1,13 +1,13 @@
-import { useState } from "react";
 import FilterButton from "./FilterButton";
 import CustomSelect from "./CustomSelect";
 import { Search } from "lucide-react";
 
-export default function SearchBar() {
-  const [keyword, setKeyword] = useState("");
-  const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("");
-  const [location, setLocation] = useState("");
+export default function SearchBar({
+  keyword, setKeyword,
+  category, setCategory,
+  status, setStatus,
+  location, setLocation
+}) {
   return (
     <div className="w-full flex flex-col gap-4">
       <div id="search-bar" className="relative w-full">
@@ -49,7 +49,7 @@ export default function SearchBar() {
             options={["library", "cafeteria", "hostel", "classroom"]}
             value={location}
             onChange={setLocation}
-              w="w-fit"
+            w="w-fit"
           />
         </div>
         <div className="md:mt-2 h-12 md:justify-center w-full md:w-auto">

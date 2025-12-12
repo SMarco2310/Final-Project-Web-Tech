@@ -1,4 +1,12 @@
-export default function DashboardStats({ itemsFound }) {
+export default function DashboardStats({ itemsFound, itemsLost, itemsClaimed }) {
+    const statusColors = {
+        "Lost": "bg-red-500/20 text-red-500",
+        "Found": "bg-green-500/20 text-green-500",
+        "Claimed": "bg-yellow-500/20 text-yellow-500",
+        "Validated": "bg-blue-500/20 text-blue-500",
+        "Returned": "bg-purple-500/20 text-purple-500"
+    };
+
     return (
         <div className="space-y-8">
             <div>
@@ -18,11 +26,11 @@ export default function DashboardStats({ itemsFound }) {
                                 <h3 className="font-semibold text-white mb-1">{item.name}</h3>
                                 <div className="flex items-center gap-2">
                                     <span
-          className={`absolute top-4 right-4 px-4 py-1.5 rounded-full text-sm font-bold backdrop-blur-md z-20 ${statusColors[item.status] || "bg-gray-500/20 text-gray-300"
-            }`}
-        >
-          {item.status}
-        </span>
+                                        className={`absolute top-4 right-4 px-4 py-1.5 rounded-full text-sm font-bold backdrop-blur-md z-20 ${statusColors[item.status] || "bg-gray-500/20 text-gray-300"
+                                            }`}
+                                    >
+                                        {item.status}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -44,11 +52,11 @@ export default function DashboardStats({ itemsFound }) {
                             </div>
                             <div className="flex items-center gap-2">
                                 <span
-          className={`absolute top-4 right-4 px-4 py-1.5 rounded-full text-sm font-bold backdrop-blur-md z-20 ${statusColors[item.status] || "bg-gray-500/20 text-gray-300"
-            }`}
-        >
-          {item.status}
-        </span>
+                                    className={`absolute top-4 right-4 px-4 py-1.5 rounded-full text-sm font-bold backdrop-blur-md z-20 ${statusColors[item.status] || "bg-gray-500/20 text-gray-300"
+                                        }`}
+                                >
+                                    {item.status}
+                                </span>
                             </div>
                         </div>
                     ))}

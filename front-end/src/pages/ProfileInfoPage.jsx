@@ -29,7 +29,6 @@ export default function ProfileInfoPage() {
     const handleSave = () => {
         setUser(editForm);
         setIsEditing(false);
-        // Here you would typically make an API call to update the user profile
     };
 
     const handleChange = (e) => {
