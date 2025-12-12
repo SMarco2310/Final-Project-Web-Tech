@@ -1,40 +1,49 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { User, Lock, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [isVisible, setIsVisible] = useState(false);
   const handleToggle = () => {
     setIsVisible(!isVisible);
   };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // In a real app, you would validate credentials here
-    console.log("Logging in with:", email, password);
-    navigate("/dashboard");
+    setError(""); // Clear previous errors
+    try {
+      await login(email, password);
+      console.log("Logged in successfully");
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Login failed:", err);
+      setError("Invalid email or password"); // or use err.message
+    }
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full h-full min-h-[calc(100vh-80px)] items-center justify-center p-4 gap-2">
-      <div className="hidden md:flex flex-1 w-full max-w-xl items-center justify-center">
+    <div className="flex flex-row md:flex-row w-full h-full min-h-[calc(100vh-80px)] items-center justify-center p-4 gap-2">
+      <div className="hidden md:flex flex-1 w-full max-w-xl items-center mx-10">
         <img
-          src="login_image.png"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrl_kYSuxFORtYxh4dZMVlAvzm0gnPlGqQQKbFNdR1dn0Td53rewM4D2ufSf1mUldF7S1JBsxacq5t7nVkHYg1sdy6KQur9XYC_xTg_TknPNs7bGyQKSfdiK96G0rPADB7jpvdBnAFS-XYFHzYWL0-XdqdX1QjMjJvW7LYe0xfNAvsSvhNYelg96sc7tSF_VJSPyQ0fkJ6cE5BIY9Y8hqyYdY46bzBm1G0M-V6sPK9dyLTbdQ-IxSK1ng-HxgDQmrr-mX6KJJByQI"
           alt="Illustration of lost and found items"
-          className="w-full h-auto max-h-[500px] object-contain rounded-3xl drop-shadow-2xl"
+          className="w-full h-auto object-cover rounded-3xl drop-shadow-2xl"
         />
       </div>
-      <div className="w-full md:flex-1 max-w-xl p-8 bg-[#1e293b]/50 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/10 mx-auto">
-        <h2 className="text-3xl font-bold pb-2 text-white">
-          Welcome Back!
-        </h2>
-        <p className="mb-8 text-sm text-gray-400">
-          Find what you've lost, return what you've found
-        </p>
+      <div className="w-full max-w-md p-8 bg-[#1e293b]/50 backdrop-blur-sm rounded-3xl shadow-2xl mx-10">
 
+
+        {error && (
+          <div className=" text-red-400 px-4 py-3 rounded-xl mb-4 text-sm text-center">
+            {error}
+          </div>
+        )}
         <form className="flex flex-col gap-4" onSubmit={handleLogin}>
           <div>
             <label

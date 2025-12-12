@@ -1,9 +1,11 @@
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { User, Mail, Lock, Phone, Briefcase, GraduationCap, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 export default function RegistrationPage() {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [isVisible, setIsVisible] = useState(false);
   const handleToggle = () => {
     setIsVisible(!isVisible);
@@ -15,43 +17,62 @@ export default function RegistrationPage() {
   const [phone, setPhone] = useState("");
   // const [role, setRole] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    // In a real app, you would validate credentials here
-    console.log("Sign up with new user");
-    navigate("/Login");
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const userData = {
+        name,
+        email,
+        password,
+        phone,
+        studentId
+        // role: "student" // Default or selected role
+      };
+      await register(userData);
+      console.log("Sign up successful");
+      navigate("/Login");
+    } catch (err) {
+      console.error("Registration failed:", err);
+      setError(err.message || "Failed to create account");
+    }
   };
-  const inputClasses = "w-full bg-gray-800/50 border border-gray-600 text-white rounded-xl h-12 pl-10 pr-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all";
-  const labelClasses = "block text-sm font-bold mb-2 text-gray-200";
-  const iconClasses = "absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400";
+
 
   return (
     <div className="flex flex-col md:flex-row w-full h-full min-h-[calc(100vh-80px)] items-center justify-center p-4 gap-2">
-      <div className="hidden md:flex flex-1 w-full max-w-xl items-center justify-center">
+      <div className="hidden md:flex flex-1 w-full max-w-xl items-center mx-10">
         <img
-          src="login_image.png"
-          alt="Background Image"
-          className="w-full h-auto max-h-[500px] object-contain rounded-3xl drop-shadow-2xl"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrl_kYSuxFORtYxh4dZMVlAvzm0gnPlGqQQKbFNdR1dn0Td53rewM4D2ufSf1mUldF7S1JBsxacq5t7nVkHYg1sdy6KQur9XYC_xTg_TknPNs7bGyQKSfdiK96G0rPADB7jpvdBnAFS-XYFHzYWL0-XdqdX1QjMjJvW7LYe0xfNAvsSvhNYelg96sc7tSF_VJSPyQ0fkJ6cE5BIY9Y8hqyYdY46bzBm1G0M-V6sPK9dyLTbdQ-IxSK1ng-HxgDQmrr-mX6KJJByQI"
+          alt="Illustration of lost and found items"
+          className="w-full h-auto object-cover rounded-3xl drop-shadow-2xl"
         />
       </div>
-      <div className="w-full md:flex-1 max-w-xl p-8 bg-[#1e293b]/50 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/10 mx-auto">
-        <h2 className="text-3xl font-bold pb-1.5 text-white">
-          Create an Account!
-        </h2>
-        <p className="mb-6 text-sm text-gray-400">
-          Find what you've lost, return what you've found
-        </p>
+      <div className="w-full max-w-md p-8 bg-[#1e293b]/50 backdrop-blur-sm rounded-3xl shadow-2xl mx-10">
 
+
+        {error && (
+          <div className=" text-red-400 px-4 py-3 rounded-xl mb-4 text-sm text-center">
+            {error}
+          </div>
+        )}
         <form className="flex flex-col gap-4" onSubmit={handleSignUp}>
           <div>
-            <label className={labelClasses} htmlFor="name">
+            <label className="block text-sm font-bold mb-2 text-gray-200" htmlFor="name">
               Full Name
             </label>
             <div className="relative">
-              <User className={iconClasses} />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
-                className={inputClasses}
+                className="w-full bg-gray-800/50 border border-gray-600 text-white rounded-xl h-12 pl-10 pr-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                 type="text"
                 id="name"
                 name="name"
@@ -64,13 +85,13 @@ export default function RegistrationPage() {
           </div>
 
           <div>
-            <label className={labelClasses} htmlFor="email">
+            <label className="block text-sm font-bold mb-2 text-gray-200" htmlFor="email">
               Email
             </label>
             <div className="relative">
-              <Mail className={iconClasses} />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
-                className={inputClasses}
+                className="w-full bg-gray-800/50 border border-gray-600 text-white rounded-xl h-12 pl-10 pr-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                 type="email"
                 id="email"
                 name="email"
@@ -84,13 +105,13 @@ export default function RegistrationPage() {
           </div>
 
           <div>
-            <label className={labelClasses} htmlFor="studentId">
+            <label className="block text-sm font-bold mb-2 text-gray-200" htmlFor="studentId">
               Student ID
             </label>
             <div className="relative">
-              <GraduationCap className={iconClasses} />
+              <GraduationCap className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
-                className={inputClasses}
+                className="w-full bg-gray-800/50 border border-gray-600 text-white rounded-xl h-12 pl-10 pr-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                 type="text"
                 id="studentId"
                 name="studentId"
@@ -104,13 +125,13 @@ export default function RegistrationPage() {
           </div>
 
           <div>
-            <label className={labelClasses} htmlFor="password">
+            <label className="block text-sm font-bold mb-2 text-gray-200" htmlFor="password">
               Password
             </label>
             <div className="relative">
-              <Lock className={iconClasses} />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
-                className={`${inputClasses} pr-12`}
+                className="w-full bg-gray-800/50 border border-gray-600 text-white rounded-xl h-12 pl-10 pr-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                 type={isVisible ? "text" : "password"}
                 id="password"
                 name="password"
@@ -131,13 +152,13 @@ export default function RegistrationPage() {
           </div>
 
           <div>
-            <label className={labelClasses} htmlFor="confirmPassword">
+            <label className="block text-sm font-bold mb-2 text-gray-200" htmlFor="confirmPassword">
               Confirm Password
             </label>
             <div className="relative">
-              <Lock className={iconClasses} />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
-                className={`${inputClasses} pr-12`}
+                className="w-full bg-gray-800/50 border border-gray-600 text-white rounded-xl h-12 pl-10 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all pr-12"
                 type={isVisible ? "text" : "password"}
                 id="confirmPassword"
                 name="confirmPassword"
@@ -157,13 +178,13 @@ export default function RegistrationPage() {
           </div>
 
           <div>
-            <label className={labelClasses} htmlFor="phone">
+            <label className="block text-sm font-bold mb-2 text-gray-200" htmlFor="phone">
               Phone Number
             </label>
             <div className="relative">
-              <Phone className={iconClasses} />
+              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
-                className={inputClasses}
+                className="w-full bg-gray-800/50 border border-gray-600 text-white rounded-xl h-12 pl-10 pr-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                 type="tel"
                 id="phone"
                 name="phone"
@@ -176,13 +197,13 @@ export default function RegistrationPage() {
             </div>
           </div>
           {/* <div>
-            <label className={labelClasses} htmlFor="role">
+            <label className="block text-sm font-bold mb-2 text-gray-200" htmlFor="role">
               Role
             </label>
             <div className="relative">
-              <Briefcase className={iconClasses} />
+              <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <select
-                className={`${inputClasses} appearance-none`}
+                className="w-full bg-gray-800/50 border border-gray-600 text-white rounded-xl h-12 pl-10 pr-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all appearance-none"
                 id="role"
                 name="role"
                 value={role}

@@ -2,23 +2,74 @@ import FilterButton from "../components/FilterButton";
 import CustomSelect from "../components/CustomSelect";
 import CustomUploadImage from "../components/CustomUploadImage";
 import { useState } from "react";
-// import { useItem } from "../hooks/useItem";
+import { useItem } from "../hooks/useItem";
+import { useDescriptionAi } from "../hooks/useDescriptionAi";
 import { useNavigate } from "react-router-dom";
+import { Loader2, Wand2 } from "lucide-react";
 
 export default function ReportFormPage() {
-  // const { createItem } = useItem();
+  const { createItem } = useItem();
+  const { generateDescription, loading: aiLoading } = useDescriptionAi();
   const navigate = useNavigate();
+
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [photos, setPhotos] = useState([]);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
-  const [status, setStatus] = useState("Lost"); // Default to Lost
+  const [status, setStatus] = useState("Lost");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleGenerateDescription = async () => {
+    if (photos.length === 0) {
+      alert("Please upload a photo first to generate a description.");
+      return;
+    }
+
+    const file = photos[0];
+    const reader = new FileReader();
+
+    reader.onloadend = async () => {
+      const base64String = reader.result;
+      try {
+        const data = await generateDescription(base64String);
+ 
+        if (data && data.data) {
+          let aiResponse = data.data;
+          if (typeof aiResponse === 'string') {
+            const cleanText = aiResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+            try {
+              aiResponse = JSON.parse(cleanText);
+            } catch (e) {
+              console.error("Failed to parse AI JSON", e);
+              setDescription(cleanText);
+              return;
+            }
+          }
+
+          if (aiResponse.title) setName(aiResponse.title);
+          if (aiResponse.description) setDescription(aiResponse.description);
+        }
+      } catch (error) {
+        console.error("AI Generation failed:", error);
+        alert("Failed to generate description. Please try again or fill manually.");
+      }
+    };
+
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
+    // TODO: Implement actual image upload to Cloudinary here to get URLs
+    // For now, we are sending the file objects which might not work with backend 'createItem'
+    // depending on how it handles images. Assuming it might expect URLs.
+    // If we assume the hooks are "all we have", we try to use them. 
+
     const itemData = {
       name,
       category,
@@ -26,22 +77,23 @@ export default function ReportFormPage() {
       location,
       status,
       date: new Date().toISOString().split('T')[0],
-      images: photos,
+      images: photos, // Backend likely needs an update to handle Files or we need an upload step
       contact: { email, phone }
     };
 
     console.log("Submitting item:", itemData);
 
     try {
-      // await createItem(itemData); // Un-comment when backend is ready
-      // For now, mock success:
-      console.log("Item created successfully (mock)");
+      await createItem(itemData);
+      console.log("Item created successfully");
       navigate("/Gallery");
     } catch (error) {
       console.error("Failed to create item:", error);
+      alert("Failed to create report. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
 
   return (
     <div className="w-full min-h-screen py-10 px-4">
@@ -57,6 +109,11 @@ export default function ReportFormPage() {
 
         <div className="flex flex-col gap-4 w-full border border-gray-700 rounded-2xl p-6 bg-[#1e293b]/30 backdrop-blur-sm">
           <p className="text-xl md:text-2xl font-semibold text-white mb-2">Tell us about the item</p>
+
+          <div>
+            <label htmlFor="photos" className="block mb-2 text-sm font-medium text-gray-300">Add Photos (up to 5)</label>
+            <CustomUploadImage photos={photos} setPhotos={setPhotos} />
+          </div>
 
           <div>
             <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-300">Item Name</label>
@@ -77,7 +134,15 @@ export default function ReportFormPage() {
           <div>
             <div className="flex justify-between items-center mb-2">
               <label htmlFor="description" className="text-sm font-medium text-gray-300">Description</label>
-              <button type="button" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">Generate with AI</button>
+              <button
+                type="button"
+                onClick={handleGenerateDescription}
+                disabled={aiLoading || photos.length === 0}
+                className="text-xs flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {aiLoading ? <Loader2 size={12} className="animate-spin" /> : <Wand2 size={12} />}
+                {aiLoading ? "Generating..." : "Generate with AI"}
+              </button>
             </div>
             <textarea
               id="description"
@@ -90,11 +155,6 @@ export default function ReportFormPage() {
               onChange={(e) => setDescription(e.target.value)}
               required
             ></textarea>
-          </div>
-
-          <div>
-            <label htmlFor="photos" className="block mb-2 text-sm font-medium text-gray-300">Add Photos (up to 5)</label>
-            <CustomUploadImage photos={photos} setPhotos={setPhotos} />
           </div>
         </div>
 
@@ -126,8 +186,13 @@ export default function ReportFormPage() {
         </div>
 
         <div className="flex justify-end mt-2">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-blue-900/20" type="submit">
-            Submit Report
+          <button
+            disabled={isSubmitting}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-blue-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            type="submit"
+          >
+            {isSubmitting ? <Loader2 className="animate-spin" /> : null}
+            {isSubmitting ? "Submitting..." : "Submit Report"}
           </button>
         </div>
       </form>
