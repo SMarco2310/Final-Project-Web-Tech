@@ -1,4 +1,3 @@
-import React from 'react';
 import { Search, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -54,7 +53,7 @@ export default function MessagesPage() {
                         {chats.map((chat) => (
                             <Link
                                 key={chat.id}
-                                to={`chat/${chat.id}`} // Assuming route structure, adjust as needed
+                                to={`/dashboard/chat/${chat.id}`}
                                 className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors group"
                             >
                                 <div className="w-12 h-12 rounded-full bg-gray-800 overflow-hidden shrink-0">

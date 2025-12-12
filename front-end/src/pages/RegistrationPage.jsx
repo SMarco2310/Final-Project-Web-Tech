@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { User, Mail, Lock, Phone, Briefcase, GraduationCap, Eye, EyeOff } from "lucide-react";
 
 export default function RegistrationPage() {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const handleToggle = () => {
     setIsVisible(!isVisible);
@@ -12,9 +13,15 @@ export default function RegistrationPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [role, setRole] = useState("");
+  // const [role, setRole] = useState("");
   const [studentId, setStudentId] = useState("");
 
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    // In a real app, you would validate credentials here
+    console.log("Sign up with new user");
+    navigate("/Login");
+  };
   const inputClasses = "w-full bg-gray-800/50 border border-gray-600 text-white rounded-xl h-12 pl-10 pr-4 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all";
   const labelClasses = "block text-sm font-bold mb-2 text-gray-200";
   const iconClasses = "absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400";
@@ -36,7 +43,7 @@ export default function RegistrationPage() {
           Find what you've lost, return what you've found
         </p>
 
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handleSignUp}>
           <div>
             <label className={labelClasses} htmlFor="name">
               Full Name
@@ -168,8 +175,7 @@ export default function RegistrationPage() {
               />
             </div>
           </div>
-
-          <div>
+          {/* <div>
             <label className={labelClasses} htmlFor="role">
               Role
             </label>
@@ -189,7 +195,7 @@ export default function RegistrationPage() {
                 <option value="admin">Admin</option>
               </select>
             </div>
-          </div>
+          </div> */}
 
           <button
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-900/20 mt-2"
