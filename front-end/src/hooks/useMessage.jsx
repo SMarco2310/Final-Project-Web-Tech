@@ -3,7 +3,7 @@ import { useAuth } from './useAuth';
 
 export const useMessage = () => {
     const { token } = useAuth();
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'http://localhost:4000/api';
 
     const sendMessage = async (chatId, content) => {
         try {

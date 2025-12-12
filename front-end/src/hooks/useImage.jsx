@@ -3,7 +3,7 @@ import { useAuth } from './useAuth';
 
 export const useImage = () => {
     const { token } = useAuth();
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'http://localhost:4000/api';
     const [uploading, setUploading] = useState(false);
 
     const uploadImage = async (file) => {
