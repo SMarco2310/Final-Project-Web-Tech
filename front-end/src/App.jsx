@@ -13,6 +13,8 @@ import ChatPage from "./pages/ChatPage";
 import DashboardLayout from "./Layouts/DashboardLayout";
 import DashboardPage from "./pages/DashboardPage";
 import ProfileInfoPage from "./pages/ProfileInfoPage";
+import MessagesPage from "./pages/MessagesPage";
+import ClaimsPage from "./pages/ClaimsPage";
 function App() {
   return (
     <Router>
@@ -28,12 +30,16 @@ function App() {
           <Route path="/Claim" element={<ClaimFormPage />} />
           <Route path="/Report" element={<ReportFormPage />} />
           <Route path="/Profile" element={<ProfilePage />} />
-          <Route path="/Chat" element={<ChatPage />} />
         </Route>
 
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="ProfileInfo" element={<ProfileInfoPage />} />
+          <Route path="messages" element={<MessagesPage />} />
+          <Route path="claims" element={<ClaimsPage />} />
+
+          <Route path="chat/:id" element={<ChatPage />} />
+
         </Route>
 
       </Routes>

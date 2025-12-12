@@ -1,6 +1,8 @@
 import { LucideFlag, LucideShare2, LucideShieldCheck, MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function ItemPage() {
+    const navigate = useNavigate();
     const item = {
         name: "Black Leather Wallet",
         status: "Found",
@@ -22,10 +24,10 @@ export default function ItemPage() {
     };
 
     const statusColors = {
-    Lost: "bg-red-600/40 text-red-100",
-    Found: "bg-green-500/40 text-green-100",
-    Claimed: "bg-amber-500/40 text-amber-100",
-  };
+        Lost: "bg-red-600/40 text-red-100",
+        Found: "bg-green-500/40 text-green-100",
+        Claimed: "bg-amber-500/40 text-amber-100",
+    };
 
     return (
         <div className="min-h-screen bg-[#0f172a] text-slate-300 p-8 flex justify-center font-sans">
@@ -88,7 +90,7 @@ export default function ItemPage() {
                             <span>{item.location}</span>
                         </div>
                         <div className="w-full h-48 bg-slate-700 rounded-xl overflow-hidden relative">
-                            {/* Placeholder for map */}
+
                             <img
                                 src="https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/-73.9749,40.7648,13,0/600x300?access_token=pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJja2xsY3I4a20wMG1qMnB0ZzB6Z2R6Z2R6In0.example"
                                 alt="Map Location"
@@ -110,7 +112,10 @@ export default function ItemPage() {
                             </div>
                         </div>
 
-                        <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors mb-4 shadow-lg shadow-blue-900/20">
+                        <button
+                            onClick={() => navigate("/Claim")}
+                            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors mb-4 shadow-lg shadow-blue-900/20"
+                        >
                             <LucideShieldCheck className="w-5 h-5" />
                             Claim This Item
                         </button>

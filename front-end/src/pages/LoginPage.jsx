@@ -1,14 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { User, Lock, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const handleToggle = () => {
     setIsVisible(!isVisible);
   };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // In a real app, you would validate credentials here
+    console.log("Logging in with:", email, password);
+    navigate("/dashboard");
+  };
 
   return (
     <div className="flex flex-col md:flex-row w-full h-full min-h-[calc(100vh-80px)] items-center justify-center p-4 gap-2">
@@ -27,7 +35,7 @@ export default function LoginPage() {
           Find what you've lost, return what you've found
         </p>
 
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handleLogin}>
           <div>
             <label
               className="block text-sm font-bold mb-2 text-gray-200"
