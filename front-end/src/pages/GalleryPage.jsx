@@ -1,97 +1,56 @@
 import SearchBar from "../components/SearchAndFilterBar.jsx";
 import Gallery from "../components/Gallery.jsx";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useItem } from "../hooks/useItem";
+import { Loader2 } from "lucide-react";
 
 export default function GalleryPage() {
   const [keyword, setKeyword] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
   const [location, setLocation] = useState("");
+  const { getAllItems } = useItem();
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const items = [
-    {
-      id: 1,
-      name: "Laptop",
-      description: "A black laptop with a broken screen",
-      image: "laptop_image.jpg",
-      location: "Room 101",
-      date: "2022-01-01",
-      status: "Lost",
-      category: "electronics"
-    },
-    {
-      id: 2,
-      name: "Phone",
-      description: "A white phone with a cracked screen",
-      image: "phone_image.jpg",
-      location: "Room 102",
-      date: "2022-01-02",
-      status: "Found",
-      category: "electronics"
-    },
-    {
-      id: 3,
-      name: "Wallet",
-      description: "A black wallet with a missing card",
-      image: "purse_picture.png",
-      location: "Room 103",
-      date: "2022-01-03",
-      status: "Lost",
-      category: "personal"
-    },
-    {
-      id: 4,
-      name: "Wallet",
-      description: "A black wallet with a missing card",
-      image: "purse_picture.png",
-      location: "Room 103",
-      date: "2022-01-03",
-      status: "Lost",
-      category: "personal"
-    },
-    {
-      id: 5,
-      name: "Phone",
-      description: "A white phone with a cracked screen",
-      image: "phone_image.jpg",
-      location: "Room 102",
-      date: "2022-01-02",
-      status: "Claimed",
-      category: "electronics"
-    },
-    {
-      id: 6,
-      name: "Wallet",
-      description: "A black wallet with a missing card",
-      image: "purse_picture.png",
-      location: "Room 103",
-      date: "2022-01-03",
-      status: "Lost",
-      category: "personal"
-    },
-    {
-      id: 7,
-      name: "Wallet",
-      description: "A black wallet with a missing card",
-      image: "purse_picture.png",
-      location: "Room 103",
-      date: "2022-01-03",
-      status: "Lost",
-      category: "personal"
-    },
-  ];
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const data = await getAllItems();
+        // Check if data is array or wrapped
+        const apiItems = Array.isArray(data) ? data : (data.data || []);
+
+        // Map backend fields to frontend expectations for ItemCard
+        const mappedItems = apiItems.map(item => ({
+          ...item,
+          name: item.title, // Backend uses title, frontend uses name
+          date: new Date(item.created_at || item.createdAt).toLocaleDateString(),
+          image: (item.images && item.images.length > 0) ? item.images[0].url : "https://via.placeholder.com/600x400?text=No+Image",
+          location: item.location ? (item.location.name || "Unknown") : "Unknown"
+        }));
+        setItems(mappedItems);
+      } catch (error) {
+        console.error("Failed to fetch items", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchItems();
+  }, [getAllItems]);
 
   const filteredItems = useMemo(() => {
     return items.filter(item => {
-      const matchKeyword = item.name.toLowerCase().includes(keyword.toLowerCase()) ||
-        item.description.toLowerCase().includes(keyword.toLowerCase());
+      const matchKeyword = (item.name || "").toLowerCase().includes(keyword.toLowerCase()) ||
+        (item.description || "").toLowerCase().includes(keyword.toLowerCase());
       const matchCategory = category ? item.category === category : true;
       const matchStatus = status ? item.status.toLowerCase() === status.toLowerCase() : true;
-      const matchLocation = location ? item.location.toLowerCase().includes(location.toLowerCase()) : true;
+      const matchLocation = location ? (item.location || "").toLowerCase().includes(location.toLowerCase()) : true;
 
       return matchKeyword && matchCategory && matchStatus && matchLocation;
     });
   }, [items, keyword, category, status, location]);
+
+  if (loading) return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white"><Loader2 className="animate-spin w-10 h-10" /></div>;
 
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col gap-6">

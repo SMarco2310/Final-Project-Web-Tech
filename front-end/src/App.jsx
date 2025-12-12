@@ -28,14 +28,14 @@ function App() {
           </Route>
           <Route path="/" element={<RegularLayout />}>
             <Route path="/Gallery" element={<GalleryPage />} />
-            <Route path="/Item" element={<ItemPage />} />
+            <Route path="/Item/:id" element={<ItemPage />} />
             <Route path="/NotFound" element={<NotFoundPage />} />
-            <Route path="/Claim" element={<ClaimFormPage />} />
+            <Route path="/Claim/:id" element={<ClaimFormPage />} />
             <Route path="/Report" element={<ReportFormPage />} />
-            <Route path="/Profile" element={<ProfilePage />} />
+            <Route path="/Profile/:id" element={<ProfilePage />} />
           </Route>
 
-          <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route path="/dashboard/:id" element={<DashboardLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="ProfileInfo" element={<ProfileInfoPage />} />
             <Route path="messages" element={<MessagesPage />} />

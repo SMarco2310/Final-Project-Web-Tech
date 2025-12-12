@@ -35,7 +35,7 @@ export default function ReportFormPage() {
       const base64String = reader.result;
       try {
         const data = await generateDescription(base64String);
- 
+
         if (data && data.data) {
           let aiResponse = data.data;
           if (typeof aiResponse === 'string') {
