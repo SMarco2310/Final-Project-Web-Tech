@@ -1,6 +1,3 @@
-// TODO: Implement image upload functionality
-// - the cloudinary SDK
-
 import cloudinary from "../config/cloudinary.js";
 import multer from "multer";
 
