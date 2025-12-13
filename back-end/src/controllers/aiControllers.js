@@ -96,38 +96,33 @@ export const describeItem = async (req, res) => {
     const prompt = `Identify this item and provide a short title and a concise description for a lost and found post. Return JSON format with keys: 'title' and 'description'`;
 
     const response = await groq.chat.completions.create({
-      model: "llama3-70b-8192", // Using a strong, fast Groq-supported model
+      model: "meta-llama/llama-4-scout-17b-16e-instruct", // Using a vision-supported model
       "messages": [
-      {
-        "role": "user",
-        "content": [
-          {
-            "type": "text",
-            "text": prompt
-          },
-          {
-            "type": "image_url",
-            "image_url": {
-              "url": imageUrl
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": prompt
+            },
+            {
+              "type": "image_url",
+              "image_url": {
+                "url": imageUrl
+              }
             }
-          }
-        ]
-      }
-    ]
+          ]
+        }
+      ]
     });
-
-    // for testing 
-    console.log(response);
-
     const content = response.choices[0].message.content;
-    
     // Attempt to parse the content if it's a stringified JSON
     let parsedData;
     try {
-        parsedData = JSON.parse(content);
+      parsedData = JSON.parse(content);
     } catch (e) {
-        // If parsing fails, just send the raw content back
-        parsedData = content;
+      // If parsing fails, just send the raw content back
+      parsedData = content;
     }
 
     res.status(200).json({

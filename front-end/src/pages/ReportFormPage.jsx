@@ -70,37 +70,39 @@ export default function ReportFormPage() {
       return;
     }
 
-    const file = photos[0];
-    const reader = new FileReader();
+    // photos state now contains URLs (strings) because CustomUploadImage uploads them immediately.
+    // So we just take the first URL.
+    const imageUrl = photos[0];
 
-    reader.onloadend = async () => {
-      const base64String = reader.result;
-      try {
-        const data = await generateDescription(base64String);
+    try {
+      const data = await generateDescription(imageUrl);
 
-        if (data && data.data) {
-          let aiResponse = data.data;
-          if (typeof aiResponse === 'string') {
-            const cleanText = aiResponse.replace(/```json/g, '').replace(/```/g, '').trim();
-            try {
-              aiResponse = JSON.parse(cleanText);
-            } catch (e) {
-              console.error("Failed to parse AI JSON", e);
-              setDescription(cleanText);
-              return;
-            }
+      if (data && data.data) {
+        let aiResponse = data.data;
+
+        // If it's a string, try to clean and parse it
+        if (typeof aiResponse === 'string') {
+          // Remove Markdown code blocks if present (case insensitive)
+          const cleanText = aiResponse.replace(/```(json)?/gi, '').replace(/```/g, '').trim();
+
+          try {
+            aiResponse = JSON.parse(cleanText);
+          } catch (e) {
+            console.error("Failed to parse AI JSON", e);
+            // If parsing fails, just use the raw text as description
+            setDescription(cleanText);
+            return;
           }
-
-          if (aiResponse.title) setTitle(aiResponse.title);
-          if (aiResponse.description) setDescription(aiResponse.description);
         }
-      } catch (error) {
-        console.error("AI Generation failed:", error);
-        alert("Failed to generate description. Please try again or fill manually.");
-      }
-    };
 
-    reader.readAsDataURL(file);
+        // Now aiResponse should be an object
+        if (aiResponse.title) setTitle(aiResponse.title);
+        if (aiResponse.description) setDescription(aiResponse.description);
+      }
+    } catch (error) {
+      console.error("AI Generation failed:", error);
+      alert("Failed to generate description. Please try again or fill manually.");
+    }
   };
 
   const handleSubmit = async (e) => {
