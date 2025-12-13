@@ -92,7 +92,7 @@ export default function ItemPage() {
                         <div className="grid grid-cols-2 gap-y-6 gap-x-4">
                             <div>
                                 <span className="block text-sm text-slate-500 mb-1">Category</span>
-                                <span className="text-slate-200 font-medium">{item.category || "N/A"}</span>
+                                <span className="text-slate-200 font-medium">{item.category || "Others"}</span>
                             </div>
                             <div>
                                 <span className="block text-sm text-slate-500 mb-1">Date Created</span>

@@ -4,6 +4,8 @@ export const CATEGORY = {
   CLOTHING: "Clothing",
   ACCESSORIES: "Accessories",
   ELECTRONICS: "Electronics",
+  DOCUMENTS: "Documents",
+  ACCESSORIES: "Accessories",
   BOOKS: "Books",
   OTHER: "Other",
 };

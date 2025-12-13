@@ -1,76 +1,166 @@
-import { useRef, useState } from "react";
-import { Upload, X, Camera, Check } from "lucide-react";
+// import { useRef, useState } from "react";
+// import { Upload, X, Camera, Check } from "lucide-react";
+// import { useImage } from "../hooks/useImage";
 
-export default function CustomUploadImage({ photos, setPhotos }) {
+// export default function CustomUploadImage({ photos, setPhotos }) {
+//     const [showCamera, setShowCamera] = useState(false);
+//     const videoRef = useRef(null);
+//     const canvasRef = useRef(null);
+//     const { uploadImage } = useImage();
+
+//     // Fallback if used without props
+//     const fileList = photos || [];
+
+//     const handleFileChange = async (e) => {
+//     const selectedFiles = Array.from(e.target.files);
+
+//     if ((photos?.length || 0) + selectedFiles.length > 5) {
+//         alert("You can only upload up to 5 images.");
+//         return;
+//     }
+
+//     try {
+//         for (const file of selectedFiles) {
+//             const imageUrl = await uploadImage(file);
+
+//             setPhotos(prev => [...prev, imageUrl]);
+//         }
+//     } catch (err) {
+//         alert("Failed to upload image");
+//     }
+// };
+
+//     const removeFile = (index) => {
+//         if (setPhotos) {
+//             setPhotos((prev) => prev.filter((_, i) => i !== index));
+//         }
+//     };
+
+//     const startCamera = async () => {
+//         setShowCamera(true);
+//         try {
+//             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+//             if (videoRef.current) {
+//                 videoRef.current.srcObject = stream;
+//             }
+//         } catch (err) {
+//             console.error("Error accessing camera:", err);
+//             setShowCamera(false);
+//             alert("Could not access camera. Please allow permissions or upload a file.");
+//         }
+//     };
+
+//     const stopCamera = () => {
+//         const stream = videoRef.current?.srcObject;
+//         if (stream) {
+//             stream.getTracks().forEach(track => track.stop());
+//         }
+//         setShowCamera(false);
+//     };
+
+//     const capturePhoto = () => {
+//         const video = videoRef.current;
+//         const canvas = canvasRef.current;
+//         if (video && canvas) {
+//             const context = canvas.getContext('2d');
+//             canvas.width = video.videoWidth;
+//             canvas.height = video.videoHeight;
+//             context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+//             canvas.toBlob((blob) => {
+//                 const file = new File([blob], `photo_${Date.now()}.jpg`, { type: "image/jpeg" });
+//                 if (setPhotos) {
+//                     setPhotos((prev) => [...prev, file]);
+//                 }
+//                 stopCamera();
+//             }, 'image/jpeg');
+//         }
+//     };
+
+import { useRef, useState } from "react";
+import { Upload, X, Camera } from "lucide-react";
+import { useImage } from "../hooks/useImage";
+
+export default function CustomUploadImage({ photos = [], setPhotos }) {
     const [showCamera, setShowCamera] = useState(false);
+    const [loadingIndexes, setLoadingIndexes] = useState([]);
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
+    const { uploadImage } = useImage();
 
-    // Fallback if used without props
-    const fileList = photos || [];
-
-    const handleFileChange = (e) => {
+    // ---------------- FILE UPLOAD ----------------
+    const handleFileChange = async (e) => {
         const selectedFiles = Array.from(e.target.files);
-        if ((photos?.length || 0) + selectedFiles.length > 5) {
+
+        if (photos.length + selectedFiles.length > 5) {
             alert("You can only upload up to 5 images.");
             return;
         }
 
-        if (setPhotos) {
-            setPhotos((prev) => [...prev, ...selectedFiles]);
+        for (const file of selectedFiles) {
+            try {
+                setLoadingIndexes(prev => [...prev, photos.length]);
+
+                const imageUrl = await uploadImage(file);
+                setPhotos(prev => [...prev, imageUrl]);
+            } catch (err) {
+                alert("Image upload failed");
+            } finally {
+                setLoadingIndexes(prev => prev.slice(0, -1));
+            }
         }
     };
 
+    // ---------------- REMOVE IMAGE ----------------
     const removeFile = (index) => {
-        if (setPhotos) {
-            setPhotos((prev) => prev.filter((_, i) => i !== index));
-        }
+        setPhotos(prev => prev.filter((_, i) => i !== index));
     };
 
+    // ---------------- CAMERA ----------------
     const startCamera = async () => {
         setShowCamera(true);
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            if (videoRef.current) {
-                videoRef.current.srcObject = stream;
-            }
-        } catch (err) {
-            console.error("Error accessing camera:", err);
+            videoRef.current.srcObject = stream;
+        } catch {
             setShowCamera(false);
-            // Fallback for mobile if getUserMedia fails or is not preferred, 
-            // but we can't easily fallback to input click here without user interaction issues.
-            // Best to show a message.
-            alert("Could not access camera. Please allow permissions or upload a file.");
+            alert("Camera access denied");
         }
     };
 
     const stopCamera = () => {
         const stream = videoRef.current?.srcObject;
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-        }
+        stream?.getTracks().forEach(track => track.stop());
         setShowCamera(false);
     };
 
     const capturePhoto = () => {
         const video = videoRef.current;
         const canvas = canvasRef.current;
-        if (video && canvas) {
-            const context = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        if (!video || !canvas) return;
 
-            canvas.toBlob((blob) => {
-                const file = new File([blob], `photo_${Date.now()}.jpg`, { type: "image/jpeg" });
-                if (setPhotos) {
-                    setPhotos((prev) => [...prev, file]);
-                }
+        const ctx = canvas.getContext("2d");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+
+        canvas.toBlob(async (blob) => {
+            try {
+                const file = new File(
+                    [blob],
+                    `photo_${Date.now()}.jpg`,
+                    { type: "image/jpeg" }
+                );
+
+                const imageUrl = await uploadImage(file);
+                setPhotos(prev => [...prev, imageUrl]);
+            } catch {
+                alert("Photo upload failed");
+            } finally {
                 stopCamera();
-            }, 'image/jpeg');
-        }
+            }
+        }, "image/jpeg");
     };
-
     return (
         <div className="w-full space-y-4">
             <div className="flex gap-4">
@@ -147,26 +237,27 @@ export default function CustomUploadImage({ photos, setPhotos }) {
             )}
 
             {/* Preview Section */}
-            {fileList.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {fileList.map((file, index) => (
-                        <div key={index} className="relative group">
-                            <img
-                                src={URL.createObjectURL(file)}
-                                alt={`preview ${index}`}
-                                className="w-full h-32 object-cover rounded-xl border border-gray-700"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => removeFile(index)}
-                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all hover:scale-110 shadow-lg"
-                            >
-                                <X className="w-3.5 h-3.5" />
-                            </button>
-                        </div>
-                    ))}
-                </div>
-            )}
+{photos.length > 0 && (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {photos.map((url, index) => (
+            <div key={index} className="relative group">
+                <img
+                    src={url}
+                    alt={`uploaded ${index}`}
+                    className="w-full h-32 object-cover rounded-xl border border-gray-700"
+                />
+                <button
+                    type="button"
+                    onClick={() => removeFile(index)}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all hover:scale-110 shadow-lg"
+                >
+                    <X size={14} />
+                </button>
+            </div>
+        ))}
+    </div>
+)}
+
         </div>
     );
 }

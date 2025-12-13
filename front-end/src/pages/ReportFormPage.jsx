@@ -127,7 +127,7 @@ export default function ReportFormPage() {
 
           const data = await response.json();
           if (!response.ok) throw new Error(data.message || 'Failed to upload image');
-          return data.url;
+          return data.imageUrl;
         }
         return null;
       }));
@@ -217,10 +217,11 @@ export default function ReportFormPage() {
             <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-300">Category</label>
             <CustomSelect
               label="Category"
-              options={["electronics", "clothing", "documents", "others"]}
+              options={["electronics", "clothing", "documents", "books", "accessories", "others"]}
               value={category}
               onChange={setCategory}
               w="w-full"
+              className="z-100"
             />
           </div>
 
@@ -242,7 +243,7 @@ export default function ReportFormPage() {
               name="description"
               placeholder="Describe colors, brands, distinguishing features..."
               maxLength={1000}
-              rows={5}
+              rows={10}
               className="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -251,7 +252,7 @@ export default function ReportFormPage() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 w-full border border-gray-700 rounded-2xl p-6 bg-[#1e293b]/30 backdrop-blur-sm">
+        <div className="flex flex-col gap-4 w-full border border-gray-700 rounded-2xl p-6 bg-[#1e293b]/30 backdrop-blur-sm z-100">
           <h2 className="text-xl font-semibold text-white mb-2">Where was the item lost or found?</h2>
           <div>
             <label htmlFor="location" className="block mb-2 text-sm font-medium text-gray-300">Location</label>

@@ -26,7 +26,7 @@ export const useImage = () => {
                 throw new Error(data.message || data.error || 'Failed to upload image');
             }
 
-            return data.url; 
+            return data.imageUrl; 
         } catch (error) {
             console.error("Upload hook error:", error);
             throw error;
