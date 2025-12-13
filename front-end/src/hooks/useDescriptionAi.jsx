@@ -5,7 +5,7 @@ export const useDescriptionAi = () => {
     const { token } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const API_URL = 'http://localhost:4000/api';
+    const API_URL = '/api';
 
     const generateDescription = async (imageUrl) => {
         setLoading(true);

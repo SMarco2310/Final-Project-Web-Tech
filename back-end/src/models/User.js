@@ -38,6 +38,12 @@ export const UserEntity = new EntitySchema({
       enum: [Role.USER, Role.ADMIN],
       default: Role.USER,
     },
+
+    // adding this for bio
+    bio: {
+      type: "varchar",
+      nullable: true,
+    },
     createdAt: {
       type: "datetime",
       createDate: true,

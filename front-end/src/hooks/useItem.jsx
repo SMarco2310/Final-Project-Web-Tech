@@ -3,7 +3,7 @@ import { useAuth } from './useAuth';
 
 export const useItem = () => {
     const { token } = useAuth();
-    const API_URL = 'http://localhost:4000/api';
+    const API_URL = '/api';
 
     const getAllItems = useCallback(async () => {
         try {

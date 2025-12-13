@@ -51,12 +51,21 @@ export const registerUser = async (req, res) => {
         {
           expiresIn: "7d",
         },
+
       );
+      const userResponse = {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        student_id: newUser.student_id,
+        phone: newUser.phone,
+        role: newUser.role,
+      }
 
       res.status(201).json({
         ok: true,
         token: token,
-        user_id: newUser.id,
+        user: userResponse,
         status: 201,
         message: "new user created successfully!!",
       });
@@ -104,10 +113,20 @@ export const loginUser = async (req, res) => {
           expiresIn: "7d",
         },
       );
+
+      const loggedUser = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        student_id: user.student_id,
+        phone: user.phone,
+        role: user.role,
+      }
+
       res.status(200).json({
         ok: true,
         token: token,
-        user_id: user_id,
+        user: loggedUser,
         status: 200,
         message: "User logged in successfully!!",
       });
@@ -144,12 +163,16 @@ export const getProfile = async (req, res) => {
         "user.name",
         "user.student_id",
         "user.phone",
+        "user.bio",
         "user.createdAt",
 
         "claims",
         "items",
       ])
       .getOne();
+
+
+
     if (user) {
       res.status(200).json({
         ok: true,

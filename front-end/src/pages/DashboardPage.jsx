@@ -21,7 +21,7 @@ export default function DashboardPage() {
 
                 // Filter items belonging to the user
                 const myItems = apiItems
-                    .filter(item => item.user && item.user.id === user.id)
+                    .filter(item => item.user_id && item.user_id === user.user_id)
                     .map(item => ({
                         ...item,
                         name: item.title,

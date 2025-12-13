@@ -2,7 +2,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import AppDataSource from "./src/config/dataSource.js";
-import cors from "cors"; // Recommended: See Best Practices below
+import cors from "cors"; 
 import imageRouter from "./src/routes/imageRoutes.js";
 import itemRouter from "./src/routes/itemRoutes.js";
 import authRouter from "./src/routes/authRoutes.js";
@@ -10,7 +10,6 @@ import claimRouter from "./src/routes/claimRoutes.js";
 import chatRouter from "./src/routes/chatRoutes.js";
 import messageRouter from "./src/routes/messageRoutes.js";
 import aiRouter from "./src/routes/aiRoutes.js";
-// FIX: Import the singleton instance from your config file
 import "reflect-metadata";
 dotenv.config();
 
@@ -26,7 +25,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 
-app.use(cors()); // Apply CORS middleware
+app.use(cors()); 
 
 app.get("/", (req, res) => {
   res.send("<h1>Hello World</h1>");

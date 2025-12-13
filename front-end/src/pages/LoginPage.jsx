@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const [isVisible, setIsVisible] = useState(false);
   const handleToggle = () => {
     setIsVisible(!isVisible);
@@ -16,14 +16,14 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError(""); 
     try {
       await login(email, password);
       console.log("Logged in successfully");
-      navigate("/dashboard");
+      navigate(`/dashboard/${user.user_id}`);
     } catch (err) {
       console.error("Login failed:", err);
-      setError("Invalid email or password"); // or use err.message
+      setError("Invalid email or password"); 
     }
   };
 

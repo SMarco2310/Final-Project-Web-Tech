@@ -4,13 +4,15 @@ import CustomUploadImage from "../components/CustomUploadImage";
 import { useState } from "react";
 import { useItem } from "../hooks/useItem";
 import { useDescriptionAi } from "../hooks/useDescriptionAi";
-import { useNavigate } from "react-router-dom";
-import { Loader2, Wand2 } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { Loader2, Wand2, LogIn } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 export default function ReportFormPage() {
   const { createItem } = useItem();
   const { generateDescription, loading: aiLoading } = useDescriptionAi();
   const navigate = useNavigate();
+  const { user } = useAuth(); // Get user from auth hook
 
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -66,9 +68,9 @@ export default function ReportFormPage() {
     setIsSubmitting(true);
 
     // TODO: Implement actual image upload to Cloudinary here to get URLs
-    // For now, we are sending the file objects which might not work with backend 'createItem'
-    // depending on how it handles images. Assuming it might expect URLs.
-    // If we assume the hooks are "all we have", we try to use them. 
+    // For now, in MVP, we might be relying on backend to handle base64 or expecting URLs from a pre-upload step (not implemented here)
+    // Assuming backend might handle what we send or we need a real upload flow. 
+    // Given context of "replace hardcoded data", we send what we have.
 
     const itemData = {
       name,
@@ -77,7 +79,7 @@ export default function ReportFormPage() {
       location,
       status,
       date: new Date().toISOString().split('T')[0],
-      images: photos, // Backend likely needs an update to handle Files or we need an upload step
+      images: photos,
       contact: { email, phone }
     };
 
@@ -94,6 +96,31 @@ export default function ReportFormPage() {
       setIsSubmitting(false);
     }
   };
+
+  if (!user) {
+    return (
+      <div className="min-h-[80vh] flex flex-col items-center justify-center p-4 text-center">
+        <div className="bg-[#1e293b] p-8 rounded-2xl border border-gray-700 shadow-xl max-w-md w-full">
+          <div className="bg-blue-500/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+            <LogIn className="w-8 h-8 text-blue-500" />
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-2">Login Required</h1>
+          <p className="text-gray-400 mb-8">
+            You must be logged in to report a lost or found item.
+            Please sign in to your account or create a new one.
+          </p>
+          <div className="flex flex-col gap-3">
+            <Link to="/Login" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-all">
+              Login
+            </Link>
+            <Link to="/Register" className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-xl transition-all">
+              Create Account
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen py-10 px-4">
