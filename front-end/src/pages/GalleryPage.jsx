@@ -26,7 +26,7 @@ export default function GalleryPage() {
           name: item.title, // Backend uses title, frontend uses name
           date: new Date(item.created_at || item.createdAt).toLocaleDateString(),
           image: (item.images && item.images.length > 0) ? item.images[0].url : "https://via.placeholder.com/600x400?text=No+Image",
-          location: item.location ? (item.location.name || "Unknown") : "Unknown"
+          location: item.location ? (item.location || "Unknown") : "Unknown"
         }));
         setItems(mappedItems);
       } catch (error) {

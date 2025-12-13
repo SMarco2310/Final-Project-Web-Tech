@@ -1,17 +1,17 @@
 import { EntitySchema } from "typeorm";
 
 export const CATEGORY = {
-  CLOTHING: "CLOTHING",
-  ACCESSORIES: "ACCESSORIES",
-  ELECTRONICS: "ELECTRONICS",
-  BOOKS: "BOOKS",
-  OTHER: "OTHER",
+  CLOTHING: "Clothing",
+  ACCESSORIES: "Accessories",
+  ELECTRONICS: "Electronics",
+  BOOKS: "Books",
+  OTHER: "Other",
 };
 
 export const STATUS = {
-  LOST: "LOST",
-  FOUND: "FOUND",
-  CLAIMED: "CLAIMED",
+  LOST: "Lost",
+  FOUND: "Found",
+  CLAIMED: "Claimed",
 };
 
 export const ItemEntity = new EntitySchema({

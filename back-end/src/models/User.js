@@ -1,8 +1,8 @@
 import { EntitySchema } from "typeorm";
 
 export const Role = {
-  USER: "user",
-  ADMIN: "admin",
+  USER: "User",
+  ADMIN: "Admin",
 };
 
 export const UserEntity = new EntitySchema({

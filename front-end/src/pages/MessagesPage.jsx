@@ -1,37 +1,81 @@
-import { Search, MessageSquare } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, MessageSquare, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useChat } from '../hooks/useChat';
+import { useAuth } from '../hooks/useAuth';
 
 export default function MessagesPage() {
-    // Mock Data for UI
-    const chats = [
-        {
-            id: 1,
-            partnerName: "Jane Doe",
-            partnerAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
-            lastMessage: "Is the item still available?",
-            time: "10:30 AM",
-            unreadCount: 2,
-            itemTitle: "Blue Backpack"
-        },
-        {
-            id: 2,
-            partnerName: "John Smith",
-            partnerAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
-            lastMessage: "Great, I can meet you at the library.",
-            time: "Yesterday",
-            unreadCount: 0,
-            itemTitle: "Calculus Textbook"
-        },
-        {
-            id: 3,
-            partnerName: "Sarah Wilson",
-            partnerAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-            lastMessage: "Thank you so much for finding it!",
-            time: "2 days ago",
-            unreadCount: 0,
-            itemTitle: "Silver Keys"
+    const { getUserChats } = useChat();
+    const { user } = useAuth();
+    const [chats, setChats] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    useEffect(() => {
+        const fetchChats = async () => {
+            try {
+                const data = await getUserChats();
+                // Process chats to format for UI if necessary
+                const formattedChats = data.map(chat => {
+                    // Determine partner based on current user
+                    const isUser1 = chat.user1?.id === user?.id;
+                    const partner = isUser1 ? chat.user2 : chat.user1;
+
+                    // Find last message info
+                    const lastMsg = chat.messages && chat.messages.length > 0
+                        ? chat.messages[chat.messages.length - 1]
+                        : null;
+
+                    return {
+                        id: chat.id,
+                        partnerName: partner?.name || "Unknown User",
+                        partnerAvatar: partner?.avatar || `https://ui-avatars.com/api/?name=${partner?.name || 'User'}&background=random`,
+                        lastMessage: lastMsg ? lastMsg.content : "No messages yet",
+                        time: lastMsg ? new Date(lastMsg.createdAt).toLocaleDateString() : "",
+                        unreadCount: 0, // Logic for unread count would require more backend support or frontend calc
+                        itemTitle: chat.item?.title || "Item",
+                        updatedAt: chat.updatedAt
+                    };
+                });
+
+                // Sort by updated at
+                formattedChats.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+                setChats(formattedChats);
+            } catch (err) {
+                console.error("Failed to fetch chats:", err);
+                setError("Failed to load messages");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (user) {
+            fetchChats();
         }
-    ];
+    }, [getUserChats, user]);
+
+    const filteredChats = chats.filter(chat =>
+        chat.partnerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        chat.itemTitle.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-full">
+                <Loader2 className="animate-spin w-10 h-10 text-white" />
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex items-center justify-center h-full text-red-400">
+                {error}
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-4xl mx-auto h-full flex flex-col">
@@ -42,18 +86,20 @@ export default function MessagesPage() {
                     <input
                         type="text"
                         placeholder="Search messages..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full bg-gray-900 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
             </div>
 
             <div className="bg-gray-900 rounded-3xl border border-white/10 overflow-hidden flex-1">
-                {chats.length > 0 ? (
+                {filteredChats.length > 0 ? (
                     <div className="divide-y divide-white/10">
-                        {chats.map((chat) => (
+                        {filteredChats.map((chat) => (
                             <Link
                                 key={chat.id}
-                                to={`/dashboard/chat/${chat.id}`}
+                                to={`/dashboard/${user.id}/chat/${chat.id}`}
                                 className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors group"
                             >
                                 <div className="w-12 h-12 rounded-full bg-gray-800 overflow-hidden shrink-0">

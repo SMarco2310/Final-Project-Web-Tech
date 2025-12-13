@@ -14,17 +14,15 @@ export default function ItemPage() {
     useEffect(() => {
         const fetchItem = async () => {
             try {
-                // If accessed without ID (e.g. testing), we might want to handle it or just fail
                 if (!id) {
+                    setError("No item ID provided");
                     setLoading(false);
                     return;
                 }
 
                 const data = await getItemById(id);
-                // Backend returns { ok: true, data: { item: {...} } } based on controller view
-                // item structure: id, title, description, status, created_at, images: [], user: {...}
-                if (data && data.data && data.data.item) {
-                    setItem(data.data.item);
+                if (data && data.data) {
+                    setItem(data.data);
                 } else {
                     setError("Item not found");
                 }
@@ -39,7 +37,6 @@ export default function ItemPage() {
         fetchItem();
     }, [id, getItemById]);
 
-
     const statusColors = {
         Lost: "bg-red-600/40 text-red-100",
         Found: "bg-green-500/40 text-green-100",
@@ -49,9 +46,6 @@ export default function ItemPage() {
     if (loading) return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white"><Loader2 className="animate-spin w-10 h-10" /></div>;
     if (error || !item) return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white text-xl">Item not found</div>;
 
-    // Map backend data to frontend expectations
-    // Backend images are likely [{url: ...}, ...]. Frontend expects array of strings or we map.
-    // Let's assume backend images is array of objects with url property based on controller code.
     const displayImages = item.images && item.images.length > 0 ? item.images.map(img => img.url) : ["https://via.placeholder.com/600x400?text=No+Image"];
     const mainImage = displayImages[0];
 
@@ -114,7 +108,7 @@ export default function ItemPage() {
                         <h2 className="text-xl font-bold text-white mb-4">Location</h2>
                         <div className="flex items-start gap-3 mb-4 text-slate-300">
                             <MapPin className="w-5 h-5 text-blue-400 mt-0.5 shrink-0" />
-                            <span>{item.location ? (item.location.name || "Unknown Location") : "Location not available"}</span>
+                            <span>{item.location ? (item.location || "Unknown Location") : "Location not available"}</span>
                         </div>
                         {/* Map placeholder for now */}
                         <div className="w-full h-48 bg-slate-700 rounded-xl overflow-hidden relative">
@@ -133,10 +127,10 @@ export default function ItemPage() {
                     <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg">
                         <div
                             className="flex items-center gap-4 mb-6 cursor-pointer hover:bg-slate-700/50 p-2 rounded-xl transition-colors -mx-2"
-                            onClick={() => navigate("/Profile")}
+                            onClick={() => navigate("/Profile/" + item.user?.id)}
                         >
                             {/* User might not have image yet, fallback */}
-                            <img src={item.user?.image || "https://via.placeholder.com/150"} alt={item.user?.name || "User"} className="w-12 h-12 rounded-full object-cover border-2 border-slate-600" />
+                            <img src={item.user?.image || "https://lh3.googleusercontent.com/aida-public/AB6AXuBOtobM1j3ECr0pN0ZWg8LNDdi7YBTXWO8infmDL937kAZZXI4rQ8Mg2JiZrKVYjL81ci5lGrHICuH7AIXNU1t7kqae8eM1CKPdRee_38kFEA0WuPK5QXgN2WCb7H4kUG_r2Episs7h0D98YdIkSW1Z6wzZlPPGgSPIqSd5sS4SVBoPoG0dq-ngpzHBAf3PLciKAIREqR4pMXCCEIzFmNdEpgHVN9EGMhyRyqTBj4Sa8uYhXfK5JH_u49IFeR-0Q6Q6HZFu6vl5eAk"} alt={item.user?.name || "User"} className="w-12 h-12 rounded-full object-cover border-2 border-slate-600" />
                             <div>
                                 <h3 className="text-white font-bold">{item.user?.name || "Anonymous"}</h3>
                                 <span className="text-sm text-slate-500">Reported this item</span>

@@ -10,16 +10,16 @@ export const describeItem = async (req, res) => {
   const { imageUrl } = req.body; // Expect an image URL from the frontend
 
   if (!imageUrl) {
-    return res.status(400).json({ 
-      ok: false, 
+    return res.status(400).json({
+      ok: false,
       status: 400,
-      message: "Image URL is required" 
+      message: "Image URL is required"
     });
   }
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4-vision-preview" || "gpt-4o",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "user",
@@ -42,20 +42,29 @@ export const describeItem = async (req, res) => {
 
     const content = response.choices[0].message.content;
     // You might need to parse 'content' if the AI returns a stringified JSON
-    
-    res.status(200).json({ 
-      ok: true, 
+
+    res.status(200).json({
+      ok: true,
       status: 200,
       message: "Description generated successfully",
-      data: content 
+      data: content
     });
 
   } catch (error) {
     console.error("AI Error:", error);
-    res.status(500).json({ 
-      ok: false, 
+
+    if (error.status === 429 || error.code === 'insufficient_quota') {
+      return res.status(429).json({
+        ok: false,
+        status: 429,
+        message: "AI Service Quota Exceeded. Please check billing or try again later."
+      });
+    }
+
+    res.status(500).json({
+      ok: false,
       status: 500,
-      message: "Failed to generate description. Please try again." 
+      message: "Failed to generate description. Please try again."
     });
   }
 };

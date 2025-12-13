@@ -1,9 +1,9 @@
 import { EntitySchema } from "typeorm";
 
 export const STATUS = {
-  PENDING: "pending",
-  APPROVED: "approved",
-  REJECTED: "rejected",
+  PENDING: "Pending",
+  APPROVED: "Approved",
+  REJECTED: "Rejected",
 };
 
 export const ClaimEntity = new EntitySchema({

@@ -94,7 +94,7 @@ export default function RegistrationPage() {
                 type="email"
                 id="email"
                 name="email"
-                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="john.doe@example.com"
@@ -136,7 +136,8 @@ export default function RegistrationPage() {
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\-])[A-Za-z\\d!@#$%^&*()_+{}\\[\\]:;<>,.?~\\-]{8,}$"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+                title="Must contain at least 8 characters, including uppercase, lowercase, and numbers"
                 placeholder="Enter your password"
                 required
               />

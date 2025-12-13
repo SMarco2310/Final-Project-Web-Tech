@@ -32,16 +32,16 @@ function App() {
             <Route path="/NotFound" element={<NotFoundPage />} />
             <Route path="/Claim/:id" element={<ClaimFormPage />} />
             <Route path="/Report" element={<ReportFormPage />} />
+            <Route path="/Report/:id" element={<ReportFormPage />} />
             <Route path="/Profile/:id" element={<ProfilePage />} />
           </Route>
 
           <Route path="/dashboard/:id" element={<DashboardLayout />}>
             <Route index element={<DashboardPage />} />
-            <Route path="ProfileInfo" element={<ProfileInfoPage />} />
+            <Route path="ProfileInfo/:id" element={<ProfileInfoPage />} />
             <Route path="messages" element={<MessagesPage />} />
             <Route path="claims" element={<ClaimsPage />} />
-
-            <Route path="chat/:id" element={<ChatPage />} />
+            <Route path="chat/:chatId" element={<ChatPage />} />
 
           </Route>
 

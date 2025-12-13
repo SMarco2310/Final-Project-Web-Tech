@@ -9,11 +9,13 @@ export const validateEmail = (email) => {
 };
 
 export const validatePassword = (password) => {
-  // this check if the password has 8 characters and at least one uppercase
-  // letter, one lowercase letter, one number, and one special character
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  return passwordRegex.test(password);
+  // Check if length is at least 8
+  if (password.length < 8) return false;
+  // Check for lowercase, uppercase, and digit. Special char is optional but encouraged.
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasDigit = /\d/.test(password);
+  return hasUpperCase && hasLowerCase && hasDigit;
 };
 
 export const getRole = (role) => {

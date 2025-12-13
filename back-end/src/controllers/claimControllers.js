@@ -5,7 +5,7 @@ import { ItemEntity, STATUS as ITEM_STATUS } from "../models/Item.js";
 export const createClaim = async (req, res) => {
     try {
         const { itemId, reason, proof_images, contact_phone } = req.body;
-        const claimerId = req.user.id; 
+        const claimerId = req.user.id;
         const itemRepository = AppDataSource.getRepository(ItemEntity);
         const claimRepository = AppDataSource.getRepository(ClaimEntity);
 
@@ -29,10 +29,10 @@ export const createClaim = async (req, res) => {
 
         const newClaim = claimRepository.create({
             item: { id: itemId },
-            claimer: { id: claimerId }, 
+            claimer: { id: claimerId },
             status: CLAIM_STATUS.PENDING,
             reason: reason,
-            proof_images: proof_images || [], 
+            proof_images: proof_images || [],
             contact_phone: contact_phone
         });
         await claimRepository.save(newClaim);
@@ -61,6 +61,30 @@ export const getClaims = async (req, res) => {
         return res.status(200).json(claims);
     } catch (error) {
         console.error("Error fetching claims:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const getUserClaims = async (req, res) => {
+    try {
+        const claimerId = req.user.id;
+        const claimRepository = AppDataSource.getRepository(ClaimEntity);
+
+        const claims = await claimRepository.find({
+            where: {
+                claimer: { id: claimerId }
+            },
+            relations: {
+                item: true,
+            },
+            order: {
+                createdAt: "DESC",
+            },
+        });
+
+        return res.status(200).json(claims);
+    } catch (error) {
+        console.error("Error fetching user claims:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 };

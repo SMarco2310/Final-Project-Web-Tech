@@ -150,11 +150,11 @@ export default function CustomUploadImage({ photos, setPhotos }) {
             {fileList.length > 0 && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {fileList.map((file, index) => (
-                        <div key={index} className="relative group aspect-square">
+                        <div key={index} className="relative group">
                             <img
                                 src={URL.createObjectURL(file)}
                                 alt={`preview ${index}`}
-                                className="w-full h-20 object-cover rounded-xl border border-gray-700"
+                                className="w-full h-32 object-cover rounded-xl border border-gray-700"
                             />
                             <button
                                 type="button"

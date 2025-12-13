@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 
 export default function ProfilePage() {
     const { user: authUser, getUserProfile } = useAuth();
-    const { getAllItems } = useItem();
+    const { getAllItems, getMyItems } = useItem();
     const [displayedUser, setDisplayedUser] = useState(null);
     const [userItems, setUserItems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -30,18 +30,16 @@ export default function ProfilePage() {
                 if (targetUser) {
                     setDisplayedUser(targetUser);
 
-                    const data = await getAllItems();
+                    const data = await getMyItems(targetUser.id);
                     const apiItems = Array.isArray(data) ? data : (data.data || []);
 
-                    const myItems = apiItems
-                        .filter(item => item.user && item.user.id === targetUser.id)
-                        .map(item => ({
-                            ...item,
-                            name: item.title,
-                            date: new Date(item.created_at || item.createdAt).toLocaleDateString(),
-                            image: (item.images && item.images.length > 0) ? item.images[0].url : "https://via.placeholder.com/600x400?text=No+Image",
-                            location: item.location ? (item.location.name || "Unknown") : "Unknown"
-                        }));
+                    const myItems = apiItems.map(item => ({
+                        ...item,
+                        name: item.title,
+                        date: new Date(item.created_at || item.createdAt).toLocaleDateString(),
+                        image: (item.images && item.images.length > 0) ? item.images[0].url : "https://via.placeholder.com/600x400?text=No+Image",
+                        location: item.location || "Unknown"
+                    }));
 
                     setUserItems(myItems);
 
@@ -71,7 +69,8 @@ export default function ProfilePage() {
         memberSince: new Date(displayedUser.createdAt || new Date()).getFullYear(),
         bio: displayedUser.bio || "No bio available",
         items: userItems,
-        student_id: displayedUser.student_id
+        student_id: displayedUser.student_id,
+        id: displayedUser.id,
     };
 
     return (

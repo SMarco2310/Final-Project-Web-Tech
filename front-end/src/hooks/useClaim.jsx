@@ -5,28 +5,12 @@ export const useClaim = () => {
     const { token } = useAuth();
     const API_URL = 'http://localhost:4000/api';
 
-    const createClaim = async (itemId) => {
+    const getMyClaims = useCallback(async () => {
         try {
-            const response = await fetch(`${API_URL}/claims`, {
-                method: 'POST',
+            const response = await fetch(`${API_URL}/claims/my-claims`, {
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ itemId })
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to create claim');
-            return data;
-        } catch (error) {
-            throw error;
-        }
-    };
-
-    const getClaims = useCallback(async () => {
-        try {
-            const response = await fetch(`${API_URL}/claims`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+                }
             });
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Failed to fetch claims');
@@ -36,23 +20,23 @@ export const useClaim = () => {
         }
     }, [token]);
 
-    const updateClaimStatus = async (claimId, status) => {
+    const createClaim = async (claimData) => {
         try {
-            const response = await fetch(`${API_URL}/claims/${claimId}/status`, {
-                method: 'PUT',
+            const response = await fetch(`${API_URL}/claims`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ status })
+                body: JSON.stringify(claimData)
             });
             const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to update claim status');
+            if (!response.ok) throw new Error(data.message || 'Failed to submit claim');
             return data;
         } catch (error) {
             throw error;
         }
     };
 
-    return { createClaim, getClaims, updateClaimStatus };
+    return { getMyClaims, createClaim };
 };

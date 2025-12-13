@@ -72,5 +72,31 @@ export const useItem = () => {
         }
     };
 
-    return { getAllItems, getItemById, createItem, deleteItem };
+    // --- COMPLETED THIS FUNCTION ---
+    const updateItem = async (id, itemData) => {
+        try {
+            const response = await fetch(`${API_URL}/item/item/${id}`, {
+                method: 'PUT', // or PATCH
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(itemData)
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Failed to update item');
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    return {
+        getAllItems,
+        getItemById,
+        getMyItems,
+        createItem,
+        deleteItem,
+        updateItem
+    };
 };

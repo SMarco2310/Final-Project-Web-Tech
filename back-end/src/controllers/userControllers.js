@@ -197,7 +197,7 @@ export const getProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   const { id } = req.params;
-  const { name, bio, address } = req.body;
+  const { name,email,phone, address, bio } = req.body;
   try {
     const user = await userRepo.findOneBy({ id });
     if (!user) {
@@ -208,6 +208,8 @@ export const updateProfile = async (req, res) => {
       });
     }
     user.name = name;
+    user.email = email;
+    user.phone = phone;
     user.bio = bio;
     user.address = address;
     await userRepo.save(user);

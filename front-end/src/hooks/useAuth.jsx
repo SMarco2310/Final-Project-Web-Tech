@@ -93,9 +93,12 @@ export const AuthProvider = ({ children }) => {
 
     const updateProfile = async (id, userData) => {
         try {
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
             const response = await fetch(`${API_URL}/auth/profile/${id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: headers,
                 body: JSON.stringify(userData),
             });
             const data = await response.json();
@@ -116,7 +119,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout, getUserProfile,updateProfile, loading }}>
+        <AuthContext.Provider value={{ user, token, login, register, logout, getUserProfile, updateProfile, loading }}>
             {children}
         </AuthContext.Provider>
     );
