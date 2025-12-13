@@ -7,12 +7,10 @@
 
 import AppDataSource from "../config/dataSource.js";
 import { UserEntity } from "../models/User.js";
-import { LocationEntity } from "../models/Location.js";
 import { ItemEntity } from "../models/Item.js";
 import { ImageEntity } from "../models/Image.js";
 const itemRepo = AppDataSource.getRepository(ItemEntity);
 const userRepo = AppDataSource.getRepository(UserEntity);
-const locationRepo = AppDataSource.getRepository(LocationEntity);
 const imageRepo = AppDataSource.getRepository(ImageEntity);
 
 // this return all the items
@@ -23,17 +21,16 @@ export const getAllItems = async (req, res) => {
       .createQueryBuilder("item")
       .leftJoinAndSelect("item.images", "images")
       .leftJoinAndSelect("item.user", "user")
-      .leftJoinAndSelect("item.location", "location")
       .select([
         "item.id",
         "item.title",
         "item.category",
         "item.description",
         "item.status",
+        "item.location",
         "item.createdAt",
 
         "images", // selecting whole object is allowed
-        "location",
 
         "user.id",
         "user.name",
@@ -59,26 +56,71 @@ export const getAllItems = async (req, res) => {
   }
 };
 
+// this return all the items of a specific user
+
+export const getMyItems = async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const items = await itemRepo
+      .createQueryBuilder("item")
+      .leftJoinAndSelect("item.images", "images")
+      .leftJoinAndSelect("item.user", "user")
+      .where("item.user_id = :user_id", { user_id })
+      .select([
+        "item.id",
+        "item.title",
+        "item.category",
+        "item.description",
+        "item.status",
+        "item.location",
+        "item.createdAt",
+
+        "images", // selecting whole object is allowed
+
+        "user.id",
+        "user.name",
+        "user.email",
+        "user.phone",
+      ])
+      .getMany();
+
+    res.status(200).json({
+      ok: true,
+      status: 200,
+      data: items,
+      message: "Items received successfully!",
+    });
+  } catch (err) {
+    console.error("Error in get_my_items:", err);
+
+    res.status(500).json({
+      ok: false,
+      status: 500,
+      message: "Server error while fetching items",
+    });
+  }
+};
+
 // this gets an item by ID
 
 export const getItemById = async (req, res) => {
-  const { item_id } = req.params;
+  const { id } = req.params;
   try {
     const item = await itemRepo
       .createQueryBuilder("item")
       .leftJoinAndSelect("item.images", "images")
       .leftJoinAndSelect("item.user", "user")
-      .leftJoinAndSelect("item.location", "location")
-      .where("item.id = :id", { id: item_id })
+      .where("item.id = :id", { id })
       .select([
         "item.id",
         "item.title",
+        "item.category",
         "item.description",
         "item.status",
-        "item.created_at",
+        "item.location",
+        "item.createdAt",
 
-        "images",
-        "location",
+        "images", // selecting whole object is allowed
 
         "user.id",
         "user.name",
@@ -86,11 +128,17 @@ export const getItemById = async (req, res) => {
         "user.phone",
       ])
       .getOne();
-
+    if (!item) {
+      return res.status(404).json({
+        ok: false,
+        status: 404,
+        message: "Item not found",
+      });
+    }
     res.status(200).json({
       ok: true,
       status: 200,
-      data: { item },
+      data: item,
       message: "Item received successfully!",
     });
   } catch (err) {
@@ -106,13 +154,12 @@ export const getItemById = async (req, res) => {
 //  this create an item
 
 export const createItem = async (req, res) => {
-  const { user_id, location_id, category, title, description, status, images } =
+  const { user_id, location, category, title, description, status, images } =
     req.body;
 
   try {
     //Load related entities
     const user = await userRepo.findOneBy({ id: user_id });
-    const location = await locationRepo.findOneBy({ id: location_id });
 
     if (!user || !location) {
       return res.status(400).json({
@@ -127,8 +174,9 @@ export const createItem = async (req, res) => {
       title,
       description,
       status,
-      user, // assign relation
-      location, // assign relation
+      user,
+      location,
+      
     });
 
     // Save Item first to get its id

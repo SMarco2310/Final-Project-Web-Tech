@@ -4,7 +4,7 @@ import { ItemEntity, STATUS as ITEM_STATUS } from "../models/Item.js";
 
 export const createClaim = async (req, res) => {
     try {
-        const { itemId } = req.body;
+        const { itemId, reason, proof_images, contact_phone } = req.body;
         const claimerId = req.user.id; 
         const itemRepository = AppDataSource.getRepository(ItemEntity);
         const claimRepository = AppDataSource.getRepository(ClaimEntity);
@@ -19,19 +19,22 @@ export const createClaim = async (req, res) => {
         }
 
         const existingClaim = await claimRepository.findOne({
-            where: { item_id: itemId, claimer_id: claimerId },
+            where: { item: itemId, claimer: claimerId },
         });
 
         if (existingClaim) {
             return res.status(400).json({ message: "You have already claimed this item" });
         }
 
-        const newClaim = claimRepository.create({
-            item_id: itemId,
-            claimer_id: claimerId,
-            status: CLAIM_STATUS.PENDING,
-        });
 
+        const newClaim = claimRepository.create({
+            item: { id: itemId },
+            claimer: { id: claimerId }, 
+            status: CLAIM_STATUS.PENDING,
+            reason: reason,
+            proof_images: proof_images || [], 
+            contact_phone: contact_phone
+        });
         await claimRepository.save(newClaim);
 
         return res.status(201).json({ message: "Claim submitted successfully", claim: newClaim });

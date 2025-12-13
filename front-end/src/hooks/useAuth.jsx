@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    const API_URL = '/api';
+    const API_URL = 'http://localhost:4000/api';
 
     useEffect(() => {
         const initAuth = async () => {
@@ -87,7 +87,23 @@ export const AuthProvider = ({ children }) => {
             return data;
         } catch (error) {
             console.error("Fetch profile error:", error);
-            return null; // or throw
+            return null;
+        }
+    };
+
+    const updateProfile = async (id, userData) => {
+        try {
+            const response = await fetch(`${API_URL}/auth/profile/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Failed to update profile');
+            return data;
+        } catch (error) {
+            console.error("Update profile error:", error);
+            return null;
         }
     };
 
@@ -100,7 +116,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout, getUserProfile, loading }}>
+        <AuthContext.Provider value={{ user, token, login, register, logout, getUserProfile,updateProfile, loading }}>
             {children}
         </AuthContext.Provider>
     );

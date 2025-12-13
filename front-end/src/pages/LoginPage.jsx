@@ -16,14 +16,14 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(""); 
+    setError("");
     try {
       await login(email, password);
       console.log("Logged in successfully");
-      navigate(`/dashboard/${user.user_id}`);
+      navigate(`/dashboard/${user.id}`);
     } catch (err) {
       console.error("Login failed:", err);
-      setError("Invalid email or password"); 
+      setError("Invalid email or password");
     }
   };
 
@@ -85,7 +85,7 @@ export default function LoginPage() {
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\-]{8,}$"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\-])[A-Za-z\\d!@#$%^&*()_+{}\\[\\]:;<>,.?~\\-]{8,}$"
                 placeholder="Enter your password"
                 required
               />

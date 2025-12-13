@@ -7,7 +7,7 @@ import { useItem } from '../hooks/useItem';
 export default function DashboardPage() {
     const [activeTab, setActiveTab] = useState('found');
     const { user } = useAuth();
-    const { getAllItems } = useItem();
+    const { getMyItems } = useItem();
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -16,18 +16,16 @@ export default function DashboardPage() {
             if (!user) return;
 
             try {
-                const data = await getAllItems();
+                const data = await getMyItems(user.id);
                 const apiItems = Array.isArray(data) ? data : (data.data || []);
 
-                // Filter items belonging to the user
-                const myItems = apiItems
-                    .filter(item => item.user_id && item.user_id === user.user_id)
-                    .map(item => ({
-                        ...item,
-                        name: item.title,
-                        date: new Date(item.created_at || item.createdAt).toLocaleDateString(),
-                        image: (item.images && item.images.length > 0) ? item.images[0].url : "https://via.placeholder.com/600x400?text=No+Image",
-                    }));
+                // Map items to match component expected structure
+                const myItems = apiItems.map(item => ({
+                    ...item,
+                    name: item.title,
+                    date: new Date(item.created_at || item.createdAt).toLocaleDateString(),
+                    image: (item.images && item.images.length > 0) ? item.images[0].url : "https://via.placeholder.com/600x400?text=No+Image",
+                }));
 
                 setItems(myItems);
             } catch (error) {
@@ -40,7 +38,7 @@ export default function DashboardPage() {
         if (user) {
             fetchUserItems();
         }
-    }, [getAllItems, user]);
+    }, [getMyItems, user]);
 
     // Categorize items
     // Note: Adjust status checks based on actual backend values (Lost, Found, Claimed)

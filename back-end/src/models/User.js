@@ -21,11 +21,11 @@ export const UserEntity = new EntitySchema({
     name: {
       type: "varchar",
     },
-    student_id: {
-      type: "varchar",
-      nullable: true,
-      unique: true,
-    },
+    // student_id: {
+    //   type: "varchar",
+    //   nullable: true,
+    //   unique: true,
+    // },
     password: {
       type: "varchar",
     },
@@ -41,8 +41,12 @@ export const UserEntity = new EntitySchema({
 
     // adding this for bio
     bio: {
-      type: "varchar",
+      type: "text", // Changed to text for longer content
       nullable: true,
+    },
+    address: {
+      type: "varchar",
+      nullable: true, // Added this field so ProfileInfoPage works
     },
     createdAt: {
       type: "datetime",

@@ -26,7 +26,7 @@ export default function Header({ isRegularLayout, showLoginButtons, toggleSideba
         {isRegularLayout ? (
           <div className="flex items-center gap-2">
             {user ? (
-              <Link to="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <Link to={`/dashboard/${user.id}`} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                 {user.image ? (
                   <img src={user.image} alt={user.name} className="w-10 h-10 rounded-full object-cover border-2 border-slate-600" />
                 ) : (
