@@ -23,6 +23,7 @@ export default function GalleryPage() {
         // Map backend fields to frontend expectations for ItemCard
         const mappedItems = apiItems.map(item => ({
           ...item,
+          category: item.category|| "others",
           name: item.title, // Backend uses title, frontend uses name
           date: new Date(item.created_at || item.createdAt).toLocaleDateString(),
           image: (item.images && item.images.length > 0) ? item.images[0].url : "https://via.placeholder.com/600x400?text=No+Image",
@@ -42,7 +43,7 @@ export default function GalleryPage() {
     return items.filter(item => {
       const matchKeyword = (item.name || "").toLowerCase().includes(keyword.toLowerCase()) ||
         (item.description || "").toLowerCase().includes(keyword.toLowerCase());
-      const matchCategory = category ? item.category === category : true;
+      const matchCategory = category ? item.category.toLowerCase() === category.toLowerCase() : true;
       const matchStatus = status ? item.status.toLowerCase() === status.toLowerCase() : true;
       const matchLocation = location ? (item.location || "").toLowerCase().includes(location.toLowerCase()) : true;
 

@@ -32,7 +32,7 @@ export default function SearchBar({
         <div className="flex flex-wrap gap-2 z-20">
           <CustomSelect
             label="Category"
-            options={["electronics", "clothing", "documents", "others"]}
+            options={["electronics", "clothing", "documents", "books", "accessories", "others"]}
             value={category}
             onChange={setCategory}
             w="w-fit"
@@ -46,7 +46,7 @@ export default function SearchBar({
           />
           <CustomSelect
             label="Location"
-            options={["library", "cafeteria", "hostel", "classroom"]}
+            options={["library", "cafeteria", "hostel", "classroom", "others"]}
             value={location}
             onChange={setLocation}
             w="w-fit"
