@@ -26,7 +26,7 @@ export const useDescriptionAi = () => {
                 throw new Error(data.message || 'Failed to generate description');
             }
 
-            return data;
+            return data
         } catch (err) {
             setError(err.message);
             throw err;

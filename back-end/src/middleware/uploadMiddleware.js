@@ -1,10 +1,19 @@
 import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../config/cloudinary.js";
 
-const storage = multer.memoryStorage();
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "lost-and-found",
+    allowed_formats: ["jpg", "png", "jpeg", "webp"],
+    transformation: [
+      { width: 800, height: 800, crop: "limit" }
+    ]
+  },
+});
 
 export const upload = multer({
     storage: storage,
-    limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
-    }
 });
