@@ -5,7 +5,6 @@ import { UserEntity } from "../models/User.js";
 import { ClaimEntity } from "../models/Claim.js";
 import { ItemEntity } from "../models/Item.js";
 import { ImageEntity } from "../models/Image.js";
-import { LocationEntity } from "../models/Location.js";
 import { MessageEntity } from "../models/Message.js";
 import { ChatEntity } from "../models/Chat.js";
 
@@ -20,7 +19,7 @@ const AppDataSource = new DataSource({
   database: process.env.DATABASE_NAME,
 
   // Automatically load all entity files in src/models
-  entities: [UserEntity, ClaimEntity, ItemEntity, ImageEntity, LocationEntity, MessageEntity, ChatEntity],
+  entities: [UserEntity, ClaimEntity, ItemEntity, ImageEntity, MessageEntity, ChatEntity],
   migrations: ["../migrations/*.js"],
 
   synchronize: true, // ❗ dev only, turn off in production!

@@ -18,7 +18,7 @@ const userRepo = AppDataSource.getRepository(UserEntity);
 //  create user
 
 export const registerUser = async (req, res) => {
-  const { name, email, student_id, password, phone, role } = req.body;
+  const { name, email, password, phone, role } = req.body;
   if (validateEmail(email) && validatePassword(password)) {
     try {
       const user = await userRepo.findOneBy({
@@ -37,7 +37,6 @@ export const registerUser = async (req, res) => {
       const newUser = userRepo.create({
         email,
         name,
-        student_id,
         password: hashed_password,
         phone,
         role: processedRole,
@@ -51,12 +50,20 @@ export const registerUser = async (req, res) => {
         {
           expiresIn: "7d",
         },
+
       );
+      const userResponse = {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        phone: newUser.phone,
+        role: newUser.role,
+      }
 
       res.status(201).json({
         ok: true,
         token: token,
-        user_id: newUser.id,
+        user: userResponse,
         status: 201,
         message: "new user created successfully!!",
       });
@@ -104,10 +111,21 @@ export const loginUser = async (req, res) => {
           expiresIn: "7d",
         },
       );
+
+      const loggedUser = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        bio: user.bio,
+        address: user.address,
+      }
+
       res.status(200).json({
         ok: true,
         token: token,
-        user_id: user_id,
+        user: loggedUser,
         status: 200,
         message: "User logged in successfully!!",
       });
@@ -142,14 +160,17 @@ export const getProfile = async (req, res) => {
         "user.id",
         "user.email",
         "user.name",
-        "user.student_id",
         "user.phone",
+        "user.bio",
         "user.createdAt",
 
         "claims",
         "items",
       ])
       .getOne();
+
+
+
     if (user) {
       res.status(200).json({
         ok: true,
@@ -169,6 +190,40 @@ export const getProfile = async (req, res) => {
       ok: false,
       status: 500,
       message: "Server error while loading the user profile",
+    });
+  }
+};
+
+
+export const updateProfile = async (req, res) => {
+  const { id } = req.params;
+  const { name,email,phone, address, bio } = req.body;
+  try {
+    const user = await userRepo.findOneBy({ id });
+    if (!user) {
+      return res.status(404).json({
+        ok: false,
+        status: 404,
+        message: "User Not Found",
+      });
+    }
+    user.name = name;
+    user.email = email;
+    user.phone = phone;
+    user.bio = bio;
+    user.address = address;
+    await userRepo.save(user);
+    res.status(200).json({
+      ok: true,
+      user,
+      message: "User profile successfully updated!",
+    });
+  } catch (err) {
+    console.error("Error in updateProfile : ", err);
+    return res.status(500).json({
+      ok: false,
+      status: 500,
+      message: "Server error while updating the user profile",
     });
   }
 };

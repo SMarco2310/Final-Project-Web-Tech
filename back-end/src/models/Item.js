@@ -1,17 +1,17 @@
 import { EntitySchema } from "typeorm";
 
 export const CATEGORY = {
-  CLOTHING: "CLOTHING",
-  ACCESSORIES: "ACCESSORIES",
-  ELECTRONICS: "ELECTRONICS",
-  BOOKS: "BOOKS",
-  OTHER: "OTHER",
+  CLOTHING: "Clothing",
+  ACCESSORIES: "Accessories",
+  ELECTRONICS: "Electronics",
+  BOOKS: "Books",
+  OTHER: "Other",
 };
 
 export const STATUS = {
-  LOST: "LOST",
-  FOUND: "FOUND",
-  CLAIMED: "CLAIMED",
+  LOST: "Lost",
+  FOUND: "Found",
+  CLAIMED: "Claimed",
 };
 
 export const ItemEntity = new EntitySchema({
@@ -42,6 +42,10 @@ export const ItemEntity = new EntitySchema({
       default: STATUS.FOUND,
       enum: Object.values(STATUS),
     },
+    location: {
+      type: "varchar",
+      nullable: true,
+    },
     createdAt: {
       type: "datetime",
       createDate: true,
@@ -56,13 +60,6 @@ export const ItemEntity = new EntitySchema({
       type: "many-to-one",
       target: "User",
       joinColumn: { name: "user_id" },
-      inverseSide: "items",
-      onDelete: "CASCADE",
-    },
-    location: {
-      type: "many-to-one",
-      target: "Location",
-      joinColumn: { name: "location_id" },
       inverseSide: "items",
       onDelete: "CASCADE",
     },

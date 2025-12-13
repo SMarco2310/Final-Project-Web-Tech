@@ -17,19 +17,12 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'http://localhost:4000/api';
 
     useEffect(() => {
         const initAuth = async () => {
             if (token) {
                 try {
-                    // Optional: Verify token with backend
-                    // const res = await fetch(`${API_URL}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
-                    // const data = await res.json();
-                    // if (res.ok) setUser(data.user);
-
-                    // For now, we'll just decode or trust the token/user from local storage if we stored user there too
-                    // Or just set loading false and wait for a real profile fetch
                     const storedUser = localStorage.getItem('user');
                     if (storedUser) {
                         setUser(JSON.parse(storedUser));
@@ -74,10 +67,46 @@ export const AuthProvider = ({ children }) => {
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Registration failed');
 
-            // Automatically login after register? Or just return success
             return data;
         } catch (error) {
             throw error;
+        }
+    };
+
+    const getUserProfile = async (id) => {
+        try {
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
+            const response = await fetch(`${API_URL}/auth/profile/${id}`, {
+                method: 'GET',
+                headers: headers
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Failed to fetch profile');
+            return data;
+        } catch (error) {
+            console.error("Fetch profile error:", error);
+            return null;
+        }
+    };
+
+    const updateProfile = async (id, userData) => {
+        try {
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
+            const response = await fetch(`${API_URL}/auth/profile/${id}`, {
+                method: 'PUT',
+                headers: headers,
+                body: JSON.stringify(userData),
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Failed to update profile');
+            return data;
+        } catch (error) {
+            console.error("Update profile error:", error);
+            return null;
         }
     };
 
@@ -90,7 +119,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout, loading }}>
+        <AuthContext.Provider value={{ user, token, login, register, logout, getUserProfile, updateProfile, loading }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,83 +1,86 @@
 import ProfileGallery from "../components/ProfileGallery";
 import ProfileCard from "../components/ProfileCard";
+import { useAuth } from "../hooks/useAuth";
+import { useItem } from "../hooks/useItem";
+import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useParams } from "react-router-dom";
+
 export default function ProfilePage() {
-    const user = {
-        name: "John Doe",
-        location: "Room 101",
-        memberSince: "2022-01-01",
-        items: [
-            {
-                id: 1,
-                name: "Laptop",
-                description: "A black laptop with a broken screen",
-                image: "laptop_image.jpg",
-                location: "Room 101",
-                date: "2022-01-01",
-                status: "Lost",
-            },
-            {
-                id: 2,
-            name: "Phone",
-            description: "A white phone with a cracked screen",
-                image: "phone_image.jpg",
-                location: "Room 102",
-            date: "2022-01-02",
-            status: "Found",
-            },
-            {
-                id: 3,
-            name: "Wallet",
-            description: "A black wallet with a missing card",
-                image: "purse_picture.png",
-                location: "Room 103",
-            date: "2022-01-03",
-                status: "Lost",
-            },
-            {
-                id: 4,
-            name: "Wallet",
-            description: "A black wallet with a missing card",
-                image: "purse_picture.png",
-                location: "Room 103",
-            date: "2022-01-03",
-            status: "Lost",
-            },
-            {
-                id: 5,
-                name: "Phone",
-                description: "A white phone with a cracked screen",
-                image: "phone_image.jpg",
-                location: "Room 102",
-                date: "2022-01-02",
-            status: "Claimed",
-            },
-        {
-            id: 6,
-            name: "Wallet",
-            description: "A black wallet with a missing card",
-            image: "purse_picture.png",
-            location: "Room 103",
-            date: "2022-01-03",
-            status: "Lost",
-        },
-        {
-            id: 7,
-            name: "Wallet",
-            description: "A black wallet with a missing card",
-            image: "purse_picture.png",
-            location: "Room 103",
-            date: "2022-01-03",
-            status: "Lost",
-        },
-    ]};
+    const { user: authUser, getUserProfile } = useAuth();
+    const { getAllItems, getMyItems } = useItem();
+    const [displayedUser, setDisplayedUser] = useState(null);
+    const [userItems, setUserItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const { id } = useParams();
+
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            setLoading(true);
+            try {
+                let targetUser = null;
+
+                if (id) {
+                    const res = await getUserProfile(id);
+                    if (res && res.ok) targetUser = res.user;
+                } else {
+                    targetUser = authUser;
+                }
+
+                if (targetUser) {
+                    setDisplayedUser(targetUser);
+
+                    const data = await getMyItems(targetUser.id);
+                    const apiItems = Array.isArray(data) ? data : (data.data || []);
+
+                    const myItems = apiItems.map(item => ({
+                        ...item,
+                        name: item.title,
+                        date: new Date(item.created_at || item.createdAt).toLocaleDateString(),
+                        image: (item.images && item.images.length > 0) ? item.images[0].url : "https://via.placeholder.com/600x400?text=No+Image",
+                        location: item.location || "Unknown"
+                    }));
+
+                    setUserItems(myItems);
+
+                }
+            } catch (error) {
+                console.error("Failed to fetch profile data", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProfileData();
+    }, [id, authUser, getUserProfile, getAllItems]);
+
+    if (loading) return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white"><Loader2 className="animate-spin w-10 h-10" /></div>;
+
+    // If no displayedUser found (and not loading), show error or prompt
+    if (!displayedUser) return <div className="min-h-screen bg-[#0f172a] text-white flex justify-center items-center">
+        {id ? "User not found" : "Please log in to view profile."}
+    </div>;
+
+    const profileUser = {
+        name: displayedUser.name,
+        email: displayedUser.email,
+        phone: displayedUser.phone || "N/A",
+        location: displayedUser.location || "N/A",
+        memberSince: new Date(displayedUser.createdAt || new Date()).getFullYear(),
+        bio: displayedUser.bio || "No bio available",
+        items: userItems,
+        student_id: displayedUser.student_id,
+        id: displayedUser.id,
+    };
+
     return (
-        <div className="w-full min-h-screen bg-[#0f172a] text-white flex justify-center p-10">
+        <div className="w-full min-h-screen bg-[#0f172a] text-white flex justify-center p-4 md:p-10">
             <div className="w-full max-w-6xl flex flex-col md:flex-row gap-10">
                 <div className="w-full md:w-1/2">
-                    <ProfileCard user={user} />
+                    <ProfileCard user={profileUser} />
                 </div>
                 <div className="w-full md:w-3/4">
-                    <ProfileGallery items={user.items} />
+                    <ProfileGallery items={userItems} />
                 </div>
             </div>
         </div>

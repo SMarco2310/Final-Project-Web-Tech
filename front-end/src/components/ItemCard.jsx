@@ -10,7 +10,7 @@ export default function ItemCard({ item }) {
 
 
   return (
-    <Link to="/Item" className="w-full md:max-w-[400px] xl:max-w-[550px]">
+    <Link to={`/Item/${item.id}`} className="w-full md:max-w-[400px] xl:max-w-[550px]">
       <div className="bg-[#0f172a] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col h-full max-h-[400px] transform hover:-translate-y-1 w-full">
         <div className="relative h-64 overflow-hidden">
           <span

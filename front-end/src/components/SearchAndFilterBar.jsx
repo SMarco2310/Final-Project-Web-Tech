@@ -29,7 +29,7 @@ export default function SearchBar({
         id="filter-bar"
         className="w-full flex flex-wrap gap-4 justify-between items-center"
       >
-        <div className="flex flex-wrap gap-2 z-50">
+        <div className="flex flex-wrap gap-2 z-20">
           <CustomSelect
             label="Category"
             options={["electronics", "clothing", "documents", "others"]}

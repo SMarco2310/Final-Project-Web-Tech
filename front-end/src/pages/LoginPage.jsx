@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const [isVisible, setIsVisible] = useState(false);
   const handleToggle = () => {
     setIsVisible(!isVisible);
@@ -16,14 +16,14 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError("");
     try {
       await login(email, password);
       console.log("Logged in successfully");
-      navigate("/dashboard");
+      navigate(`/dashboard/${user.id}`);
     } catch (err) {
       console.error("Login failed:", err);
-      setError("Invalid email or password"); // or use err.message
+      setError("Invalid email or password");
     }
   };
 
@@ -59,7 +59,7 @@ export default function LoginPage() {
                 type="email"
                 id="email"
                 name="email"
-                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 aria-autocomplete="true"
@@ -85,7 +85,8 @@ export default function LoginPage() {
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\-]{8,}$"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+                title="Must contain at least 8 characters, including uppercase, lowercase, and numbers"
                 placeholder="Enter your password"
                 required
               />

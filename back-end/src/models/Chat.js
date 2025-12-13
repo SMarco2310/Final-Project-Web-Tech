@@ -11,6 +11,7 @@ export const ChatEntity = new EntitySchema({
         },
         item_id: {
             type: "int",
+            nullable: true,
         },
         user1_id: {
             type: "uuid",

@@ -3,18 +3,20 @@ import {
   getItemById,
   createItem,
   deleteItem,
+  getMyItems,
 } from "../controllers/itemControllers.js";
-import { authenticate, authorizeItemOwner } from "../middleware/authMiddleware.js";
+import { authenticate } from "../middleware/authMiddleware.js";
 import express from "express";
 
 const itemRouter = express.Router();
 
 itemRouter.get("/items", getAllItems);
+itemRouter.get("/my-items/:user_id", getMyItems);
 
-itemRouter.post("/item", authenticate, authorizeItemOwner, createItem);
+itemRouter.post("/", authenticate, createItem);
 
 itemRouter.get("/item/:id", getItemById);
 
-itemRouter.delete("/item/:id", authenticate, authorizeItemOwner, deleteItem);
+itemRouter.delete("/item/:id", authenticate, deleteItem);
 
 export default itemRouter;

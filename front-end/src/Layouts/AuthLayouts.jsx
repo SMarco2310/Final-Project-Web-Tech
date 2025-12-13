@@ -6,7 +6,7 @@ export default function AuthLayouts() {
   const [isRegularLayout, setIsRegularLayout] = useState(false);
   return (
     <div className="min-h-screen flex flex-col w-full">
-      <Header isRegularLayout={false} showLoginButtons={false} />
+      <Header isRegularLayout={false} showLoginButtons={false} showMenu={false} />
       <main className="flex-1 flex w-full pt-24">
         <Outlet />
       </main>

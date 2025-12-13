@@ -1,35 +1,65 @@
 import CustomUploadImage from "../components/CustomUploadImage";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useItem } from "../hooks/useItem";
+import { useClaim } from "../hooks/useClaim";
+import { useAuth } from "../hooks/useAuth";
+import { useParams } from "react-router-dom";
 export default function ClaimFormPage() {
     const navigate = useNavigate();
+    const { itemId } = useParams(); 
+    const { user } = useAuth();
+    const { getItemById } = useItem();
+    const { createClaim } = useClaim();
+    
+    const [itemDetails, setItemDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [reason, setReason] = useState("");
     const [photos, setPhotos] = useState([]); // Renamed from images/files to match other forms approx
 
+    useEffect(() => {
+        const fetchItem = async () => {
+             try {
+                const data = await getItemById(itemId);
+                if(data.ok) {
+                    setItemDetails(data.data.item);
+                }
+             } catch(err) { 
+                 console.error("Error fetching item:", err); 
+             } finally {
+                 setLoading(false);
+             }
+        };
+        if(itemId) fetchItem();
+    }, [itemId, getItemById]);
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const claimData = {
-            name,
-            email,
-            phone,
-            reason,
-            photos
+        
+        const payload = {
+            itemId: itemId, 
+            reason: reason,
+            contact_phone: phone,
+            proof_images: photos 
         };
 
-        console.log("Submitting Claim:", claimData);
-
-        // Mock API call
-        // await submitClaim(claimData);
-
-        // Navigate back to Claims dashboard or Gallery
-        navigate("/dashboard/claims");
-        // Or if you want to show a success message first, you could alert.
-        // For now, simple redirect.
+        try {
+            // using the hook function
+            await createClaim(payload);
+            navigate("/dashboard/claims");
+        } catch (error) {
+            console.error("Claim Error:", error);
+            alert(error.message || "Failed to submit claim");
+        }
     };
+    if (loading) return <p className="text-white p-10">Loading item...</p>;
+    if (!itemDetails) return <p className="text-red-500 p-10">Item not found</p>;
 
     return (
         <div className="flex items-center justify-center min-h-[80vh]">
@@ -42,11 +72,10 @@ export default function ClaimFormPage() {
             <div id="item-info-card" className="flex justify-between border border-slate-700/80 bg-slate-800/20 p-5 rounded-2xl h-50">
                 <div className="flex flex-col gap-2 w-1/2 mx-2 ">
                     <h1>Item Name</h1>
-                    <p><span>Category: </span> | <span>Found on: </span></p>
+                    <p><span>Category: {itemDetails.category}</span> | <span>Found on: {itemDetails.found_date}</span></p>
                     </div>
                     <div className="w-1/4">
-                        <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            alt="" className="w-full h-full object-cover rounded-3xl" />
+                        <img src={itemDetails.image} alt="" className="w-full h-full object-cover rounded-3xl" />
                     </div>
                 </div>
 

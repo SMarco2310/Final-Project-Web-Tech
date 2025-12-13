@@ -3,7 +3,7 @@ import { useAuth } from './useAuth';
 
 export const useItem = () => {
     const { token } = useAuth();
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'http://localhost:4000/api';
 
     const getAllItems = useCallback(async () => {
         try {
@@ -27,9 +27,20 @@ export const useItem = () => {
         }
     }, []);
 
+    const getMyItems = useCallback(async (user_id) => {
+        try {
+            const response = await fetch(`${API_URL}/item/my-items/${user_id}`);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Failed to fetch items');
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }, []);
+
     const createItem = async (itemData) => {
         try {
-            const response = await fetch(`${API_URL}/item/item`, {
+            const response = await fetch(`${API_URL}/item/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,5 +72,31 @@ export const useItem = () => {
         }
     };
 
-    return { getAllItems, getItemById, createItem, deleteItem };
+    // --- COMPLETED THIS FUNCTION ---
+    const updateItem = async (id, itemData) => {
+        try {
+            const response = await fetch(`${API_URL}/item/item/${id}`, {
+                method: 'PUT', // or PATCH
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(itemData)
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Failed to update item');
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    return {
+        getAllItems,
+        getItemById,
+        getMyItems,
+        createItem,
+        deleteItem,
+        updateItem
+    };
 };

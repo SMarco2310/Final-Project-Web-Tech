@@ -1,38 +1,64 @@
-import React, { useState } from 'react';
-import { Pencil, Save, X, LogOut } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Pencil, Save, X, LogOut, Loader2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { useParams } from 'react-router-dom';
 
 export default function ProfileInfoPage() {
-    const { logout } = useAuth();
+    const { user: currentUser, logout, getUserProfile, updateProfile } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
-    const [user, setUser] = useState({
-        name: "Alex Thompson",
-        email: "alex.thompson@email.com",
-        firstName: "Alex",
-        lastName: "Thompson",
-        phone: "(555) 123-4567",
-        address: "123 Main St, Anytown, USA",
-        bio: "Frontend developer and design enthusiast. Passionate about creating beautiful and intuitive user interfaces. In my free time, I enjoy hiking and exploring new coffee shops. I tend to lose my keys, so this app is a lifesaver!",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
-    });
+    const [profile, setProfile] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [editForm, setEditForm] = useState({});
+    const { id } = useParams();
 
-    const [editForm, setEditForm] = useState(user);
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (id) {
+                try {
+                    const data = await getUserProfile(id);
+                    if (data && data.user) {
+                        setProfile(data.user);
+                        setEditForm(data.user);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch profile:", error);
+                }
+            }
+            setLoading(false);
+        };
+        fetchUser();
+    }, [id, getUserProfile]);
+
+    const handleLogout = () => {
+        logout();
+    };
 
     const handleEdit = () => {
-        setEditForm(user);
+        setEditForm(profile);
         setIsEditing(true);
     };
 
     const handleCancel = () => {
         setIsEditing(false);
-        setEditForm(user);
+        setEditForm(profile);
     };
-
-    const handleSave = () => {
-        setUser(editForm);
-        setIsEditing(false);
+const handleSave = async () => {
+        try {
+            const result = await updateProfile(profile.id, editForm);
+            
+            // Handle both common API response patterns
+            if (result && (result.ok || result.success)) {
+                // Update the local profile state with the new data
+                setProfile(prev => ({ ...prev, ...editForm }));
+                setIsEditing(false);
+            } else {
+                alert(result?.message || "Failed to update profile");
+            }
+        } catch (error) {
+            console.error("Update failed:", error);
+            alert("Failed to save changes");
+        }
     };
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEditForm(prev => ({
@@ -40,6 +66,22 @@ export default function ProfileInfoPage() {
             [name]: value
         }));
     };
+
+    if (loading) {
+        return (
+            <div className="w-full h-[50vh] flex items-center justify-center">
+                <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+            </div>
+        );
+    }
+
+    if (!profile) {
+        return (
+            <div className="w-full text-center py-10 text-gray-400">
+                User profile not found.
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-4xl mx-auto">
@@ -56,7 +98,7 @@ export default function ProfileInfoPage() {
                                 Edit Profile
                             </button>
                             <button
-                                onClick={logout}
+                                onClick={handleLogout}
                                 className="flex items-center gap-2 px-4 py-2 bg-red-900 text-white  rounded-xl hover:bg-red-500 transition-colors"
                             >
                                 <LogOut size={16} />
@@ -87,7 +129,7 @@ export default function ProfileInfoPage() {
             <div className="bg-gray-900 rounded-3xl border border-white/10 p-8">
                 <div className="flex items-center gap-6 mb-8 border-b border-white/10 pb-8">
                     <div className="w-24 h-24 rounded-full bg-orange-100 overflow-hidden relative group">
-                        <img src={editForm.avatar} alt={editForm.name} className="w-full h-full object-cover" />
+                        <img src={editForm.avatar|| "https://lh3.googleusercontent.com/aida-public/AB6AXuBOtobM1j3ECr0pN0ZWg8LNDdi7YBTXWO8infmDL937kAZZXI4rQ8Mg2JiZrKVYjL81ci5lGrHICuH7AIXNU1t7kqae8eM1CKPdRee_38kFEA0WuPK5QXgN2WCb7H4kUG_r2Episs7h0D98YdIkSW1Z6wzZlPPGgSPIqSd5sS4SVBoPoG0dq-ngpzHBAf3PLciKAIREqR4pMXCCEIzFmNdEpgHVN9EGMhyRyqTBj4Sa8uYhXfK5JH_u49IFeR-0Q6Q6HZFu6vl5eAk"} alt={editForm.name} className="w-full h-full object-cover" />
                         {isEditing && (
                             <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                 <Pencil size={20} className="text-white" />
@@ -95,38 +137,38 @@ export default function ProfileInfoPage() {
                         )}
                     </div>
                     <div>
-                        <h2 className="text-2xl font-bold text-white">{user.name}</h2>
-                        <p className="text-gray-400">{user.email}</p>
+                        <h2 className="text-2xl font-bold text-white">{profile.name}</h2>
+                        <p className="text-gray-400">{profile.email}</p>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                     <div>
-                        <label className="block text-sm text-gray-500 mb-1">First Name</label>
+                        <label className="block text-sm text-gray-500 mb-1">Full Name</label>
                         {isEditing ? (
                             <input
                                 type="text"
-                                name="firstName"
-                                value={editForm.firstName}
+                                name="name"
+                                value={editForm.name || ''}
                                 onChange={handleChange}
                                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
                             />
                         ) : (
-                            <p className="text-white font-medium text-lg">{user.firstName}</p>
+                            <p className="text-white font-medium text-lg">{profile.name}</p>
                         )}
                     </div>
                     <div>
-                        <label className="block text-sm text-gray-500 mb-1">Last Name</label>
+                        <label className="block text-sm text-gray-500 mb-1">Email</label>
                         {isEditing ? (
                             <input
                                 type="text"
-                                name="lastName"
-                                value={editForm.lastName}
+                                name="email"
+                                value={editForm.email || ''}
                                 onChange={handleChange}
                                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
                             />
                         ) : (
-                            <p className="text-white font-medium text-lg">{user.lastName}</p>
+                            <p className="text-white font-medium text-lg">{profile.email}</p>
                         )}
                     </div>
                     <div>
@@ -135,12 +177,12 @@ export default function ProfileInfoPage() {
                             <input
                                 type="tel"
                                 name="phone"
-                                value={editForm.phone}
+                                value={editForm.phone || ''}
                                 onChange={handleChange}
                                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
                             />
                         ) : (
-                            <p className="text-white font-medium text-lg">{user.phone}</p>
+                            <p className="text-white font-medium text-lg">{profile.phone}</p>
                         )}
                     </div>
                     <div>
@@ -149,12 +191,12 @@ export default function ProfileInfoPage() {
                             <input
                                 type="text"
                                 name="address"
-                                value={editForm.address}
+                                value={editForm.address || ''}
                                 onChange={handleChange}
                                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
                             />
                         ) : (
-                            <p className="text-white font-medium text-lg">{user.address}</p>
+                            <p className="text-white font-medium text-lg">{profile.address}</p>
                         )}
                     </div>
                 </div>
@@ -164,14 +206,14 @@ export default function ProfileInfoPage() {
                     {isEditing ? (
                         <textarea
                             name="bio"
-                            value={editForm.bio}
+                            value={editForm.bio || ''}
                             onChange={handleChange}
                             rows={4}
                             className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500 resize-none"
                         />
                     ) : (
                         <p className="text-gray-300 leading-relaxed">
-                            {user.bio}
+                            {profile.bio}
                         </p>
                     )}
                 </div>

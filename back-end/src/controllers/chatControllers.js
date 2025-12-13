@@ -3,6 +3,8 @@ import { ChatEntity } from "../models/Chat.js";
 import { ItemEntity } from "../models/Item.js";
 import { UserEntity } from "../models/User.js";
 
+import { IsNull } from "typeorm";
+
 export const createChat = async (req, res) => {
     try {
         const { itemId, otherUserId } = req.body;
@@ -10,12 +12,23 @@ export const createChat = async (req, res) => {
 
         const chatRepository = AppDataSource.getRepository(ChatEntity);
 
+        // Prepare where conditions checking for null itemId explicitly if needed
+        const whereConditions = [
+            {
+                user1_id: currentUserId,
+                user2_id: otherUserId,
+                item_id: itemId || IsNull()
+            },
+            {
+                user1_id: otherUserId,
+                user2_id: currentUserId,
+                item_id: itemId || IsNull()
+            },
+        ];
+
         // Check if chat already exists
         const existingChat = await chatRepository.findOne({
-            where: [
-                { item_id: itemId, user1_id: currentUserId, user2_id: otherUserId },
-                { item_id: itemId, user1_id: otherUserId, user2_id: currentUserId },
-            ],
+            where: whereConditions,
         });
 
         if (existingChat) {
@@ -24,7 +37,7 @@ export const createChat = async (req, res) => {
 
         // Create new chat
         const newChat = chatRepository.create({
-            item_id: itemId,
+            item_id: itemId || null, // Ensure it's null if undefined
             user1_id: currentUserId,
             user2_id: otherUserId,
         });

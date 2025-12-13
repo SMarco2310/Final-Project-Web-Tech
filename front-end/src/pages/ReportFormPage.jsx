@@ -1,26 +1,68 @@
 import FilterButton from "../components/FilterButton";
 import CustomSelect from "../components/CustomSelect";
 import CustomUploadImage from "../components/CustomUploadImage";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useItem } from "../hooks/useItem";
 import { useDescriptionAi } from "../hooks/useDescriptionAi";
-import { useNavigate } from "react-router-dom";
-import { Loader2, Wand2 } from "lucide-react";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import { Loader2, Wand2, LogIn } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 export default function ReportFormPage() {
-  const { createItem } = useItem();
+  const { createItem, getItemById, updateItem } = useItem();
   const { generateDescription, loading: aiLoading } = useDescriptionAi();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { user, token } = useAuth(); // Get user and token from auth hook
 
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [photos, setPhotos] = useState([]);
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
   const [status, setStatus] = useState("Lost");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [contactName, setContactName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const fetchItem = async () => {
+      if (id) {
+        try {
+          const data = await getItemById(id);
+          // Adjust 'data.data' based on your API response structure (e.g. data or data.data)
+          const item = data.data || data;
+
+          setTitle(item.title || "");
+          setCategory(item.category || "");
+          setDescription(item.description || "");
+          setLocation(item.location || "");
+          setStatus(item.status || "Lost");
+          setPhotos(item.images || []);
+          // Populate contact info if available
+          if (item.user) {
+            setEmail(item.user.email || "");
+            setPhone(item.user.phone || "");
+            setContactName(item.user.name || "");
+          }
+        } catch (error) {
+          console.error("Failed to fetch item for edit:", error);
+          alert("Could not load item details.");
+        }
+      }
+    };
+    fetchItem();
+  }, [id, getItemById]);
+
+  // Pre-fill contact info from logged-in user if creating new report
+  useEffect(() => {
+    if (!id && user) {
+      setContactName(user.name || "");
+      setEmail(user.email || "");
+      setPhone(user.phone || "");
+    }
+  }, [id, user]);
 
   const handleGenerateDescription = async () => {
     if (photos.length === 0) {
@@ -35,7 +77,7 @@ export default function ReportFormPage() {
       const base64String = reader.result;
       try {
         const data = await generateDescription(base64String);
- 
+
         if (data && data.data) {
           let aiResponse = data.data;
           if (typeof aiResponse === 'string') {
@@ -49,7 +91,7 @@ export default function ReportFormPage() {
             }
           }
 
-          if (aiResponse.title) setName(aiResponse.title);
+          if (aiResponse.title) setTitle(aiResponse.title);
           if (aiResponse.description) setDescription(aiResponse.description);
         }
       } catch (error) {
@@ -65,40 +107,91 @@ export default function ReportFormPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // TODO: Implement actual image upload to Cloudinary here to get URLs
-    // For now, we are sending the file objects which might not work with backend 'createItem'
-    // depending on how it handles images. Assuming it might expect URLs.
-    // If we assume the hooks are "all we have", we try to use them. 
-
-    const itemData = {
-      name,
-      category,
-      description,
-      location,
-      status,
-      date: new Date().toISOString().split('T')[0],
-      images: photos, // Backend likely needs an update to handle Files or we need an upload step
-      contact: { email, phone }
-    };
-
-    console.log("Submitting item:", itemData);
-
     try {
-      await createItem(itemData);
-      console.log("Item created successfully");
+      // Upload images first
+      const uploadedImageUrls = await Promise.all(photos.map(async (photo) => {
+        // If it's already a string, it's an existing URL
+        if (typeof photo === 'string') return photo;
+
+        // If it's a File object, upload it
+        if (photo instanceof File || photo instanceof Blob) {
+          const formData = new FormData();
+          formData.append('image', photo);
+
+          const response = await fetch('http://localhost:4000/api/image/upload', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }, body: formData
+          });
+
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.message || 'Failed to upload image');
+          return data.url;
+        }
+        return null;
+      }));
+
+      // Filter out any failed uploads (nulls)
+      const validImageUrls = uploadedImageUrls.filter(url => url !== null);
+
+      const itemData = {
+        user_id: user.id,
+        location,
+        category,
+        title,
+        description,
+        status,
+        images: validImageUrls,
+      };
+
+      console.log("Submitting item:", itemData);
+
+      if (id) {
+        await updateItem(id, itemData);
+        console.log("Item updated successfully");
+      } else {
+        await createItem(itemData);
+        console.log("Item created successfully");
+      }
       navigate("/Gallery");
     } catch (error) {
-      console.error("Failed to create item:", error);
-      alert("Failed to create report. Please try again.");
+      console.error("Failed to create/update item:", error);
+      alert(error.message || "Failed to submit report. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  if (!user) {
+    return (
+      <div className="min-h-[80vh] flex flex-col items-center justify-center p-4 text-center">
+        <div className="bg-[#1e293b] p-8 rounded-2xl border border-gray-700 shadow-xl max-w-md w-full">
+          <div className="bg-blue-500/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+            <LogIn className="w-8 h-8 text-blue-500" />
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-2">Login Required</h1>
+          <p className="text-gray-400 mb-8">
+            You must be logged in to report a lost or found item.
+            Please sign in to your account or create a new one.
+          </p>
+          <div className="flex flex-col gap-3">
+            <Link to="/Login" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-all">
+              Login
+            </Link>
+            <Link to="/Register" className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-xl transition-all">
+              Create Account
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full min-h-screen py-10 px-4">
       <form className="flex flex-col gap-6 w-full max-w-3xl mx-auto" onSubmit={handleSubmit}>
-        <h1 className="text-3xl md:text-4xl font-bold text-white text-center md:text-left">Report a Lost or Found Item</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-white text-center md:text-left">{id ? "Edit Item Report" : "Report a Lost or Found Item"}</h1>
 
         <div className="w-full border border-gray-700 rounded-2xl p-6 bg-[#1e293b]/30 backdrop-blur-sm">
           <p className="mb-6 text-gray-300 text-lg">
@@ -116,8 +209,8 @@ export default function ReportFormPage() {
           </div>
 
           <div>
-            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-300">Item Name</label>
-            <input type="text" id="name" name="name" placeholder="e.g iPhone 14 Pro" className="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" value={name} onChange={(e) => setName(e.target.value)} required />
+            <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-300">Item Name</label>
+            <input type="text" id="title" name="title" placeholder="e.g iPhone 14 Pro" className="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" value={title} onChange={(e) => setTitle(e.target.value)} required />
           </div>
 
           <div>
@@ -171,7 +264,7 @@ export default function ReportFormPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
               <label htmlFor="contactName" className="block mb-2 text-sm font-medium text-gray-300">Your Name</label>
-              <input type="text" id="contactName" name="contactName" placeholder="e.g John Doe" className="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" />
+              <input type="text" id="contactName" name="contactName" placeholder="e.g John Doe" className="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" value={contactName} onChange={(e) => setContactName(e.target.value)} required />
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-300"> Your Email Address</label>
@@ -192,7 +285,7 @@ export default function ReportFormPage() {
             type="submit"
           >
             {isSubmitting ? <Loader2 className="animate-spin" /> : null}
-            {isSubmitting ? "Submitting..." : "Submit Report"}
+            {isSubmitting ? "Submitting..." : (id ? "Update Report" : "Submit Report")}
           </button>
         </div>
       </form>

@@ -3,6 +3,7 @@ import {
     createClaim,
     getClaims,
     updateClaimStatus,
+    getUserClaims,
 } from "../controllers/claimControllers.js";
 import { authenticate } from "../middleware/authMiddleware.js";
 
@@ -13,6 +14,9 @@ claimRouter.post("/", authenticate, createClaim);
 
 // Get all claims
 claimRouter.get("/", authenticate, getClaims);
+
+// Get user claims
+claimRouter.get("/my-claims", authenticate, getUserClaims);
 
 // Update claim status
 claimRouter.put("/:id/status", authenticate, updateClaimStatus);

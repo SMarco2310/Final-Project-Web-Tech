@@ -1,14 +1,15 @@
 import { LayoutDashboard, FileText, Package, Users, UserCircle, Search, ChartBarIcon, PlusCircle, X } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
     const location = useLocation();
     const isActive = (path) => location.pathname === path;
+    const { id } = useParams();
 
     const navItems = [
-        { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-        { icon: FileText, label: 'Claims', path: '/dashboard/claims' },
-        { icon: ChartBarIcon, label: 'Messages', path: '/dashboard/messages' },
+        { icon: LayoutDashboard, label: 'Dashboard', path: `/dashboard/${id}` },
+        { icon: FileText, label: 'Claims', path: `/dashboard/${id}/claims` },
+        { icon: ChartBarIcon, label: 'Messages', path: `/dashboard/${id}/messages` },
     ];
 
     return (
@@ -47,8 +48,8 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
             <div className="p-4 border-t border-white/5">
                 <Link
-                    to="ProfileInfo"
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive('/ProfileInfo')
+                    to={`ProfileInfo/${id}`}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive(`/ProfileInfo/${id}`)
                         ? 'bg-blue-900/10 text-blue-400 border border-blue-600/20'
                         : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
                         }`}
