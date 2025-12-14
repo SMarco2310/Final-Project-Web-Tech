@@ -1,4 +1,4 @@
-export default function DashboardStats({ itemsFound, itemsLost, itemsClaimed }) {
+export default function DashboardStats({ itemsFound, itemsLost }) {
     const statusColors = {
         "Lost": "bg-red-500/20 text-red-500",
         "Found": "bg-green-500/20 text-green-500",

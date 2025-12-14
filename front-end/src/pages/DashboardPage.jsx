@@ -44,14 +44,13 @@ export default function DashboardPage() {
     // Note: Adjust status checks based on actual backend values (Lost, Found, Claimed)
     const itemsFound = items.filter(item => item.status === 'Found' || item.status === 'Validated' || item.status === 'Returned');
     const itemsLost = items.filter(item => item.status === 'Lost');
-    const itemsClaimed = items.filter(item => item.status === 'Claimed');
 
     if (loading) return <div className="min-h-screen bg-[#0f172a] text-white flex justify-center items-center"><Loader2 className="animate-spin" /></div>;
     if (!user) return <div className="text-white text-center mt-10">Please log in to view dashboard.</div>;
 
     return (
         <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-7">
                 <h1 className="text-3xl font-bold text-white">Dashboard</h1>
                 <div className="relative w-64">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -62,31 +61,9 @@ export default function DashboardPage() {
                     />
                 </div>
             </div>
+            <br/>
 
-            <div className="flex gap-6 mb-8 border-b border-white/10">
-                <button
-                    onClick={() => setActiveTab('found')}
-                    className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'found' ? 'text-blue-500' : 'text-gray-400 hover:text-white'
-                        }`}
-                >
-                    Items Found
-                    {activeTab === 'found' && (
-                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 rounded-t-full" />
-                    )}
-                </button>
-                <button
-                    onClick={() => setActiveTab('claimed')}
-                    className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === 'claimed' ? 'text-blue-500' : 'text-gray-400 hover:text-white'
-                        }`}
-                >
-                    Items Claimed
-                    {activeTab === 'claimed' && (
-                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 rounded-t-full" />
-                    )}
-                </button>
-            </div>
-
-            <DashboardStats itemsFound={itemsFound} itemsClaimed={itemsClaimed} itemsLost={itemsLost} />
+            <DashboardStats itemsFound={itemsFound} itemsLost={itemsLost} />
         </div>
     );
 }

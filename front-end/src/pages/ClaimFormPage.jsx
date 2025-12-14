@@ -1,5 +1,5 @@
 import CustomUploadImage from "../components/CustomUploadImage";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useItem } from "../hooks/useItem";
 import { useClaim } from "../hooks/useClaim";
@@ -7,13 +7,14 @@ import { useAuth } from "../hooks/useAuth";
 import { useParams } from "react-router-dom";
 export default function ClaimFormPage() {
     const navigate = useNavigate();
-    const { itemId } = useParams(); 
-    const { user } = useAuth();
+    const { id } = useParams();
+    const { user, token } = useAuth();
     const { getItemById } = useItem();
     const { createClaim } = useClaim();
-    
+
     const [itemDetails, setItemDetails] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
 
     const [name, setName] = useState("");
@@ -24,29 +25,33 @@ export default function ClaimFormPage() {
 
     useEffect(() => {
         const fetchItem = async () => {
-             try {
-                const data = await getItemById(itemId);
-                if(data.ok) {
-                    setItemDetails(data.data.item);
+            try {
+                const data = await getItemById(id);
+                if (data.ok) {
+                    setItemDetails(data.data);
+                } else {
+                    setError(true);
                 }
-             } catch(err) { 
-                 console.error("Error fetching item:", err); 
-             } finally {
-                 setLoading(false);
-             }
+            } catch (err) {
+                console.error("Error fetching item:", err);
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
         };
-        if(itemId) fetchItem();
-    }, [itemId, getItemById]);
+        if (id) fetchItem();
+    }, [id, getItemById]);
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         const payload = {
-            itemId: itemId, 
+            itemId: id,
+            userId: user.id,
             reason: reason,
             contact_phone: phone,
-            proof_images: photos 
+            proof_images: photos
         };
 
         try {
@@ -59,7 +64,7 @@ export default function ClaimFormPage() {
         }
     };
     if (loading) return <p className="text-white p-10">Loading item...</p>;
-    if (!itemDetails) return <p className="text-red-500 p-10">Item not found</p>;
+    if (error || !itemDetails) return <Navigate to="/NotFound" replace />;
 
     return (
         <div className="flex items-center justify-center min-h-[80vh]">
@@ -69,10 +74,10 @@ export default function ClaimFormPage() {
                     <p className="text-gray-400">Fill out the form below to claim your lost item.</p>
                 </div>
 
-            <div id="item-info-card" className="flex justify-between border border-slate-700/80 bg-slate-800/20 p-5 rounded-2xl h-50">
-                <div className="flex flex-col gap-2 w-1/2 mx-2 ">
-                    <h1>Item Name</h1>
-                    <p><span>Category: {itemDetails.category}</span> | <span>Found on: {itemDetails.found_date}</span></p>
+                <div id="item-info-card" className="flex justify-between border border-slate-700/80 bg-slate-800/20 p-5 rounded-2xl h-50">
+                    <div className="flex flex-col gap-2 w-1/2 mx-2 ">
+                        <h1>Item Name</h1>
+                        <p><span>Category: {itemDetails.category}</span> | <span>Found on: {itemDetails.found_date}</span></p>
                     </div>
                     <div className="w-1/4">
                         <img src={itemDetails.image} alt="" className="w-full h-full object-cover rounded-3xl" />

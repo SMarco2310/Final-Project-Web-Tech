@@ -10,9 +10,11 @@ export default function ItemPage() {
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
         const fetchItem = async () => {
+            setSelectedImage(null);
             try {
                 if (!id) {
                     setError("No item ID provided");
@@ -47,13 +49,13 @@ export default function ItemPage() {
     if (error || !item) return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white text-xl">Item not found</div>;
 
     const displayImages = item.images && item.images.length > 0 ? item.images.map(img => img.url) : ["https://via.placeholder.com/600x400?text=No+Image"];
-    const mainImage = displayImages[0];
+    const mainImage = selectedImage || displayImages[0];
 
     return (
         <div className="min-h-screen bg-[#0f172a] text-slate-300 p-4 md:p-8 flex justify-center font-sans">
-            <div className="max-w-7xl w-full grid md:grid-rows-2 lg:grid-cols-3 gap-4 md:gap-8">
+            <div className="max-w-7xl w-full grid lg:grid-cols-3 gap-4 md:gap-4 ">
 
-                <div className="lg:col-span-2 flex flex-col gap-4">
+                <div className="lg:col-span-2 flex flex-col gap-2">
                     <div className="w-full aspect-4/3 bg-[#1e293b] rounded-2xl overflow-hidden shadow-lg">
                         <img
                             src={mainImage}
@@ -64,7 +66,11 @@ export default function ItemPage() {
                     {displayImages.length > 1 && (
                         <div className="grid grid-cols-5 gap-4">
                             {displayImages.map((image, index) => (
-                                <div key={index} className={`aspect-square rounded-xl overflow-hidden cursor-pointer opacity-80 hover:opacity-100 transition-all`}>
+                                <div
+                                    key={index}
+                                    onClick={() => setSelectedImage(image)}
+                                    className={`aspect-square rounded-xl overflow-hidden cursor-pointer transition-all ${mainImage === image ? 'ring-2 ring-blue-500 opacity-100' : 'opacity-80 hover:opacity-100'}`}
+                                >
                                     <img
                                         src={image}
                                         className="w-full h-full object-cover"
@@ -98,19 +104,14 @@ export default function ItemPage() {
                                 <span className="block text-sm text-slate-500 mb-1">Date Created</span>
                                 <span className="text-slate-200 font-medium">{new Date(item.created_at || item.createdAt).toLocaleDateString()}</span>
                             </div>
-                            {/* Time is likely not separate in backend yet, so omitted or extracted from date */}
                         </div>
                     </div>
-
-                    {/* Location: backend returns item.location object? or ID? Controller says leftJoinAndSelect location. */}
-                    {/* Assuming item.location is an object with name or address */}
                     <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg">
                         <h2 className="text-xl font-bold text-white mb-4">Location</h2>
                         <div className="flex items-start gap-3 mb-4 text-slate-300">
                             <MapPin className="w-5 h-5 text-blue-400 mt-0.5 shrink-0" />
                             <span>{item.location ? (item.location || "Unknown Location") : "Location not available"}</span>
                         </div>
-                        {/* Map placeholder for now */}
                         <div className="w-full h-48 bg-slate-700 rounded-xl overflow-hidden relative">
                             <img
                                 src="https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/-73.9749,40.7648,13,0/600x300?access_token=pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJja2xsY3I4a20wMG1qMnB0ZzB6Z2R6Z2R6In0.example"
@@ -138,7 +139,7 @@ export default function ItemPage() {
                         </div>
 
                         <button
-                            onClick={() => navigate("/Claim")}
+                            onClick={() => navigate("/Claim/" + item.id)}
                             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors mb-4 shadow-lg shadow-blue-900/20"
                         >
                             <LucideShieldCheck className="w-5 h-5" />

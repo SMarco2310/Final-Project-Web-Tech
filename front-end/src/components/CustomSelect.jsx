@@ -3,49 +3,49 @@ import styled from "styled-components";
 import { ChevronDown } from "lucide-react";
 
 export default function CustomSelect({ label, options, value, onChange, w }) {
-    const [isOpen, setIsOpen] = useState(false);
-  
+  const [isOpen, setIsOpen] = useState(false);
 
-    const handleSelect = (optionValue) => {
-        onChange(optionValue);
-        setIsOpen(false);
-    };
 
-    return (
-        <StyledWrapper>
+  const handleSelect = (optionValue) => {
+    onChange(optionValue);
+    setIsOpen(false);
+  };
+
+  return (
+    <StyledWrapper>
+      <div
+        id="select"
+        className={w}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
+        <div className="selected">
+          <span>{value || label}</span>
+          <ChevronDown
+            className={`arrow ${isOpen ? "rotated" : ""}`}
+            size={16}
+          />
+        </div>
+        <div className={`options ${isOpen ? "open" : ""}`}>
+          <div
+            className={`option ${value === "" ? "active" : ""}`}
+            onClick={() => handleSelect("")}
+          >
+            {label}
+          </div>
+          {options.map((opt) => (
             <div
-                id="select"
-                className={w}
-                onMouseEnter={() => setIsOpen(true)}
-                onMouseLeave={() => setIsOpen(false)}
+              key={opt}
+              className={`option ${value === opt ? "active" : ""}`}
+              onClick={() => handleSelect(opt)}
             >
-                <div className="selected">
-                    <span>{value || label}</span>
-                    <ChevronDown
-                        className={`arrow ${isOpen ? "rotated" : ""}`}
-                        size={16}
-                    />
-                </div>
-                <div className={`options ${isOpen ? "open" : ""}`}>
-                    <div
-                        className={`option ${value === "" ? "active" : ""}`}
-                        onClick={() => handleSelect("")}
-                    >
-                        {label}
-                    </div>
-                    {options.map((opt) => (
-                        <div
-                            key={opt}
-                            className={`option ${value === opt ? "active" : ""}`}
-                            onClick={() => handleSelect(opt)}
-                        >
-                            {opt.charAt(0).toUpperCase() + opt.slice(1)}
-                        </div>
-                    ))}
-                </div>
+              {opt.charAt(0).toUpperCase() + opt.slice(1)}
             </div>
-        </StyledWrapper>
-    );
+          ))}
+        </div>
+      </div>
+    </StyledWrapper>
+  );
 }
 
 const StyledWrapper = styled.div`
@@ -97,7 +97,7 @@ const StyledWrapper = styled.div`
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 50;
+    z-index: 30;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 

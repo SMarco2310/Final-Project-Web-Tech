@@ -16,7 +16,6 @@
   "author": "SMarco2310",
   "license": "ISC",
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
     "axios": "^1.13.2",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.8.0",
@@ -28,7 +27,6 @@
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^4.0.0",
     "mysql2": "^3.15.3",
-    "openai": "^6.10.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.27"
   },

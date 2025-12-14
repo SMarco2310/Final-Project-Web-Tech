@@ -17,7 +17,7 @@ export default function Header({ isRegularLayout, showLoginButtons, toggleSideba
               <Menu size={24} />
             </button>
           )}
-          <Link className="inline-block" to="/Gallery">
+          <Link className="inline-block" to="/">
             <h1 className="text-2xl w-fit font-bold text-white p-0.5 items-left">
               FindMyStuff
             </h1>

@@ -8,12 +8,9 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "lost-and-found",
     allowed_formats: ["jpg", "png", "jpeg", "webp"],
-    transformation: [
-      { width: 800, height: 800, crop: "limit" }
-    ]
   },
 });
 
 export const upload = multer({
-    storage: storage,
+  storage: storage,
 });
