@@ -23,20 +23,21 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<AuthLayouts />}>
-            <Route path="/Login" element={<LoginPage />} />
-            <Route path="/Register" element={<RegistrationPage />} />
-          </Route>
-          <Route path="/" element={<RegularLayout />}>
-            <Route path="/Gallery" element={<GalleryPage />} />
-            <Route path="/Item/:id" element={<ItemPage />} />
-            <Route path="/NotFound" element={<NotFoundPage />} />
-            <Route path="/Claim/:id" element={<ClaimFormPage />} />
-            <Route path="/Report" element={<ReportFormPage />} />
-            <Route path="/Report/:id" element={<ReportFormPage />} />
-            <Route path="/Profile/:id" element={<ProfilePage />} />
+            <Route path="Login" element={<LoginPage />} />
+            <Route path="Register" element={<RegistrationPage />} />
           </Route>
 
-          <Route path="/dashboard/:id" element={<DashboardLayout />}>
+          <Route path="/" element={<RegularLayout />}>
+            <Route index element={<GalleryPage />} />
+            <Route path="Item/:id" element={<ItemPage />} />
+            <Route path="NotFound" element={<NotFoundPage />} />
+            <Route path="Claim/:id" element={<ClaimFormPage />} />
+            <Route path="Report" element={<ReportFormPage />} />
+            <Route path="Report/:id" element={<ReportFormPage />} />
+            <Route path="Profile/:id" element={<ProfilePage />} />
+          </Route>
+
+          <Route path="dashboard/:id" element={<DashboardLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="ProfileInfo/:id" element={<ProfileInfoPage />} />
             <Route path="messages" element={<MessagesPage />} />

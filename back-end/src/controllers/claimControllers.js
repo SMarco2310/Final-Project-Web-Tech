@@ -4,22 +4,30 @@ import { ItemEntity, STATUS as ITEM_STATUS } from "../models/Item.js";
 
 export const createClaim = async (req, res) => {
     try {
-        const { itemId, reason, proof_images, contact_phone } = req.body;
-        const claimerId = req.user.id;
+        const { itemId, userId, reason, proof_images, contact_phone } = req.body;
+        // console.log("Create Claim Request Body:", req.body);
+        // console.log("User ID:", userId);
+
+        const claimerId = userId;
         const itemRepository = AppDataSource.getRepository(ItemEntity);
         const claimRepository = AppDataSource.getRepository(ClaimEntity);
 
         const item = await itemRepository.findOneBy({ id: itemId });
+        console.log("Item Lookup Result:", item ? "Found" : "Not Found", "ItemID:", itemId);
+
         if (!item) {
             return res.status(404).json({ message: "Item not found" });
         }
 
-        if (item.status !== ITEM_STATUS.FOUND) {
+        if (item.status === ITEM_STATUS.CLAIMED) {
             return res.status(400).json({ message: "Item is not available for claim" });
         }
 
         const existingClaim = await claimRepository.findOne({
-            where: { item: itemId, claimer: claimerId },
+            where: {
+                item: { id: itemId },
+                claimer: { id: claimerId }
+            },
         });
 
         if (existingClaim) {

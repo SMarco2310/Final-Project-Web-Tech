@@ -11,6 +11,7 @@ import express from "express";
 const itemRouter = express.Router();
 
 itemRouter.get("/items", getAllItems);
+
 itemRouter.get("/my-items/:user_id", getMyItems);
 
 itemRouter.post("/", authenticate, createItem);
