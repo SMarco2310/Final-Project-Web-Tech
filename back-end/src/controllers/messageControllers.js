@@ -18,16 +18,15 @@ export const sendMessage = async (req, res) => {
 
         // Create message
         const newMessage = messageRepository.create({
-            chat_id: chatId,
-            sender_id: senderId,
+            chat: { id: chatId },
+            sender: { id: senderId },
             content,
         });
 
         await messageRepository.save(newMessage);
 
         // Update chat's updatedAt timestamp
-        chat.updatedAt = new Date();
-        await chatRepository.save(chat);
+        await chatRepository.update(chatId, { updatedAt: new Date() });
 
         return res.status(201).json({ message: "Message sent", data: newMessage });
     } catch (error) {
@@ -42,7 +41,7 @@ export const getMessages = async (req, res) => {
         const messageRepository = AppDataSource.getRepository(MessageEntity);
 
         const messages = await messageRepository.find({
-            where: { chat_id: chatId },
+            where: { chat: { id: chatId } },
             order: {
                 createdAt: "ASC",
             },
@@ -64,16 +63,12 @@ export const markAsRead = async (req, res) => {
         const userId = req.user.id;
         const messageRepository = AppDataSource.getRepository(MessageEntity);
 
-        // Update all messages in this chat sent by the OTHER user to isRead: true
-        // This requires a more complex query or iterating. For simplicity, we'll assume we mark all unread messages in this chat as read.
-        // Ideally, we should filter by sender_id != userId.
-
         await messageRepository
             .createQueryBuilder()
             .update(MessageEntity)
             .set({ isRead: true })
-            .where("chat_id = :chatId", { chatId })
-            .andWhere("sender_id != :userId", { userId })
+            .where("chat = :chatId", { chatId })
+            .andWhere("sender != :userId", { userId })
             .execute();
 
         return res.status(200).json({ message: "Messages marked as read" });

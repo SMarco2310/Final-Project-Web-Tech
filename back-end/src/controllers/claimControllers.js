@@ -12,7 +12,10 @@ export const createClaim = async (req, res) => {
         const itemRepository = AppDataSource.getRepository(ItemEntity);
         const claimRepository = AppDataSource.getRepository(ClaimEntity);
 
-        const item = await itemRepository.findOneBy({ id: itemId });
+        const item = await itemRepository.findOne({
+            where: { id: itemId },
+            relations: { user: true }
+        });
         console.log("Item Lookup Result:", item ? "Found" : "Not Found", "ItemID:", itemId);
 
         if (!item) {
@@ -21,6 +24,10 @@ export const createClaim = async (req, res) => {
 
         if (item.status === ITEM_STATUS.CLAIMED) {
             return res.status(400).json({ message: "Item is not available for claim" });
+        }
+
+        if (item.user && item.user.id === userId) {
+            return res.status(400).json({ message: "You cannot claim your own item" });
         }
 
         const existingClaim = await claimRepository.findOne({

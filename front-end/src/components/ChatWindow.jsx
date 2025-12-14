@@ -4,7 +4,7 @@ import MessageInput from './MessageInput';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export default function ChatWindow({ messages, onSendMessage }) {
+export default function ChatWindow({ messages, onSendMessage, chatPartner, itemTitle }) {
     const messagesEndRef = useRef(null);
 
     const scrollToBottom = () => {
@@ -22,11 +22,15 @@ export default function ChatWindow({ messages, onSendMessage }) {
                     <ArrowLeft size={24} />
                 </Link>
                 <div className="w-10 h-10 rounded-full bg-gray-700 overflow-hidden">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jane" alt="Jane D." className="w-full h-full object-cover" />
+                    <img
+                        src={chatPartner?.image || "https://ui-avatars.com/api/?name=User&background=random"}
+                        alt={chatPartner?.name || "User"}
+                        className="w-full h-full object-cover"
+                    />
                 </div>
                 <div>
-                    <h3 className="font-semibold text-white">Jane D.</h3>
-                    <p className="text-xs text-gray-400">Regarding: Blue Backpack</p>
+                    <h3 className="font-semibold text-white">{chatPartner?.name || "User"}</h3>
+                    <p className="text-xs text-gray-400">Regarding: {itemTitle || "Item"}</p>
                 </div>
             </div>
 

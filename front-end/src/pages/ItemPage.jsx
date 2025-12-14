@@ -113,15 +113,15 @@ export default function ItemPage() {
                             <span>{item.location ? (item.location || "Unknown Location") : "Location not available"}</span>
                         </div>
                         <div className="w-full h-48 bg-slate-700 rounded-xl overflow-hidden relative">
-                            <img
-                                src="https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/-73.9749,40.7648,13,0/600x300?access_token=pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJja2xsY3I4a20wMG1qMnB0ZzB6Z2R6Z2R6In0.example"
-                                alt="Map Location"
-                                className="w-full h-full object-cover opacity-80"
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = "https://via.placeholder.com/600x300/334155/94a3b8?text=Map+View";
-                                }}
-                            />
+                            <iframe
+                                title="Location Map"
+                                width="100%"
+                                height="100%"
+                                frameBorder="0"
+                                style={{ border: 0 }}
+                                src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location || "Ashesi University")}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                                allowFullScreen
+                            ></iframe>
                         </div>
                     </div>
 

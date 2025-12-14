@@ -9,6 +9,7 @@ export default function GalleryPage() {
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
   const [location, setLocation] = useState("");
+  const [sortOrder, setSortOrder] = useState("recent");
   const { getAllItems } = useItem();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +24,7 @@ export default function GalleryPage() {
         // Map backend fields to frontend expectations for ItemCard
         const mappedItems = apiItems.map(item => ({
           ...item,
-          category: item.category|| "others",
+          category: item.category || "others",
           name: item.title, // Backend uses title, frontend uses name
           date: new Date(item.created_at || item.createdAt).toLocaleDateString(),
           image: (item.images && item.images.length > 0) ? item.images[0].url : "https://via.placeholder.com/600x400?text=No+Image",
@@ -48,8 +49,13 @@ export default function GalleryPage() {
       const matchLocation = location ? (item.location || "").toLowerCase().includes(location.toLowerCase()) : true;
 
       return matchKeyword && matchCategory && matchStatus && matchLocation;
+    }).sort((a, b) => {
+      const dateA = new Date(a.createdAt || a.created_at || 0).getTime();
+      const dateB = new Date(b.createdAt || b.created_at || 0).getTime();
+
+      return sortOrder === 'recent' ? dateB - dateA : dateA - dateB;
     });
-  }, [items, keyword, category, status, location]);
+  }, [items, keyword, category, status, location, sortOrder]);
 
   if (loading) return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white"><Loader2 className="animate-spin w-10 h-10" /></div>;
 
@@ -68,6 +74,7 @@ export default function GalleryPage() {
         category={category} setCategory={setCategory}
         status={status} setStatus={setStatus}
         location={location} setLocation={setLocation}
+        sortOrder={sortOrder} setSortOrder={setSortOrder}
       />
 
       <div className="mt-4">

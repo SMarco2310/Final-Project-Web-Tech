@@ -260,6 +260,17 @@ export default function ReportFormPage() {
             <label htmlFor="location" className="block mb-2 text-sm font-medium text-gray-300">Location</label>
             <input type="text" id="location" name="location" placeholder="e.g University of Ashesi" className="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" value={location} onChange={(e) => setLocation(e.target.value)} required />
           </div>
+          <div className="w-full h-48 bg-slate-700/50 rounded-xl overflow-hidden mt-2 border border-gray-700">
+            <iframe
+              title="Location Preview"
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              style={{ border: 0 }}
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(location || "Ashesi University")}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+              allowFullScreen
+            ></iframe>
+          </div>
         </div>
 
         <div className="flex flex-col gap-4 w-full border border-gray-700 rounded-2xl p-6 bg-[#1e293b]/30 backdrop-blur-sm">

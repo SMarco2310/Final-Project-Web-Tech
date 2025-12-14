@@ -12,17 +12,21 @@ export const createChat = async (req, res) => {
 
         const chatRepository = AppDataSource.getRepository(ChatEntity);
 
+        if (currentUserId === otherUserId) {
+            return res.status(400).json({ message: "You cannot chat with yourself" });
+        }
+
         // Prepare where conditions checking for null itemId explicitly if needed
         const whereConditions = [
             {
-                user1_id: currentUserId,
-                user2_id: otherUserId,
-                item_id: itemId || IsNull()
+                user1: { id: currentUserId },
+                user2: { id: otherUserId },
+                item: itemId ? { id: itemId } : IsNull()
             },
             {
-                user1_id: otherUserId,
-                user2_id: currentUserId,
-                item_id: itemId || IsNull()
+                user1: { id: otherUserId },
+                user2: { id: currentUserId },
+                item: itemId ? { id: itemId } : IsNull()
             },
         ];
 
@@ -37,9 +41,9 @@ export const createChat = async (req, res) => {
 
         // Create new chat
         const newChat = chatRepository.create({
-            item_id: itemId || null, // Ensure it's null if undefined
-            user1_id: currentUserId,
-            user2_id: otherUserId,
+            item: itemId ? { id: itemId } : null,
+            user1: { id: currentUserId },
+            user2: { id: otherUserId },
         });
 
         await chatRepository.save(newChat);
@@ -58,8 +62,8 @@ export const getUserChats = async (req, res) => {
 
         const chats = await chatRepository.find({
             where: [
-                { user1_id: userId },
-                { user2_id: userId },
+                { user1: { id: userId } },
+                { user2: { id: userId } },
             ],
             relations: {
                 item: true,

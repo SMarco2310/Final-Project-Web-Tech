@@ -9,12 +9,7 @@ export const MessageEntity = new EntitySchema({
             primary: true,
             generated: true,
         },
-        chat_id: {
-            type: "int",
-        },
-        sender_id: {
-            type: "uuid",
-        },
+
         content: {
             type: "text",
         },
