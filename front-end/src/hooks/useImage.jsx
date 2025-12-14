@@ -3,7 +3,7 @@ import { useAuth } from './useAuth';
 
 export const useImage = () => {
     const { token } = useAuth();
-    const API_URL = 'http://localhost:4000/api'; 
+    const API_URL = 'http://localhost:4000/api';
     const [uploading, setUploading] = useState(false);
 
     const uploadImage = async (file) => {
@@ -20,13 +20,22 @@ export const useImage = () => {
                 body: formData
             });
 
-            const data = await response.json();
+            let data;
+            const responseText = await response.text();
 
-            if (!response.ok) {
-                throw new Error(data.message || data.error || 'Failed to upload image');
+            try {
+                data = JSON.parse(responseText);
+            } catch (e) {
+                console.error("Failed to parse response JSON:", responseText);
+                throw new Error(`Upload failed (${response.status}): Server returned non-JSON response`);
             }
 
-            return data.imageUrl; 
+            if (!response.ok) {
+                console.error("Upload failed response:", data);
+                throw new Error(data.message || data.error || `Failed to upload image (${response.status})`);
+            }
+
+            return data.imageUrl;
         } catch (error) {
             console.error("Upload hook error:", error);
             throw error;

@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Pencil, Save, X, LogOut, Loader2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Pencil, Save, X, LogOut, Loader2, Camera } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useParams } from 'react-router-dom';
+import { useImage } from '../hooks/useImage';
 
 export default function ProfileInfoPage() {
     const { user: currentUser, logout, getUserProfile, updateProfile } = useAuth();
+    const { uploadImage } = useImage();
     const [isEditing, setIsEditing] = useState(false);
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [editForm, setEditForm] = useState({});
+    const [uploadingImage, setUploadingImage] = useState(false);
+    const fileInputRef = useRef(null);
     const { id } = useParams();
 
     useEffect(() => {
@@ -42,10 +46,33 @@ export default function ProfileInfoPage() {
         setIsEditing(false);
         setEditForm(profile);
     };
-const handleSave = async () => {
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        try {
+            setUploadingImage(true);
+            const imageUrl = await uploadImage(file);
+            setEditForm(prev => ({ ...prev, image: imageUrl }));
+        } catch (error) {
+            console.error("Failed to upload image:", error);
+            alert("Failed to upload image");
+        } finally {
+            setUploadingImage(false);
+        }
+    };
+
+    const triggerFileInput = () => {
+        if (isEditing) {
+            fileInputRef.current?.click();
+        }
+    };
+
+    const handleSave = async () => {
         try {
             const result = await updateProfile(profile.id, editForm);
-            
+
             // Handle both common API response patterns
             if (result && (result.ok || result.success)) {
                 // Update the local profile state with the new data
@@ -128,13 +155,32 @@ const handleSave = async () => {
 
             <div className="bg-gray-900 rounded-3xl border border-white/10 p-8">
                 <div className="flex items-center gap-6 mb-8 border-b border-white/10 pb-8">
-                    <div className="w-24 h-24 rounded-full bg-orange-100 overflow-hidden relative group">
-                        <img src={editForm.avatar|| "https://lh3.googleusercontent.com/aida-public/AB6AXuBOtobM1j3ECr0pN0ZWg8LNDdi7YBTXWO8infmDL937kAZZXI4rQ8Mg2JiZrKVYjL81ci5lGrHICuH7AIXNU1t7kqae8eM1CKPdRee_38kFEA0WuPK5QXgN2WCb7H4kUG_r2Episs7h0D98YdIkSW1Z6wzZlPPGgSPIqSd5sS4SVBoPoG0dq-ngpzHBAf3PLciKAIREqR4pMXCCEIzFmNdEpgHVN9EGMhyRyqTBj4Sa8uYhXfK5JH_u49IFeR-0Q6Q6HZFu6vl5eAk"} alt={editForm.name} className="w-full h-full object-cover" />
-                        {isEditing && (
-                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                                <Pencil size={20} className="text-white" />
+                    <div
+                        className={`w-24 h-24 rounded-full bg-orange-100 overflow-hidden relative group ${isEditing ? 'cursor-pointer ring-4 ring-slate-800 hover:ring-blue-500/50 transition-all' : ''}`}
+                        onClick={triggerFileInput}
+                    >
+                        <img
+                            src={isEditing ? (editForm.image || editForm.avatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuBOtobM1j3ECr0pN0ZWg8LNDdi7YBTXWO8infmDL937kAZZXI4rQ8Mg2JiZrKVYjL81ci5lGrHICuH7AIXNU1t7kqae8eM1CKPdRee_38kFEA0WuPK5QXgN2WCb7H4kUG_r2Episs7h0D98YdIkSW1Z6wzZlPPGgSPIqSd5sS4SVBoPoG0dq-ngpzHBAf3PLciKAIREqR4pMXCCEIzFmNdEpgHVN9EGMhyRyqTBj4Sa8uYhXfK5JH_u49IFeR-0Q6Q6HZFu6vl5eAk") : (profile.image || profile.avatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuBOtobM1j3ECr0pN0ZWg8LNDdi7YBTXWO8infmDL937kAZZXI4rQ8Mg2JiZrKVYjL81ci5lGrHICuH7AIXNU1t7kqae8eM1CKPdRee_38kFEA0WuPK5QXgN2WCb7H4kUG_r2Episs7h0D98YdIkSW1Z6wzZlPPGgSPIqSd5sS4SVBoPoG0dq-ngpzHBAf3PLciKAIREqR4pMXCCEIzFmNdEpgHVN9EGMhyRyqTBj4Sa8uYhXfK5JH_u49IFeR-0Q6Q6HZFu6vl5eAk")}
+                            alt={profile.name}
+                            className={`w-full h-full object-cover ${uploadingImage ? 'opacity-50' : ''}`}
+                        />
+                        {uploadingImage && (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                             </div>
                         )}
+                        {isEditing && !uploadingImage && (
+                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Camera size={24} className="text-white" />
+                            </div>
+                        )}
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleImageUpload}
+                            accept="image/*"
+                            className="hidden"
+                        />
                     </div>
                     <div>
                         <h2 className="text-2xl font-bold text-white">{profile.name}</h2>

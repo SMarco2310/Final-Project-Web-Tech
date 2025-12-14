@@ -162,6 +162,8 @@ export const getProfile = async (req, res) => {
         "user.name",
         "user.phone",
         "user.bio",
+        "user.bio",
+        "user.image",
         "user.createdAt",
 
         "claims",
@@ -197,7 +199,7 @@ export const getProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   const { id } = req.params;
-  const { name,email,phone, address, bio } = req.body;
+  const { name, email, phone, address, bio, image } = req.body;
   try {
     const user = await userRepo.findOneBy({ id });
     if (!user) {
@@ -212,6 +214,7 @@ export const updateProfile = async (req, res) => {
     user.phone = phone;
     user.bio = bio;
     user.address = address;
+    user.image = image;
     await userRepo.save(user);
     res.status(200).json({
       ok: true,

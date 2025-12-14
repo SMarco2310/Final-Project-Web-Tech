@@ -21,6 +21,10 @@ export const UserEntity = new EntitySchema({
     name: {
       type: "varchar",
     },
+    image: {
+      type: "varchar",
+      nullable: true,
+    },
     // student_id: {
     //   type: "varchar",
     //   nullable: true,
