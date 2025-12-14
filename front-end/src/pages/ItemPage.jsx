@@ -10,9 +10,11 @@ export default function ItemPage() {
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
         const fetchItem = async () => {
+            setSelectedImage(null);
             try {
                 if (!id) {
                     setError("No item ID provided");
@@ -47,13 +49,13 @@ export default function ItemPage() {
     if (error || !item) return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white text-xl">Item not found</div>;
 
     const displayImages = item.images && item.images.length > 0 ? item.images.map(img => img.url) : ["https://via.placeholder.com/600x400?text=No+Image"];
-    const mainImage = displayImages[0];
+    const mainImage = selectedImage || displayImages[0];
 
     return (
         <div className="min-h-screen bg-[#0f172a] text-slate-300 p-4 md:p-8 flex justify-center font-sans">
-            <div className="max-w-7xl w-full grid md:grid-rows-2 lg:grid-cols-3 gap-4 md:gap-4 ">
+            <div className="max-w-7xl w-full grid lg:grid-cols-3 gap-4 md:gap-4 ">
 
-                <div className="lg:col-span-2 flex flex-col gap-4">
+                <div className="lg:col-span-2 flex flex-col gap-2">
                     <div className="w-full aspect-4/3 bg-[#1e293b] rounded-2xl overflow-hidden shadow-lg">
                         <img
                             src={mainImage}
@@ -64,7 +66,11 @@ export default function ItemPage() {
                     {displayImages.length > 1 && (
                         <div className="grid grid-cols-5 gap-4">
                             {displayImages.map((image, index) => (
-                                <div key={index} className={`aspect-square rounded-xl overflow-hidden cursor-pointer opacity-80 hover:opacity-100 transition-all`}>
+                                <div
+                                    key={index}
+                                    onClick={() => setSelectedImage(image)}
+                                    className={`aspect-square rounded-xl overflow-hidden cursor-pointer transition-all ${mainImage === image ? 'ring-2 ring-blue-500 opacity-100' : 'opacity-80 hover:opacity-100'}`}
+                                >
                                     <img
                                         src={image}
                                         className="w-full h-full object-cover"
