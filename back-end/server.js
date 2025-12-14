@@ -15,7 +15,10 @@ dotenv.config();
 
 // this is to initialize the database connection
 AppDataSource.initialize()
-  .then(() => console.log("TypeORM connected"))
+  .then(() => {
+    console.log("TypeORM connected");
+    console.log("Registered Entities:", AppDataSource.entityMetadatas.map(e => e.name));
+  })
   .catch((err) => console.error("TypeORM Error:", err));
 
 // this is to initialize the express app

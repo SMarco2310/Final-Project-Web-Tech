@@ -9,16 +9,7 @@ export const ChatEntity = new EntitySchema({
             primary: true,
             generated: true,
         },
-        item_id: {
-            type: "int",
-            nullable: true,
-        },
-        user1_id: {
-            type: "uuid",
-        },
-        user2_id: {
-            type: "uuid",
-        },
+
         createdAt: {
             type: "datetime",
             createDate: true,

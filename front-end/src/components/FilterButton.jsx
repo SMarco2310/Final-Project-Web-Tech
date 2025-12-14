@@ -3,16 +3,29 @@ import { useId } from "react";
 
 // TODO: Add functionality to sort by recent or oldest
 
-export default function FilterButton({ text1, text2, w }) {
+export default function FilterButton({ text1, text2, w, selected, onChange }) {
   const id = useId();
   const name = `sort-${id}`;
 
   return (
     <StyledWrapper>
       <div className={`glass-radio-group ${w || ""}`}>
-        <input type="radio" name={name} id={`${id}-recent`} defaultChecked />
+        <input
+          type="radio"
+          name={name}
+          id={`${id}-recent`}
+          checked={selected === 'recent'}
+          onChange={() => onChange('recent')}
+        />
         <label htmlFor={`${id}-recent`}>{text1}</label>
-        <input type="radio" name={name} id={`${id}-oldest`} />
+
+        <input
+          type="radio"
+          name={name}
+          id={`${id}-oldest`}
+          checked={selected === 'oldest'}
+          onChange={() => onChange('oldest')}
+        />
         <label htmlFor={`${id}-oldest`}>{text2}</label>
         <div className="glass-glider" />
       </div>

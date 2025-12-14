@@ -6,7 +6,8 @@ export default function SearchBar({
   keyword, setKeyword,
   category, setCategory,
   status, setStatus,
-  location, setLocation
+  location, setLocation,
+  sortOrder, setSortOrder
 }) {
   return (
     <div className="w-full flex flex-col gap-4">
@@ -53,7 +54,13 @@ export default function SearchBar({
           />
         </div>
         <div className="md:mt-2 h-12 md:justify-center w-full md:w-auto">
-          <FilterButton text1={"Most recent"} text2={"Oldest"} w="w-fit" />
+          <FilterButton
+            text1={"Most recent"}
+            text2={"Oldest"}
+            w="w-fit"
+            selected={sortOrder}
+            onChange={setSortOrder}
+          />
         </div>
       </div>
     </div>

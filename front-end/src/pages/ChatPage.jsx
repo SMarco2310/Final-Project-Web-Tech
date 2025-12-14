@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import ChatWindow from '../components/ChatWindow';
-import ItemDetailsSidebar from '../components/ItemDetailsSidebar';
+// import ItemDetailsSidebar from '../components/ItemDetailsSidebar';
 import { useAuth } from '../hooks/useAuth';
 import { useChat } from '../hooks/useChat';
 
@@ -85,8 +85,6 @@ export default function ChatPage() {
     const handleSendMessage = async (text) => {
         try {
             const data = await sendMessage(chatId, text);
-            // Optimistic update or wait for re-fetch. 
-            // The backend returns the new message object usually.
 
             const newMessage = {
                 id: data.data?.id || Date.now(), // Fallback ID
@@ -112,13 +110,9 @@ export default function ChatPage() {
                     messages={messages}
                     onSendMessage={handleSendMessage}
                     chatPartner={chatPartner}
+                    itemTitle={item?.title}
                 />
             </div>
-            {/* {item && (
-                <div className="w-1/4 hidden lg:block h-full">
-                    <ItemDetailsSidebar item={item} />
-                </div>
-            )} */}
         </div>
     );
 }
