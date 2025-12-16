@@ -11,12 +11,12 @@ import { ChatEntity } from "../models/Chat.js";
 dotenv.config();
 
 const AppDataSource = new DataSource({
-  type: "mysql",//"postgres",
+  type: "postgres",//"postgres",
   url: process.env.DATABASE_URL,
   // Automatically load all entity files in src/models
   entities: [UserEntity, ClaimEntity, ItemEntity, ImageEntity, MessageEntity, ChatEntity],
   migrations: ["../migrations/*.js"],
-
+  subscribers:[],
   synchronize: true, // ❗ dev only, turn off in production!
   logging: false,
   // ssl: {

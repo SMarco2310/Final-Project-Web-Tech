@@ -27,11 +27,11 @@ export const ClaimEntity = new EntitySchema({
       enum: Object.values(STATUS),
     },
     createdAt: {
-      type: "datetime",
+      type: "timestamp",
       createDate: true,
     },
     updatedAt: {
-      type: "datetime",
+      type: "timestamp",
       updateDate: true,
     },
   },

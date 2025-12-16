@@ -53,11 +53,11 @@ export const UserEntity = new EntitySchema({
       nullable: true, // Added this field so ProfileInfoPage works
     },
     createdAt: {
-      type: "datetime",
+      type: "timestamp",
       createDate: true,
     },
     updatedAt: {
-      type: "datetime",
+      type: "timestamp",
       updateDate: true,
     },
   },

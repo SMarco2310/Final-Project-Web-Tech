@@ -18,7 +18,7 @@ export const MessageEntity = new EntitySchema({
             default: false,
         },
         createdAt: {
-            type: "datetime",
+            type: "timestamp",
             createDate: true,
         },
     },
