@@ -11,11 +11,11 @@ export const ChatEntity = new EntitySchema({
         },
 
         createdAt: {
-            type: "datetime",
+            type: "timestamp",
             createDate: true,
         },
         updatedAt: {
-            type: "datetime",
+            type: "timestamp",
             updateDate: true,
         },
     },
