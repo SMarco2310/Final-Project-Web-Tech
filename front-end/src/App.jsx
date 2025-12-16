@@ -39,7 +39,7 @@ function App() {
 
           <Route path="dashboard/:id" element={<DashboardLayout />}>
             <Route index element={<DashboardPage />} />
-            <Route path="ProfileInfo/:id" element={<ProfileInfoPage />} />
+            <Route path="profile" element={<ProfileInfoPage />} />
             <Route path="messages" element={<MessagesPage />} />
             <Route path="claims" element={<ClaimsPage />} />
             <Route path="chat/:chatId" element={<ChatPage />} />

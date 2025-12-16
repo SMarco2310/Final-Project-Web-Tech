@@ -100,7 +100,7 @@ export const loginUser = async (req, res) => {
         message: "This user doesn't exist",
       });
     }
-    const passwordMatch = bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password); // ADDED await
     if (user && passwordMatch) {
       const user_id = user.id;
       const user_role = getRole(user.role);
@@ -200,8 +200,18 @@ export const getProfile = async (req, res) => {
 export const updateProfile = async (req, res) => {
   const { id } = req.params;
   const { name, email, phone, address, bio, image } = req.body;
+
+  // Security Check: Ensure authenticated user is updating their own profile
+  if (parseInt(id) !== parseInt(req.user.user_id)) {
+    return res.status(403).json({
+      ok: false,
+      status: 403,
+      message: "Unauthorized: You can only update your own profile",
+    });
+  }
+
   try {
-    const user = await userRepo.findOneBy({ id });
+    const user = await userRepo.findOneBy({ id: parseInt(id) });
     if (!user) {
       return res.status(404).json({
         ok: false,

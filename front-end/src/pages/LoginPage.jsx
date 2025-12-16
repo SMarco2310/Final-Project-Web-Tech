@@ -18,9 +18,9 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     try {
-      await login(email, password);
+      const data = await login(email, password);
       console.log("Logged in successfully");
-      navigate(`/dashboard/${user.id}`);
+      navigate(`/dashboard/${data.user.id}`);
     } catch (err) {
       console.error("Login failed:", err);
       setError("Invalid email or password");

@@ -4,10 +4,12 @@ import MessageInput from './MessageInput';
 import { ArrowLeft, Tag, X, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useItem } from '../hooks/useItem';
+import { useAuth } from '../hooks/useAuth';
 
 export default function ChatWindow({ messages, onSendMessage, chatPartner, itemTitle }) {
     const messagesEndRef = useRef(null);
     const { getMyItems } = useItem();
+    const { user } = useAuth();
     const [showItemPicker, setShowItemPicker] = useState(false);
     const [partnerItems, setPartnerItems] = useState([]);
     const [loadingItems, setLoadingItems] = useState(false);
@@ -51,7 +53,7 @@ export default function ChatWindow({ messages, onSendMessage, chatPartner, itemT
     return (
         <div className="flex flex-col w-full h-full bg-gray-900 rounded-none md:rounded-2xl overflow-hidden border-x-0 md:border border-white/10 relative">
             <div className="p-4 border-b border-white/10 flex items-center gap-4 bg-gray-900/50 backdrop-blur-sm">
-                <Link to="/dashboard/messages" className="md:hidden text-gray-400 hover:text-white">
+                <Link to={user ? `/dashboard/${user.id}/messages` : "/"} className="md:hidden text-gray-400 hover:text-white">
                     <ArrowLeft size={24} />
                 </Link>
                 <div className="w-10 h-10 rounded-full bg-gray-700 overflow-hidden">

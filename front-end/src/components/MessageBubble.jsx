@@ -41,7 +41,7 @@ export default function MessageBubble({ message, isOwn }) {
                                 alt={itemData.title}
                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent opacity-60" />
+                            <div className="absolute inset-0 bg-linear-to-t from-gray-900/80 to-transparent opacity-60" />
                             <span
                                 className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md shadow-sm border border-white/10 ${statusColors[itemData.status] || "bg-gray-500/40 text-gray-200"
                                     }`}
