@@ -47,7 +47,7 @@ export default function SearchBar({
           />
           <CustomSelect
             label="Location"
-            options={["library", "cafeteria", "hostel", "classroom", "others"]}
+            options={["library", "cafeteria", "hostel", "classroom", "gym", "others"]}
             value={location}
             onChange={setLocation}
             w="w-fit"

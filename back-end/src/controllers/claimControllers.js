@@ -5,11 +5,10 @@ import { ImageEntity } from "../models/Image.js";
 
 export const createClaim = async (req, res) => {
     try {
-        const { itemId, userId, reason, proof_images, contact_phone } = req.body;
+        const { itemId, reason, proof_images, contact_phone } = req.body;
         // console.log("Create Claim Request Body:", req.body);
-        // console.log("User ID:", userId);
 
-        const claimerId = userId;
+        const claimerId = req.user.user_id; // Use authenticated ID
         const itemRepository = AppDataSource.getRepository(ItemEntity);
         const claimRepository = AppDataSource.getRepository(ClaimEntity);
         const imageRepo = AppDataSource.getRepository(ImageEntity);
@@ -28,7 +27,7 @@ export const createClaim = async (req, res) => {
             return res.status(400).json({ message: "Item is not available for claim" });
         }
 
-        if (item.user && item.user.id === userId) {
+        if (item.user && item.user.id === claimerId) { // Fixed: userId -> claimerId
             return res.status(400).json({ message: "You cannot claim your own item" });
         }
 
@@ -86,7 +85,7 @@ export const getClaims = async (req, res) => {
 
 export const getUserClaims = async (req, res) => {
     try {
-        const claimerId = req.user.id;
+        const claimerId = req.user.user_id; // Fixed: req.user.id -> req.user.user_id
         const claimRepository = AppDataSource.getRepository(ClaimEntity);
 
         const claims = await claimRepository.find({
@@ -122,11 +121,16 @@ export const updateClaimStatus = async (req, res) => {
 
         const claim = await claimRepository.findOne({
             where: { id },
-            relations: { item: true },
+            relations: { item: { user: true } }, // Load item owner
         });
 
         if (!claim) {
             return res.status(404).json({ message: "Claim not found" });
+        }
+
+        // Security Check: Only the item owner can update the claim status
+        if (claim.item.user.id !== req.user.user_id) {
+            return res.status(403).json({ message: "Unauthorized: Only the item owner can manage claims" });
         }
 
         claim.status = status;

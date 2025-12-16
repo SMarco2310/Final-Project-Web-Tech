@@ -1,8 +1,8 @@
-// back-end/server.js
 import express from "express";
 import dotenv from "dotenv";
 import AppDataSource from "./src/config/dataSource.js";
 import cors from "cors";
+import helmet from "helmet"; // Security headers
 import imageRouter from "./src/routes/imageRoutes.js";
 import itemRouter from "./src/routes/itemRoutes.js";
 import authRouter from "./src/routes/authRoutes.js";
@@ -25,11 +25,21 @@ AppDataSource.initialize()
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Security Middleware
+app.use(helmet());
+
+// CORS Configuration
+const corsOptions = {
+  origin: [process.env.FRONTEND_URL, "http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173", "http://127.0.0.1:5174"].filter(Boolean),
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+
 // Middleware
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("<h1>Hello World</h1>");
@@ -42,6 +52,15 @@ app.use("/api/claims", claimRouter);
 app.use("/api/chats", chatRouter);
 app.use("/api/messages", messageRouter);
 app.use("/api/ai", aiRouter);
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message: "Something went wrong!",
+    error: process.env.NODE_ENV === "production" ? {} : err.message // Hide stack in production
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

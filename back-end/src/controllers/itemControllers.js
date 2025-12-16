@@ -154,8 +154,8 @@ export const getItemById = async (req, res) => {
 //  this create an item
 
 export const createItem = async (req, res) => {
-  const { user_id, location, category, title, description, status, images } =
-    req.body;
+  const { location, category, title, description, status, images } = req.body;
+  const user_id = req.user.user_id; // Use ID from token, not body
 
   try {
     //Load related entities
@@ -176,7 +176,7 @@ export const createItem = async (req, res) => {
       status,
       user,
       location,
-      
+
     });
 
     // Save Item first to get its id

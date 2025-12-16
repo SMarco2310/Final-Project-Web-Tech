@@ -254,7 +254,7 @@ export default function ReportFormPage() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 w-full border border-gray-700 rounded-2xl p-6 bg-[#1e293b]/30 backdrop-blur-sm z-100">
+        <div className="flex flex-col gap-4 w-full border border-gray-700 rounded-2xl p-6 bg-[#1e293b]/30 backdrop-blur-sm">
           <h2 className="text-xl font-semibold text-white mb-2">Where was the item lost or found?</h2>
           <div>
             <label htmlFor="location" className="block mb-2 text-sm font-medium text-gray-300">Location</label>

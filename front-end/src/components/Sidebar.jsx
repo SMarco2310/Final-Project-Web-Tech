@@ -48,7 +48,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
             <div className="p-4 border-t border-white/5">
                 <Link
-                    to={`ProfileInfo/${id}`}
+                    to={`/dashboard/${id}/profile`}
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive(`/ProfileInfo/${id}`)
                         ? 'bg-blue-900/10 text-blue-400 border border-blue-600/20'
                         : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
