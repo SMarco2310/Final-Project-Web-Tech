@@ -25,6 +25,7 @@ export const ChatEntity = new EntitySchema({
             target: "Item",
             joinColumn: { name: "item_id" },
             onDelete: "CASCADE",
+            nullable: true,
         },
         user1: {
             type: "many-to-one",

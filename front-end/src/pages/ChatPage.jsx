@@ -40,8 +40,9 @@ export default function ChatPage() {
                 const partner = isUser1 ? chatData.user2 : chatData.user1;
 
                 setChatPartner({
+                    id: partner?.id,
                     name: partner?.name || "User",
-                    avatar: partner?.avatar || `https://ui-avatars.com/api/?name=${partner?.name || 'User'}&background=random`
+                    image: partner?.image || `https://ui-avatars.com/api/?name=${partner?.name || 'User'}&background=random`
                 });
 
                 setItem({

@@ -5,7 +5,7 @@ import { ChatEntity } from "../models/Chat.js";
 export const sendMessage = async (req, res) => {
     try {
         const { chatId, content } = req.body;
-        const senderId = req.user.id;
+        const senderId = req.user.user_id;
 
         const messageRepository = AppDataSource.getRepository(MessageEntity);
         const chatRepository = AppDataSource.getRepository(ChatEntity);
@@ -26,7 +26,12 @@ export const sendMessage = async (req, res) => {
         await messageRepository.save(newMessage);
 
         // Update chat's updatedAt timestamp
-        await chatRepository.update(chatId, { updatedAt: new Date() });
+        await chatRepository
+            .createQueryBuilder()
+            .update(ChatEntity)
+            .set({ updatedAt: new Date() })
+            .where("id = :id", { id: chatId })
+            .execute();
 
         return res.status(201).json({ message: "Message sent", data: newMessage });
     } catch (error) {
@@ -60,7 +65,7 @@ export const getMessages = async (req, res) => {
 export const markAsRead = async (req, res) => {
     try {
         const { chatId } = req.params;
-        const userId = req.user.id;
+        const userId = req.user.user_id;
         const messageRepository = AppDataSource.getRepository(MessageEntity);
 
         await messageRepository
@@ -74,6 +79,26 @@ export const markAsRead = async (req, res) => {
         return res.status(200).json({ message: "Messages marked as read" });
     } catch (error) {
         console.error("Error marking messages as read:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const getUnreadCount = async (req, res) => {
+    try {
+        const userId = req.user.user_id;
+        const messageRepository = AppDataSource.getRepository(MessageEntity);
+
+        const count = await messageRepository
+            .createQueryBuilder("message")
+            .innerJoin("message.chat", "chat")
+            .where("message.isRead = :isRead", { isRead: false })
+            .andWhere("message.sender != :userId", { userId })
+            .andWhere("(chat.user1 = :userId OR chat.user2 = :userId)", { userId })
+            .getCount();
+
+        return res.status(200).json({ count });
+    } catch (error) {
+        console.error("Error fetching unread count:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 };
