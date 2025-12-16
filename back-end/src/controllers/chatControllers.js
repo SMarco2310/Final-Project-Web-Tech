@@ -8,7 +8,7 @@ import { IsNull } from "typeorm";
 export const createChat = async (req, res) => {
     try {
         const { itemId, otherUserId } = req.body;
-        const currentUserId = req.user.id;
+        const currentUserId = req.user.user_id;
 
         const chatRepository = AppDataSource.getRepository(ChatEntity);
 
@@ -16,23 +16,19 @@ export const createChat = async (req, res) => {
             return res.status(400).json({ message: "You cannot chat with yourself" });
         }
 
-        // Prepare where conditions checking for null itemId explicitly if needed
-        const whereConditions = [
-            {
-                user1: { id: currentUserId },
-                user2: { id: otherUserId },
-                item: itemId ? { id: itemId } : IsNull()
-            },
-            {
-                user1: { id: otherUserId },
-                user2: { id: currentUserId },
-                item: itemId ? { id: itemId } : IsNull()
-            },
-        ];
-
-        // Check if chat already exists
+        // Check if ANY chat already exists between these two users
+        // We prioritize the most recently updated chat if multiple exist
         const existingChat = await chatRepository.findOne({
-            where: whereConditions,
+            where: [
+                { user1: { id: currentUserId }, user2: { id: otherUserId } },
+                { user1: { id: otherUserId }, user2: { id: currentUserId } }
+            ],
+            order: { updatedAt: "DESC" },
+            relations: {
+                item: true,
+                user1: true,
+                user2: true
+            }
         });
 
         if (existingChat) {
@@ -57,7 +53,7 @@ export const createChat = async (req, res) => {
 
 export const getUserChats = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.user_id;
         const chatRepository = AppDataSource.getRepository(ChatEntity);
 
         const chats = await chatRepository.find({

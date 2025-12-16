@@ -75,12 +75,12 @@ export default function ClaimFormPage() {
                 </div>
 
                 <div id="item-info-card" className="flex justify-between border border-slate-700/80 bg-slate-800/20 p-5 rounded-2xl h-50">
-                    <div className="flex flex-col gap-2 w-1/2 mx-2 ">
-                        <h1>Item Name</h1>
-                        <p><span>Category: {itemDetails.category}</span> | <span>Found on: {itemDetails.found_date}</span></p>
+                    <div className="flex flex-col gap-2 w-1/2 mx-2 text-xl my-7 font-bold">
+                        <h1>Item Name : <strong>{itemDetails.title}</strong></h1>
+                        <p className="flex flex-col gap-2 "><span>Category: <strong>{itemDetails.category}</strong></span> <span>Found on: <strong>{itemDetails.createdAt.split("T")[0].replaceAll("-", " / ")}</strong></span></p>
                     </div>
                     <div className="w-1/4">
-                        <img src={itemDetails.image} alt="" className="w-full h-full object-cover rounded-3xl" />
+                        <img src={itemDetails.images[0].url} alt="" className="w-full h-full object-cover rounded-3xl" />
                     </div>
                 </div>
 

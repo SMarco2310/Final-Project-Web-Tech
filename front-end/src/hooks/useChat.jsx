@@ -102,5 +102,20 @@ export const useChat = () => {
         }
     };
 
-    return { getUserChats, getChatDetails, getMessages, sendMessage, markAsRead, createChat };
+    const getUnreadCount = useCallback(async () => {
+        try {
+            const response = await fetch(`${API_URL}/messages/unread/count`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Failed to fetch unread count');
+            return data.count;
+        } catch (error) {
+            throw error;
+        }
+    }, [token]);
+
+    return { getUserChats, getChatDetails, getMessages, sendMessage, markAsRead, createChat, getUnreadCount };
 };

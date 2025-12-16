@@ -1,6 +1,7 @@
 import AppDataSource from "../config/dataSource.js";
 import { ClaimEntity, STATUS as CLAIM_STATUS } from "../models/Claim.js";
 import { ItemEntity, STATUS as ITEM_STATUS } from "../models/Item.js";
+import { ImageEntity } from "../models/Image.js";
 
 export const createClaim = async (req, res) => {
     try {
@@ -11,6 +12,7 @@ export const createClaim = async (req, res) => {
         const claimerId = userId;
         const itemRepository = AppDataSource.getRepository(ItemEntity);
         const claimRepository = AppDataSource.getRepository(ClaimEntity);
+        const imageRepo = AppDataSource.getRepository(ImageEntity);
 
         const item = await itemRepository.findOne({
             where: { id: itemId },
@@ -51,6 +53,8 @@ export const createClaim = async (req, res) => {
             contact_phone: contact_phone
         });
         await claimRepository.save(newClaim);
+        const imageEntities = proof_images.map((url) => ({ url, claim: newClaim }));
+        await imageRepo.save(imageEntities);
 
         return res.status(201).json({ message: "Claim submitted successfully", claim: newClaim });
     } catch (error) {
