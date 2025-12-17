@@ -20,11 +20,21 @@ export default function ClaimDetailsPage() {
     const [actionLoading, setActionLoading] = useState(false);
 
     // Status colors
+    // Status colors
+    const statusColors = {
+        "Lost": "bg-red-600/40 text-red-100",
+        "Found": "bg-green-500/40 text-green-100",
+        "Claimed": "bg-amber-500/40 text-amber-100",
+        "Validated": "bg-blue-500/40 text-blue-100",
+        "Returned": "bg-purple-500/40 text-purple-100",
+        "Approved": "bg-green-600/40 text-green-100",
+        "Rejected": "bg-red-600/40 text-red-100",
+        "Pending": "bg-amber-500/40 text-amber-100"
+    };
+
     const getStatusColor = (status) => {
-        const s = status?.toLowerCase();
-        if (s === 'approved') return 'bg-green-500/20 text-green-400 border-green-500/30';
-        if (s === 'rejected') return 'bg-red-500/20 text-red-400 border-red-500/30';
-        return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+        const s = status ? status.charAt(0).toUpperCase() + status.slice(1).toLowerCase() : "";
+        return statusColors[s] || statusColors[status] || 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
     };
 
     useEffect(() => {

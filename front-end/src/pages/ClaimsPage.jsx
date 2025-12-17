@@ -32,11 +32,21 @@ export default function ClaimsPage() {
         fetchAllClaims();
     }, [getMyClaims, getReceivedClaims]);
 
+    const statusColors = {
+        "Lost": "bg-red-600/40 text-red-100",
+        "Found": "bg-green-500/40 text-green-100",
+        "Claimed": "bg-amber-500/40 text-amber-100",
+        "Validated": "bg-blue-500/40 text-blue-100",
+        "Returned": "bg-purple-500/40 text-purple-100",
+        "Approved": "bg-green-600/40 text-green-100",
+        "Rejected": "bg-red-600/40 text-red-100",
+        "Pending": "bg-amber-500/40 text-amber-100"
+    };
+
     const getStatusColor = (status) => {
-        const s = status?.toLowerCase();
-        if (s === 'approved') return 'text-green-400 bg-green-400/10 border-green-400/20';
-        if (s === 'rejected') return 'text-red-400 bg-red-400/10 border-red-400/20';
-        return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
+        // Normalize status to Title Case or use direct lookup if possible
+        const s = status ? status.charAt(0).toUpperCase() + status.slice(1).toLowerCase() : "";
+        return statusColors[s] || statusColors[status] || 'text-gray-400 bg-gray-400/10 border-gray-400/20';
     };
 
     const getStatusIcon = (status) => {
