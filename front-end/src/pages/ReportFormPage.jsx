@@ -85,8 +85,12 @@ export default function ReportFormPage() {
           // Remove Markdown code blocks if present (case insensitive)
           const cleanText = aiResponse.replace(/```(json)?/gi, '').replace(/```/g, '').trim();
 
+          // Try to find the JSON object within the text (in case there's conversational text)
+          const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
+          const jsonString = jsonMatch ? jsonMatch[0] : cleanText;
+
           try {
-            aiResponse = JSON.parse(cleanText);
+            aiResponse = JSON.parse(jsonString);
           } catch (e) {
             console.error("Failed to parse AI JSON", e);
             // If parsing fails, just use the raw text as description
@@ -285,7 +289,7 @@ export default function ReportFormPage() {
             </div>
             <div className="flex flex-col gap-2 md:col-span-2">
               <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-300">Your Phone Number (Optional)</label>
-              <input type="tel" id="phone" name="phone" placeholder="e.g +233 24 123 4567" pattern="[0-9]{10}" className="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" value={phone} onChange={(e) => setPhone(e.target.value)} />
+              <input type="tel" id="phone" name="phone" placeholder="e.g 0241234567" pattern="[0-9]{10}" className="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" value={phone} onChange={(e) => setPhone(e.target.value)} />
             </div>
           </div>
           <p className="text-sm text-gray-400">Your contact will only be shared if a potential match is found</p>

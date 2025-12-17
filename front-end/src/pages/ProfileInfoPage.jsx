@@ -189,34 +189,30 @@ export default function ProfileInfoPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                    <div>
-                        <label className="block text-sm text-gray-500 mb-1">Full Name</label>
-                        {isEditing ? (
-                            <input
-                                type="text"
-                                name="name"
-                                value={editForm.name || ''}
-                                onChange={handleChange}
-                                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
-                            />
-                        ) : (
-                            <p className="text-white font-medium text-lg">{profile.name}</p>
-                        )}
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-500 mb-1">Email</label>
-                        {isEditing ? (
-                            <input
-                                type="text"
-                                name="email"
-                                value={editForm.email || ''}
-                                onChange={handleChange}
-                                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
-                            />
-                        ) : (
-                            <p className="text-white font-medium text-lg">{profile.email}</p>
-                        )}
-                    </div>
+                    {isEditing && (
+                        <>
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">Full Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={editForm.name || ''}
+                                    onChange={handleChange}
+                                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">Email</label>
+                                <input
+                                    type="text"
+                                    name="email"
+                                    value={editForm.email || ''}
+                                    onChange={handleChange}
+                                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+                                />
+                            </div>
+                        </>
+                    )}
                     <div>
                         <label className="block text-sm text-gray-500 mb-1">Phone Number</label>
                         {isEditing ? (
