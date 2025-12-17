@@ -107,6 +107,31 @@ export const getUserClaims = async (req, res) => {
     }
 };
 
+export const getIncomingClaims = async (req, res) => {
+    try {
+        const userId = req.user.user_id;
+        const claimRepository = AppDataSource.getRepository(ClaimEntity);
+
+        const claims = await claimRepository.find({
+            where: {
+                item: { user: { id: userId } }
+            },
+            relations: {
+                item: true,
+                claimer: true,
+            },
+            order: {
+                createdAt: "DESC",
+            },
+        });
+
+        return res.status(200).json(claims);
+    } catch (error) {
+        console.error("Error fetching incoming claims:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 export const getClaimById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -127,13 +152,9 @@ export const getClaimById = async (req, res) => {
             return res.status(404).json({ message: "Claim not found" });
         }
 
-        // Security Check: Only the item owner can view the claim details
-        // Note: The claimant should also be able to view their own claim, but user specificially asked for "creator of the item".
-        // I will allow both for robustness (Item Owner OR Claimant), but prioritize Owner as per request.
-        // Actually, user said "this page can only be accessed by the creator of the item". strict interpretation: Owner only.
-        // Let's stick to Owner only for now as requested for the approval flow.
-        if (claim.item.user.id !== req.user.user_id) {
-            return res.status(403).json({ message: "Unauthorized: Only the item owner can view this claim" });
+        // Security Check: Allow Item Owner OR Claimant
+        if (claim.item.user.id !== req.user.user_id && claim.claimer.id !== req.user.user_id) {
+            return res.status(403).json({ message: "Unauthorized: You do not have permission to view this claim" });
         }
 
         return res.status(200).json(claim);

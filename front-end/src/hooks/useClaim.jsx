@@ -20,6 +20,21 @@ export const useClaim = () => {
         }
     }, [token]);
 
+    const getReceivedClaims = useCallback(async () => {
+        try {
+            const response = await fetch(`${API_URL}/api/claims/received`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Failed to fetch received claims');
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }, [token]);
+
     const createClaim = async (claimData) => {
         try {
             const response = await fetch(`${API_URL}/api/claims`, {
@@ -71,5 +86,5 @@ export const useClaim = () => {
         }
     };
 
-    return { getMyClaims, createClaim, getClaimById, updateClaimStatus };
+    return { getMyClaims, getReceivedClaims, createClaim, getClaimById, updateClaimStatus };
 };
