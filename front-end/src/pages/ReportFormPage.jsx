@@ -124,7 +124,7 @@ export default function ReportFormPage() {
           const formData = new FormData();
           formData.append('image', photo);
 
-          const response = await fetch('http://localhost:4000/api/image/upload', {
+          const response = await fetch('https://findmystuff-f92h.onrender.com/api/image/upload', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`
@@ -160,7 +160,7 @@ export default function ReportFormPage() {
         await createItem(itemData);
         console.log("Item created successfully");
       }
-      navigate("/Gallery");
+      navigate("/");
     } catch (error) {
       console.error("Failed to create/update item:", error);
       alert(error.message || "Failed to submit report. Please try again.");

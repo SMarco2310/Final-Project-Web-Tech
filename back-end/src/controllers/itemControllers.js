@@ -174,6 +174,10 @@ export const createItem = async (req, res) => {
     const normalize = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : str;
     const formattedCategory = normalize(category);
     const formattedStatus = normalize(status);
+    // Validate Category
+    if (!formattedCategory || formattedCategory.trim() === '') {
+      return res.status(400).json({ ok: false, message: "Category is required" });
+    }
 
     //Create Item entity
     const item = itemRepo.create({
