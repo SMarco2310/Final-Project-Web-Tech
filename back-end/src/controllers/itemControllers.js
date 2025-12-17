@@ -156,10 +156,12 @@ export const getItemById = async (req, res) => {
 export const createItem = async (req, res) => {
   const { location, category, title, description, status, images } = req.body;
   const user_id = req.user.user_id; // Use ID from token, not body
+  console.log("Create Item - User ID from token:", user_id);
 
   try {
     //Load related entities
     const user = await userRepo.findOneBy({ id: user_id });
+    console.log("Create Item - User found:", user ? "Yes" : "No");
 
     if (!user || !location) {
       return res.status(400).json({
@@ -168,12 +170,17 @@ export const createItem = async (req, res) => {
       });
     }
 
+    // Normalize category and status to Title Case to match Enum
+    const normalize = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : str;
+    const formattedCategory = normalize(category);
+    const formattedStatus = normalize(status);
+
     //Create Item entity
     const item = itemRepo.create({
-      category,
+      category: formattedCategory,
       title,
       description,
-      status,
+      status: formattedStatus,
       user,
       location,
 
@@ -206,7 +213,7 @@ export const createItem = async (req, res) => {
 
 export const deleteItem = async (req, res) => {
   const { item_id } = req.params;
-  const { user_id } = req.user;
+  const user_id = req.user.user_id;
   try {
     const item = await itemRepo.findOneBy({
       id: item_id,

@@ -7,7 +7,7 @@ export const useMessage = () => {
 
     const sendMessage = async (chatId, content) => {
         try {
-            const response = await fetch(`${API_URL}/messages`, {
+            const response = await fetch(`${API_URL}/api/messages`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export const useMessage = () => {
 
     const getMessages = useCallback(async (chatId) => {
         try {
-            const response = await fetch(`${API_URL}/messages/${chatId}`, {
+            const response = await fetch(`${API_URL}/api/messages/${chatId}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -38,7 +38,7 @@ export const useMessage = () => {
 
     const markAsRead = async (chatId) => {
         try {
-            const response = await fetch(`${API_URL}/messages/${chatId}/read`, {
+            const response = await fetch(`${API_URL}/api/messages/${chatId}/read`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`

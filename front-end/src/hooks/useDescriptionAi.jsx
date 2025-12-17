@@ -11,7 +11,7 @@ export const useDescriptionAi = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch(`${API_URL}/ai/describe`, {
+            const response = await fetch(`${API_URL}/api/ai/describe`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

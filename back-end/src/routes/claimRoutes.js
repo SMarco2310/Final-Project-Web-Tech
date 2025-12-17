@@ -4,6 +4,7 @@ import {
     getClaims,
     updateClaimStatus,
     getUserClaims,
+    getClaimById,
 } from "../controllers/claimControllers.js";
 import { authenticate } from "../middleware/authMiddleware.js";
 
@@ -17,6 +18,9 @@ claimRouter.get("/", authenticate, getClaims);
 
 // Get user claims
 claimRouter.get("/my-claims", authenticate, getUserClaims);
+
+// Get Single Claim
+claimRouter.get("/:id", authenticate, getClaimById);
 
 // Update claim status
 claimRouter.put("/:id/status", authenticate, updateClaimStatus);
