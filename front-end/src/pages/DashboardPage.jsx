@@ -50,9 +50,9 @@ export default function DashboardPage() {
 
     return (
         <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-7">
-                <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-                <div className="relative w-64">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-white/10 pb-7 gap-4">
+                <h1 className="text-3xl font-bold text-white self-start md:self-auto">Dashboard</h1>
+                <div className="relative w-full md:w-64">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <input
                         type="text"
@@ -61,7 +61,7 @@ export default function DashboardPage() {
                     />
                 </div>
             </div>
-            <br/>
+            <br />
 
             <DashboardStats itemsFound={itemsFound} itemsLost={itemsLost} />
         </div>
