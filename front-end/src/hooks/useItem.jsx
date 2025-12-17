@@ -7,7 +7,7 @@ export const useItem = () => {
 
     const getAllItems = useCallback(async () => {
         try {
-            const response = await fetch(`${API_URL}/item/items`);
+            const response = await fetch(`${API_URL}/api/item/items`);
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Failed to fetch items');
             return data;

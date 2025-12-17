@@ -81,9 +81,10 @@ export default function ClaimsPage() {
                 {filteredClaims.length > 0 ? (
                     <div className="divide-y divide-white/10">
                         {filteredClaims.map((claim) => (
-                            <div
+                            <Link
+                                to={`${claim.id}`}
                                 key={claim.id}
-                                className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors group"
+                                className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors group block"
                             >
                                 <div className="w-16 h-16 rounded-xl bg-gray-800 overflow-hidden shrink-0">
                                     <img
@@ -103,7 +104,7 @@ export default function ClaimsPage() {
                                     <p className="text-sm text-gray-400 mb-1">Claimed on: {new Date(claim.createdAt || claim.date).toLocaleDateString()}</p>
                                     <p className="text-sm text-gray-500 truncate">{claim.reason}</p>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 ) : (

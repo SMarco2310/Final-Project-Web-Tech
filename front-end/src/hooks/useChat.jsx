@@ -7,7 +7,7 @@ export const useChat = () => {
 
     const getUserChats = useCallback(async () => {
         try {
-            const response = await fetch(`${API_URL}/chats`, {
+            const response = await fetch(`${API_URL}/api/chats`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -22,7 +22,7 @@ export const useChat = () => {
 
     const getChatDetails = useCallback(async (id) => {
         try {
-            const response = await fetch(`${API_URL}/chats/${id}`, {
+            const response = await fetch(`${API_URL}/api/chats/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -37,7 +37,7 @@ export const useChat = () => {
 
     const getMessages = useCallback(async (chatId) => {
         try {
-            const response = await fetch(`${API_URL}/messages/${chatId}`, {
+            const response = await fetch(`${API_URL}/api/messages/${chatId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -52,7 +52,7 @@ export const useChat = () => {
 
     const sendMessage = async (chatId, content) => {
         try {
-            const response = await fetch(`${API_URL}/messages`, {
+            const response = await fetch(`${API_URL}/api/messages`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export const useChat = () => {
 
     const createChat = async (otherUserId, itemId = null) => {
         try {
-            const response = await fetch(`${API_URL}/chats`, {
+            const response = await fetch(`${API_URL}/api/chats`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export const useChat = () => {
 
     const markAsRead = async (chatId) => {
         try {
-            const response = await fetch(`${API_URL}/messages/${chatId}/read`, {
+            const response = await fetch(`${API_URL}/api/messages/${chatId}/read`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -104,7 +104,7 @@ export const useChat = () => {
 
     const getUnreadCount = useCallback(async () => {
         try {
-            const response = await fetch(`${API_URL}/messages/unread/count`, {
+            const response = await fetch(`${API_URL}/api/messages/unread/count`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

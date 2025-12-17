@@ -107,6 +107,42 @@ export const getUserClaims = async (req, res) => {
     }
 };
 
+export const getClaimById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const claimRepository = AppDataSource.getRepository(ClaimEntity);
+
+        const claim = await claimRepository.findOne({
+            where: { id: parseInt(id) },
+            relations: {
+                item: {
+                    user: true, // Need item owner to show "Lost Item Details"
+                    images: true
+                },
+                claimer: true, // Need claimer info
+            },
+        });
+
+        if (!claim) {
+            return res.status(404).json({ message: "Claim not found" });
+        }
+
+        // Security Check: Only the item owner can view the claim details
+        // Note: The claimant should also be able to view their own claim, but user specificially asked for "creator of the item".
+        // I will allow both for robustness (Item Owner OR Claimant), but prioritize Owner as per request.
+        // Actually, user said "this page can only be accessed by the creator of the item". strict interpretation: Owner only.
+        // Let's stick to Owner only for now as requested for the approval flow.
+        if (claim.item.user.id !== req.user.user_id) {
+            return res.status(403).json({ message: "Unauthorized: Only the item owner can view this claim" });
+        }
+
+        return res.status(200).json(claim);
+    } catch (error) {
+        console.error("Error fetching claim details:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 export const updateClaimStatus = async (req, res) => {
     try {
         const { id } = req.params;

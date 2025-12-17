@@ -15,6 +15,7 @@ import DashboardPage from "./pages/DashboardPage";
 import ProfileInfoPage from "./pages/ProfileInfoPage";
 import MessagesPage from "./pages/MessagesPage";
 import ClaimsPage from "./pages/ClaimsPage";
+import ClaimDetailsPage from "./pages/ClaimDetailsPage";
 import { AuthProvider } from "./hooks/useAuth";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
             <Route path="profile" element={<ProfileInfoPage />} />
             <Route path="messages" element={<MessagesPage />} />
             <Route path="claims" element={<ClaimsPage />} />
+            <Route path="claims/:claimId" element={<ClaimDetailsPage />} />
             <Route path="chat/:chatId" element={<ChatPage />} />
 
           </Route>

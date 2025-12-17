@@ -12,7 +12,7 @@ export const useImage = () => {
             const formData = new FormData();
             formData.append('image', file);
 
-            const response = await fetch(`${API_URL}/image/upload`, {
+            const response = await fetch(`${API_URL}/api/image/upload`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

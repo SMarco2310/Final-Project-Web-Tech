@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const response = await fetch(`${API_URL}/auth/login`, {
+            const response = await fetch(`${API_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (userData) => {
         try {
-            const response = await fetch(`${API_URL}/auth/register`, {
+            const response = await fetch(`${API_URL}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData),
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
             const headers = { 'Content-Type': 'application/json' };
             if (token) headers['Authorization'] = `Bearer ${token}`;
 
-            const response = await fetch(`${API_URL}/auth/profile/${id}`, {
+            const response = await fetch(`${API_URL}/api/auth/profile/${id}`, {
                 method: 'GET',
                 headers: headers
             });
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }) => {
             const headers = { 'Content-Type': 'application/json' };
             if (token) headers['Authorization'] = `Bearer ${token}`;
 
-            const response = await fetch(`${API_URL}/auth/profile/${id}`, {
+            const response = await fetch(`${API_URL}/api/auth/profile/${id}`, {
                 method: 'PUT',
                 headers: headers,
                 body: JSON.stringify(userData),

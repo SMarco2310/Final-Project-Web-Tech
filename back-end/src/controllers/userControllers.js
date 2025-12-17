@@ -202,7 +202,7 @@ export const updateProfile = async (req, res) => {
   const { name, email, phone, address, bio, image } = req.body;
 
   // Security Check: Ensure authenticated user is updating their own profile
-  if (parseInt(id) !== parseInt(req.user.user_id)) {
+  if (id !== req.user.user_id) {
     return res.status(403).json({
       ok: false,
       status: 403,
@@ -211,7 +211,7 @@ export const updateProfile = async (req, res) => {
   }
 
   try {
-    const user = await userRepo.findOneBy({ id: parseInt(id) });
+    const user = await userRepo.findOneBy({ id: id });
     if (!user) {
       return res.status(404).json({
         ok: false,
