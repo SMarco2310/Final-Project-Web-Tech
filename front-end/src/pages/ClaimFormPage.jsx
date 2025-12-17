@@ -83,7 +83,7 @@ export default function ClaimFormPage() {
 
                         <div className="flex flex-col md:flex-row md:items-center gap-4 mt-2">
                             <div className="bg-slate-700/50 px-4 py-2 rounded-lg border border-slate-600/50">
-                                <span className="text-gray-400 text-xs text-center block mb-0.5">Category</span>
+                                <span className="text-gray-400 text-xs  block mb-0.5">Category</span>
                                 <span className="font-semibold text-white">{itemDetails.category}</span>
                             </div>
                             <div className="bg-slate-700/50 px-4 py-2 rounded-lg border border-slate-600/50">
