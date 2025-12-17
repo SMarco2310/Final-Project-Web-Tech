@@ -199,7 +199,7 @@ export default function ReportFormPage() {
           <p className="mb-6 text-gray-300 text-lg">
             Are you reporting an item you lost or found?
           </p>
-          <FilterButton text1={"Lost"} text2={"Found"} w="w-full" value={status} onChange={(e) => setStatus(e.target.value)} />
+          <FilterButton text1={"Lost"} text2={"Found"} val1="Lost" val2="Found" w="w-full" value={status} selected={status} onChange={(val) => setStatus(val)} />
         </div>
 
         <div className="flex flex-col gap-4 w-full border border-gray-700 rounded-2xl p-6 bg-[#1e293b]/30 backdrop-blur-sm">

@@ -18,7 +18,7 @@ export const useItem = () => {
 
     const getItemById = useCallback(async (id) => {
         try {
-            const response = await fetch(`${API_URL}/item/item/${id}`);
+            const response = await fetch(`${API_URL}/api/item/item/${id}`);
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Failed to fetch item');
             return data;
@@ -29,7 +29,7 @@ export const useItem = () => {
 
     const getMyItems = useCallback(async (user_id) => {
         try {
-            const response = await fetch(`${API_URL}/item/my-items/${user_id}`);
+            const response = await fetch(`${API_URL}/api/item/my-items/${user_id}`);
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Failed to fetch items');
             return data;
@@ -40,7 +40,7 @@ export const useItem = () => {
 
     const createItem = async (itemData) => {
         try {
-            const response = await fetch(`${API_URL}/item/`, {
+            const response = await fetch(`${API_URL}/api/item`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export const useItem = () => {
 
     const deleteItem = async (id) => {
         try {
-            const response = await fetch(`${API_URL}/item/item/${id}`, {
+            const response = await fetch(`${API_URL}/api/item/item/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -75,7 +75,7 @@ export const useItem = () => {
     // --- COMPLETED THIS FUNCTION ---
     const updateItem = async (id, itemData) => {
         try {
-            const response = await fetch(`${API_URL}/item/item/${id}`, {
+            const response = await fetch(`${API_URL}/api/item/item/${id}`, {
                 method: 'PUT', // or PATCH
                 headers: {
                     'Content-Type': 'application/json',

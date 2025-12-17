@@ -84,7 +84,7 @@ export default function ClaimsPage() {
                             <Link
                                 to={`${claim.id}`}
                                 key={claim.id}
-                                className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors group block"
+                                className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors group"
                             >
                                 <div className="w-16 h-16 rounded-xl bg-gray-800 overflow-hidden shrink-0">
                                     <img

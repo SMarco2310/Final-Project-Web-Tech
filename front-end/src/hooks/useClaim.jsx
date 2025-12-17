@@ -22,7 +22,7 @@ export const useClaim = () => {
 
     const createClaim = async (claimData) => {
         try {
-            const response = await fetch(`${API_URL}/claims`, {
+            const response = await fetch(`${API_URL}/api/claims`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export const useClaim = () => {
 
     const getClaimById = async (id) => {
         try {
-            const response = await fetch(`${API_URL}/claims/${id}`, {
+            const response = await fetch(`${API_URL}/api/claims/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -55,7 +55,7 @@ export const useClaim = () => {
 
     const updateClaimStatus = async (id, status) => {
         try {
-            const response = await fetch(`${API_URL}/claims/${id}/status`, {
+            const response = await fetch(`${API_URL}/api/claims/${id}/status`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
