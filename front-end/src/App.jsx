@@ -16,6 +16,7 @@ import ProfileInfoPage from "./pages/ProfileInfoPage";
 import MessagesPage from "./pages/MessagesPage";
 import ClaimsPage from "./pages/ClaimsPage";
 import ClaimDetailsPage from "./pages/ClaimDetailsPage";
+import { AuthProvider } from "./hooks/useAuth";
 
 function App() {
   return (
