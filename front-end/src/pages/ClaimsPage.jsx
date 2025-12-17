@@ -91,8 +91,8 @@ export default function ClaimsPage() {
                 <button
                     onClick={() => setActiveTab('sent')}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'sent'
-                            ? 'bg-blue-500 text-white'
-                            : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        ? 'bg-blue-500 text-white'
+                        : 'text-gray-400 hover:text-white hover:bg-white/5'
                         }`}
                 >
                     <Send size={16} />
@@ -102,8 +102,8 @@ export default function ClaimsPage() {
                 <button
                     onClick={() => setActiveTab('received')}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'received'
-                            ? 'bg-blue-500 text-white'
-                            : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        ? 'bg-blue-500 text-white'
+                        : 'text-gray-400 hover:text-white hover:bg-white/5'
                         }`}
                 >
                     <Inbox size={16} />
@@ -115,40 +115,56 @@ export default function ClaimsPage() {
             <div className="bg-gray-900 rounded-3xl border border-white/10 overflow-hidden flex-1">
                 {filteredClaims.length > 0 ? (
                     <div className="divide-y divide-white/10">
-                        {filteredClaims.map((claim) => (
-                            <Link
-                                to={`${claim.id}`}
-                                key={claim.id}
-                                className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors group"
-                            >
-                                <div className="w-16 h-16 rounded-xl bg-gray-800 overflow-hidden shrink-0">
-                                    <img
-                                        src={(claim.item?.images && claim.item.images.length > 0) ? claim.item.images[0].url : "https://via.placeholder.com/150?text=No+Image"}
-                                        alt={claim.item?.title || "Item"}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex justify-between items-start mb-1">
-                                        <h3 className="font-semibold text-white truncate text-lg">
-                                            {activeTab === 'received' && <span className="text-gray-400 text-sm font-normal mr-2">Claim by {claim.claimer?.name}:</span>}
-                                            {claim.item?.title || "Unknown Item"}
-                                        </h3>
-                                        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusColor(claim.status)}`}>
-                                            {getStatusIcon(claim.status)}
-                                            {claim.status}
-                                        </div>
+                        {filteredClaims.map((claim) => {
+                            const isReceived = activeTab === 'received';
+                            const content = (
+                                <>
+                                    <div className="w-16 h-16 rounded-xl bg-gray-800 overflow-hidden shrink-0">
+                                        <img
+                                            src={(claim.item?.images && claim.item.images.length > 0) ? claim.item.images[0].url : "https://via.placeholder.com/150?text=No+Image"}
+                                            alt={claim.item?.title || "Item"}
+                                            className="w-full h-full object-cover"
+                                        />
                                     </div>
-                                    <p className="text-sm text-gray-400 mb-1">
-                                        {activeTab === 'sent'
-                                            ? `Claimed on: ${new Date(claim.createdAt || claim.date).toLocaleDateString()}`
-                                            : `Received on: ${new Date(claim.createdAt || claim.date).toLocaleDateString()}`
-                                        }
-                                    </p>
-                                    <p className="text-sm text-gray-500 truncate">{claim.reason}</p>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex justify-between items-start mb-1">
+                                            <h3 className="font-semibold text-white truncate text-lg">
+                                                {isReceived && <span className="text-gray-400 text-sm font-normal mr-2">Claim by {claim.claimer?.name}:</span>}
+                                                {claim.item?.title || "Unknown Item"}
+                                            </h3>
+                                            <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusColor(claim.status)}`}>
+                                                {getStatusIcon(claim.status)}
+                                                {claim.status}
+                                            </div>
+                                        </div>
+                                        <p className="text-sm text-gray-400 mb-1">
+                                            {activeTab === 'sent'
+                                                ? `Claimed on: ${new Date(claim.createdAt || claim.date).toLocaleDateString()}`
+                                                : `Received on: ${new Date(claim.createdAt || claim.date).toLocaleDateString()}`
+                                            }
+                                        </p>
+                                        <p className="text-sm text-gray-500 truncate">{claim.reason}</p>
+                                    </div>
+                                </>
+                            );
+
+                            return isReceived ? (
+                                <Link
+                                    to={`${claim.id}`}
+                                    key={claim.id}
+                                    className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors group"
+                                >
+                                    {content}
+                                </Link>
+                            ) : (
+                                <div
+                                    key={claim.id}
+                                    className="flex items-center gap-4 p-4 opacity-75 cursor-default"
+                                >
+                                    {content}
                                 </div>
-                            </Link>
-                        ))}
+                            );
+                        })}
                     </div>
                 ) : (
                     <div className="flex flex-col items-center justify-center h-64 text-gray-500">
