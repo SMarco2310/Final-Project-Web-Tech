@@ -112,38 +112,38 @@ export default function ProfileInfoPage() {
 
     return (
         <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-white">Profile Information</h1>
-                <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                <h1 className="text-3xl font-bold text-white self-start md:self-auto">Profile Information</h1>
+                <div className="flex gap-3 w-full md:w-auto">
                     {!isEditing ? (
                         <>
                             <button
                                 onClick={handleEdit}
-                                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors"
+                                className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors"
                             >
                                 <Pencil size={16} />
                                 Edit Profile
                             </button>
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 px-4 py-2 bg-red-900 text-white  rounded-xl hover:bg-red-500 transition-colors"
+                                className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-red-900 text-white  rounded-xl hover:bg-red-500 transition-colors"
                             >
                                 <LogOut size={16} />
                                 Log Out
                             </button>
                         </>
                     ) : (
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 w-full md:w-auto">
                             <button
                                 onClick={handleCancel}
-                                className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-gray-600 transition-colors"
+                                className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-gray-600 transition-colors"
                             >
                                 <X size={16} />
                                 Cancel
                             </button>
                             <button
                                 onClick={handleSave}
-                                className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
+                                className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
                             >
                                 <Save size={16} />
                                 Save Changes
@@ -156,7 +156,7 @@ export default function ProfileInfoPage() {
             <div className="bg-gray-900 rounded-3xl border border-white/10 p-8">
                 <div className="flex items-center gap-6 mb-8 border-b border-white/10 pb-8">
                     <div
-                        className={`w-24 h-24 rounded-full bg-orange-100 overflow-hidden relative group ${isEditing ? 'cursor-pointer ring-4 ring-slate-800 hover:ring-blue-500/50 transition-all' : ''}`}
+                        className={`w-24 h-24 shrink-0 rounded-full bg-orange-100 overflow-hidden relative group ${isEditing ? 'cursor-pointer ring-4 ring-slate-800 hover:ring-blue-500/50 transition-all' : ''}`}
                         onClick={triggerFileInput}
                     >
                         <img

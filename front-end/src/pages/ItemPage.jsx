@@ -1,12 +1,14 @@
-import { LucideFlag, LucideShare2, LucideShieldCheck, MapPin, Loader2 } from "lucide-react";
+import { LucideFlag, LucideShare2, LucideShieldCheck, MapPin, Loader2, ShieldCheck } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useItem } from "../hooks/useItem";
+import { useAuth } from "../hooks/useAuth";
 import { useEffect, useState } from "react";
 
 export default function ItemPage() {
     const navigate = useNavigate();
     const { id } = useParams();
     const { getItemById } = useItem();
+    const { user, loading: authLoading } = useAuth();
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -45,8 +47,27 @@ export default function ItemPage() {
         Claimed: "bg-amber-500/40 text-amber-100",
     };
 
-    if (loading) return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white"><Loader2 className="animate-spin w-10 h-10" /></div>;
+    if (loading || authLoading) return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white"><Loader2 className="animate-spin w-10 h-10" /></div>;
+
+    // Restriction: User must be logged in
+    if (!user) {
+        return (
+            <div className="min-h-screen bg-[#0f172a] flex flex-col items-center justify-center text-white p-4 text-center">
+                <ShieldCheck className="w-16 h-16 text-blue-500 mb-4" />
+                <h2 className="text-2xl font-bold mb-2">Access Restricted</h2>
+                <p className="text-slate-400 mb-6">You need to sign in to view item details.</p>
+                <button
+                    onClick={() => navigate("/Login")}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-xl transition-colors"
+                >
+                    Sign In
+                </button>
+            </div>
+        );
+    }
+
     if (error || !item) return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white text-xl">Item not found</div>;
+
 
     const displayImages = item.images && item.images.length > 0 ? item.images.map(img => img.url) : ["https://via.placeholder.com/600x400?text=No+Image"];
     const mainImage = selectedImage || displayImages[0];
