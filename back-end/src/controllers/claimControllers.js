@@ -152,9 +152,9 @@ export const getClaimById = async (req, res) => {
             return res.status(404).json({ message: "Claim not found" });
         }
 
-        // Security Check: Allow Item Owner OR Claimant
-        if (claim.item.user.id !== req.user.user_id && claim.claimer.id !== req.user.user_id) {
-            return res.status(403).json({ message: "Unauthorized: You do not have permission to view this claim" });
+        // Security Check: Only the item creator (Item Owner) can view the claim details
+        if (claim.item.user.id !== req.user.user_id) {
+            return res.status(403).json({ message: "Unauthorized: Only the item creator can view this claim" });
         }
 
         return res.status(200).json(claim);
