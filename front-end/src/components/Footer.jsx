@@ -5,9 +5,9 @@ export default function Footer() {
         &copy; 2025 Lost & Found Inc. All rights reserved.
       </p>
       <p className="flex justify-between w-fit gap-6 mr-5 ">
-        <a href="/about">About Us</a>
-        <a href="/faq">FAQ</a>
-        <a href="/contact">Contact Support</a>
+        <a href="">About Us</a>
+        <a href="">FAQ</a>
+        <a href="">Contact Support</a>
       </p>
     </footer>
   );

@@ -74,13 +74,26 @@ export default function ClaimFormPage() {
                     <p className="text-gray-400">Fill out the form below to claim your lost item.</p>
                 </div>
 
-                <div id="item-info-card" className="flex justify-between border border-slate-700/80 bg-slate-800/20 p-5 rounded-2xl h-50">
-                    <div className="flex flex-col gap-2 w-1/2 mx-2 text-xl my-7 font-bold">
-                        <h1>Item Name : <strong>{itemDetails.title}</strong></h1>
-                        <p className="flex flex-col gap-2 "><span>Category: <strong>{itemDetails.category}</strong></span> <span>Found on: <strong>{itemDetails.createdAt.split("T")[0].replaceAll("-", " / ")}</strong></span></p>
+                <div id="item-info-card" className="flex flex-col md:flex-row justify-between text-white border border-slate-700/80 bg-slate-800/40 p-6 rounded-2xl gap-6">
+                    <div className="flex flex-col justify-center gap-3 md:w-2/3">
+                        <div>
+                            <span className="text-gray-400 text-sm uppercase tracking-wider font-semibold">Item Name</span>
+                            <h1 className="text-3xl font-bold mt-1 text-blue-100">{itemDetails.title}</h1>
+                        </div>
+
+                        <div className="flex flex-col md:flex-row md:items-center gap-4 mt-2">
+                            <div className="bg-slate-700/50 px-4 py-2 rounded-lg border border-slate-600/50">
+                                <span className="text-gray-400 text-xs text-center block mb-0.5">Category</span>
+                                <span className="font-semibold text-white">{itemDetails.category}</span>
+                            </div>
+                            <div className="bg-slate-700/50 px-4 py-2 rounded-lg border border-slate-600/50">
+                                <span className="text-gray-400 text-xs block mb-0.5">Found Date</span>
+                                <span className="font-semibold text-white">{new Date(itemDetails.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="w-1/4">
-                        <img src={itemDetails.images[0].url} alt="" className="w-full h-full object-cover rounded-3xl" />
+                    <div className="md:w-1/3 h-48 md:h-auto rounded-xl overflow-hidden border border-slate-600/50">
+                        <img src={itemDetails.images[0].url} alt={itemDetails.title} className="w-full h-full object-cover" />
                     </div>
                 </div>
 

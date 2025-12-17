@@ -10,6 +10,7 @@ export default function DashboardPage() {
     const { getMyItems } = useItem();
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         const fetchUserItems = async () => {
@@ -41,9 +42,13 @@ export default function DashboardPage() {
     }, [getMyItems, user]);
 
     // Categorize items
-    // Note: Adjust status checks based on actual backend values (Lost, Found, Claimed)
-    const itemsFound = items.filter(item => item.status === 'Found' || item.status === 'Validated' || item.status === 'Returned');
-    const itemsLost = items.filter(item => item.status === 'Lost');
+    // Filter by search query if present
+    const filteredItems = items.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const itemsFound = filteredItems.filter(item => item.status === 'Found' || item.status === 'Validated' || item.status === 'Returned');
+    const itemsLost = filteredItems.filter(item => item.status === 'Lost');
 
     if (loading) return <div className="min-h-screen bg-[#0f172a] text-white flex justify-center items-center"><Loader2 className="animate-spin" /></div>;
     if (!user) return <div className="text-white text-center mt-10">Please log in to view dashboard.</div>;
@@ -57,6 +62,8 @@ export default function DashboardPage() {
                     <input
                         type="text"
                         placeholder="Search items..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full bg-gray-900 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>

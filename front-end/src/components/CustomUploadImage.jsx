@@ -163,7 +163,7 @@ export default function CustomUploadImage({ photos = [], setPhotos }) {
     };
     return (
         <div className="w-full space-y-4">
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
                 {/* Browse Label */}
                 <label
                     htmlFor="file-upload"
@@ -237,26 +237,26 @@ export default function CustomUploadImage({ photos = [], setPhotos }) {
             )}
 
             {/* Preview Section */}
-{photos.length > 0 && (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {photos.map((url, index) => (
-            <div key={index} className="relative group">
-                <img
-                    src={url}
-                    alt={`uploaded ${index}`}
-                    className="w-full h-32 object-cover rounded-xl border border-gray-700"
-                />
-                <button
-                    type="button"
-                    onClick={() => removeFile(index)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all hover:scale-110 shadow-lg"
-                >
-                    <X size={14} />
-                </button>
-            </div>
-        ))}
-    </div>
-)}
+            {photos.length > 0 && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {photos.map((url, index) => (
+                        <div key={index} className="relative group">
+                            <img
+                                src={url}
+                                alt={`uploaded ${index}`}
+                                className="w-full h-32 object-cover rounded-xl border border-gray-700"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => removeFile(index)}
+                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all hover:scale-110 shadow-lg"
+                            >
+                                <X size={14} />
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            )}
 
         </div>
     );
