@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { Search, FileText, CheckCircle, XCircle, Clock, Loader2 } from 'lucide-react';
 import { useClaim } from '../hooks/useClaim';
