@@ -153,8 +153,8 @@ export default function ProfileInfoPage() {
                 </div>
             </div>
 
-            <div className="bg-gray-900 rounded-3xl border border-white/10 p-8">
-                <div className="flex items-center gap-6 mb-8 border-b border-white/10 pb-8">
+            <div className="bg-gray-900 rounded-3xl border border-white/10 p-6 md:p-8">
+                <div className="flex flex-col md:flex-row items-center gap-6 mb-8 border-b border-white/10 pb-8 text-center md:text-left">
                     <div
                         className={`w-24 h-24 shrink-0 rounded-full bg-orange-100 overflow-hidden relative group ${isEditing ? 'cursor-pointer ring-4 ring-slate-800 hover:ring-blue-500/50 transition-all' : ''}`}
                         onClick={triggerFileInput}
@@ -182,9 +182,9 @@ export default function ProfileInfoPage() {
                             className="hidden"
                         />
                     </div>
-                    <div>
-                        <h2 className="text-2xl font-bold text-white">{profile.name}</h2>
-                        <p className="text-gray-400">{profile.email}</p>
+                    <div className="w-full">
+                        <h2 className="text-2xl font-bold text-white mb-1">{profile.name}</h2>
+                        <p className="text-gray-400 break-all">{profile.email}</p>
                     </div>
                 </div>
 

@@ -79,9 +79,9 @@ export default function MessagesPage() {
 
     return (
         <div className="max-w-4xl mx-auto h-full flex flex-col">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-white">Messages</h1>
-                <div className="relative w-64">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                <h1 className="text-3xl font-bold text-white self-start md:self-auto">Messages</h1>
+                <div className="relative w-full md:w-64">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <input
                         type="text"

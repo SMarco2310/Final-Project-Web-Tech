@@ -120,7 +120,9 @@ export default function CustomUploadImage({ photos = [], setPhotos }) {
     const startCamera = async () => {
         setShowCamera(true);
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'environment' }
+            });
             videoRef.current.srcObject = stream;
         } catch {
             setShowCamera(false);
