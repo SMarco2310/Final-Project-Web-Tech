@@ -6,7 +6,6 @@ import { ImageEntity } from "../models/Image.js";
 export const createClaim = async (req, res) => {
     try {
         const { itemId, reason, proof_images, contact_phone } = req.body;
-        // console.log("Create Claim Request Body:", req.body);
 
         const claimerId = req.user.user_id; // Use authenticated ID
         const itemRepository = AppDataSource.getRepository(ItemEntity);
@@ -17,7 +16,7 @@ export const createClaim = async (req, res) => {
             where: { id: itemId },
             relations: { user: true }
         });
-        console.log("Item Lookup Result:", item ? "Found" : "Not Found", "ItemID:", itemId);
+        console.log("Item Lookup Result:", item ? "Found": "Not Found", "ItemID:", itemId);
 
         if (!item) {
             return res.status(404).json({ message: "Item not found" });
@@ -27,7 +26,7 @@ export const createClaim = async (req, res) => {
             return res.status(400).json({ message: "Item is not available for claim" });
         }
 
-        if (item.user && item.user.id === claimerId) { // Fixed: userId -> claimerId
+        if (item.user && item.user.id === claimerId) {
             return res.status(400).json({ message: "You cannot claim your own item" });
         }
 
@@ -85,7 +84,7 @@ export const getClaims = async (req, res) => {
 
 export const getUserClaims = async (req, res) => {
     try {
-        const claimerId = req.user.user_id; // Fixed: req.user.id -> req.user.user_id
+        const claimerId = req.user.user_id;
         const claimRepository = AppDataSource.getRepository(ClaimEntity);
 
         const claims = await claimRepository.find({
@@ -141,10 +140,10 @@ export const getClaimById = async (req, res) => {
             where: { id: parseInt(id) },
             relations: {
                 item: {
-                    user: true, // Need item owner to show "Lost Item Details"
+                    user: true,
                     images: true
                 },
-                claimer: true, // Need claimer info
+                claimer: true,
             },
         });
 
@@ -152,7 +151,7 @@ export const getClaimById = async (req, res) => {
             return res.status(404).json({ message: "Claim not found" });
         }
 
-        // Security Check: Only the item creator (Item Owner) can view the claim details
+        // Security Check: Only the item Owner can view the claim details
         if (claim.item.user.id !== req.user.user_id) {
             return res.status(403).json({ message: "Unauthorized: Only the item creator can view this claim" });
         }
