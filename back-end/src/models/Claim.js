@@ -21,9 +21,9 @@ export const ClaimEntity = new EntitySchema({
     claimer_id: {
       type: "uuid",
     },
-    reason: {
-      type: "text",
-    },
+    // reason: {
+    //   type: "text",
+    // },
     status: {
       type: "enum",
       default: STATUS.PENDING,
