@@ -1,6 +1,6 @@
 # 📦 FindMyStuff — Campus Lost & Found Platform
 
-FindMyStuff is a full-stack web application designed to make it easier for students to report, discover, and reclaim lost or found items on campus. The platform provides a simple interface for uploading images of lost or found items, adding descriptions, and browsing through a searchable gallery.
+FindMyStuff is a full-stack web application designed to make it easier for students to report, discover, and reclaim lost or found items on campus. The platform offers a straightforward interface for uploading images of lost or found items, adding descriptions, and browsing a searchable gallery.
 It also includes an optional **AI Assistance** tool that helps users automatically name and describe items from an uploaded image.
 
 ---
@@ -15,7 +15,7 @@ It also includes an optional **AI Assistance** tool that helps users automatical
 
 ### 📸 Report Lost or Found Items
 
-* Upload images from device or using the devices camera
+* Upload images from device or using the device's camera
 * Add item name, description, category, and location
 * Tag as **Lost** or **Found**
 * Optionally use **AI** to generate a name and description
@@ -57,6 +57,7 @@ It also includes an optional **AI Assistance** tool that helps users automatical
 * Axios
 * Tailwind CSS
 * React Router
+* Userway(accessibility)
 
 ### **Backend**
 
@@ -67,7 +68,7 @@ It also includes an optional **AI Assistance** tool that helps users automatical
 
 ### **Database**
 
-* MySQL
+* Postgres
 
 ### **Storage**
 
@@ -75,17 +76,16 @@ It also includes an optional **AI Assistance** tool that helps users automatical
 
 ### **AI Integration (Optional)**
 
-* A third-party image recognition API
+* A third-party image recognition  API (Gork -API)
 
 ---
 
 ## 🗂️ Project Structure
 
 ```
-findmystuff/
+find-my-stuff/
 │
 ├── backend/
-    ├── prisma/
     ├── src/
         ├── controllers/
         ├── models/
@@ -94,15 +94,18 @@ findmystuff/
         ├── utils/
         ├── server.js
         └── config/
-├── Document/
+├── documents/
 │
 └── frontend/
     ├── src/
     │   ├── components/
+        ├── layouts/
+        ├── components/
         ├── assets/
     │   ├── pages/
     │   ├── hooks/
     │   └── App.jsx
+    ├── dist/
     └── public/
 ```
 
@@ -110,31 +113,66 @@ findmystuff/
 
 ## 🧪 API Endpoints (Overview)
 
-### **Auth**
+### **Authentication**
 
-* `POST /auth/register`
-* `POST /auth/login`
-* `GET /auth/me`
+Prefix: /api/auth
+
+POST /register – Register a new user
+POST /login – Login user
+GET /profile/:id – Get user profile
+PUT /profile/:id – Update user profile
 
 ### **Items**
+Prefix: /api/item
 
-* `POST /items` – create lost/found item
-* `GET /items` – list items with filters
-* `GET /items/:id` – item details
-* `PATCH /items/:id` – update item
-* `DELETE /items/:id`
+GET /items – Get all items
+GET /my-items/:user_id – Get items posted by a specific user
+POST / – Create a new item
+GET /item/:id – Get details of a specific item
+DELETE /item/:id – Delete an item
 
 ### **Claims**
 
-* `POST /claims` – submit claim
-* `PATCH /claims/:id/approve`
-* `PATCH /claims/:id/reject`
+Prefix: /api/claims
 
-### **AI**
+POST / – Submit a new claim
+GET / – Get all claims (Admin/Internal use)
+GET /my-claims – Get claims made by the current user
+GET /received – Get claims made on the current user's items
+GET /:id – Get details of a specific claim
+PUT /:id/status – Update claim status (Approve/Reject)
 
-* `POST /ai/describe` – return AI-generated name/description
 
----
+### **Chats**
+
+Prefix: /api/chats
+
+POST / – Start a new chat
+GET / – Get all chats for the current user
+GET /:id – Get details of a specific chat
+
+
+### **Messages**
+
+Prefix: /api/messages
+
+POST / – Send a message
+GET /:chatId – Get all messages in a specific chat
+GET /unread/count – Get total unread message count
+PUT /:chatId/read – Mark all messages in a chat as read
+
+
+### **AI Services**
+
+Prefix: /api/ai
+
+POST /describe – Generate item description from an image
+
+### **Images**
+
+Prefix: /api/image
+
+POST /upload – Upload an image file
 
 ## 📸 Reporting Flow
 
@@ -142,7 +180,7 @@ findmystuff/
 2. Choose LOST or FOUND
 3. Add details
 4. Optionally run AI assistance
-5. Submit to database
+5. Submit to the database
 6. Item appears in the gallery
 
 ---
@@ -163,8 +201,8 @@ findmystuff/
 
 ```bash
 cd backend
-npm install
-npm run dev
+npm install --legacy-peer-deps
+npm start
 ```
 
 ### **Frontend**
@@ -172,7 +210,7 @@ npm run dev
 ```bash
 cd frontend
 npm install
-npm run dev
+npm build
 ```
 ___ 
 
