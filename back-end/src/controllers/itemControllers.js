@@ -1,10 +1,3 @@
-// TODO: Implement item controllers
-// - Get all items
-// - Get item by ID
-// - Create item
-// - Update item
-// - Delete item
-
 import AppDataSource from "../config/dataSource.js";
 import { UserEntity } from "../models/User.js";
 import { ItemEntity } from "../models/Item.js";
@@ -13,7 +6,7 @@ const itemRepo = AppDataSource.getRepository(ItemEntity);
 const userRepo = AppDataSource.getRepository(UserEntity);
 const imageRepo = AppDataSource.getRepository(ImageEntity);
 
-// this return all the items
+// this returns all the items
 
 export const getAllItems = async (req, res) => {
   try {
@@ -56,7 +49,7 @@ export const getAllItems = async (req, res) => {
   }
 };
 
-// this return all the items of a specific user
+// this returns all the items of a specific user
 
 export const getMyItems = async (req, res) => {
   const { user_id } = req.params;
@@ -75,7 +68,7 @@ export const getMyItems = async (req, res) => {
         "item.location",
         "item.createdAt",
 
-        "images", // selecting whole object is allowed
+        "images",
 
         "user.id",
         "user.name",
@@ -120,7 +113,7 @@ export const getItemById = async (req, res) => {
         "item.location",
         "item.createdAt",
 
-        "images", // selecting whole object is allowed
+        "images", 
 
         "user.id",
         "user.name",
@@ -151,11 +144,11 @@ export const getItemById = async (req, res) => {
   }
 };
 
-//  this create an item
+//  this creates an item
 
 export const createItem = async (req, res) => {
   const { location, category, title, description, status, images } = req.body;
-  const user_id = req.user.user_id; // Use ID from token, not body
+  const user_id = req.user.user_id;
   console.log("Create Item - User ID from token:", user_id);
 
   try {
@@ -213,7 +206,7 @@ export const createItem = async (req, res) => {
   }
 };
 
-//  this is to delete item which is only allowed to the user who uploaded the item or the admin
+//  this is to delete the item, which is only allowed to the user who uploaded the item or the admin
 
 export const deleteItem = async (req, res) => {
   const { item_id } = req.params;
