@@ -5,6 +5,10 @@ import { UserEntity } from "../models/User.js";
 
 import { IsNull } from "typeorm";
 
+
+//  Greate Chat
+
+
 export const createChat = async (req, res) => {
     try {
         const { itemId, otherUserId } = req.body;
@@ -17,7 +21,7 @@ export const createChat = async (req, res) => {
         }
 
         // Check if ANY chat already exists between these two users
-        // We prioritize the most recently updated chat if multiple exist
+        // and prioritize the most recently updated chat if multiple exist
         const existingChat = await chatRepository.findOne({
             where: [
                 { user1: { id: currentUserId }, user2: { id: otherUserId } },
@@ -37,7 +41,7 @@ export const createChat = async (req, res) => {
 
         // Create new chat
         const newChat = chatRepository.create({
-            item: itemId ? { id: itemId } : null,
+            item: itemId? { id: itemId } : null,
             user1: { id: currentUserId },
             user2: { id: otherUserId },
         });
@@ -50,6 +54,10 @@ export const createChat = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
+
+
+// Get User Chat
+
 
 export const getUserChats = async (req, res) => {
     try {
@@ -79,6 +87,9 @@ export const getUserChats = async (req, res) => {
     }
 };
 
+
+
+//  Get chat Details 
 export const getChatDetails = async (req, res) => {
     try {
         const { id } = req.params;
