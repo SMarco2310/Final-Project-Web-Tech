@@ -7,7 +7,7 @@ export const CATEGORY = {
   DOCUMENTS: "Documents",
   ACCESSORIES: "Accessories",
   BOOKS: "Books",
-  OTHER: "Others",
+  OTHERS: "Others",
 };
 
 export const STATUS = {
