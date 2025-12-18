@@ -117,62 +117,63 @@ find-my-stuff/
 
 Prefix: /api/auth
 
-POST /register – Register a new user
-POST /login – Login user
-GET /profile/:id – Get user profile
-PUT /profile/:id – Update user profile
+- POST /register – Register a new user
+- POST /login – Login user
+- GET /profile/:id – Get user profile
+- PUT /profile/:id – Update user profile
 
 ### **Items**
+
 Prefix: /api/item
 
-GET /items – Get all items
-GET /my-items/:user_id – Get items posted by a specific user
-POST / – Create a new item
-GET /item/:id – Get details of a specific item
-DELETE /item/:id – Delete an item
+- GET /items – Get all items
+- GET /my-items/:user_id – Get items posted by a specific user
+- POST / – Create a new item
+- GET /item/:id – Get details of a specific item
+- DELETE /item/:id – Delete an item
 
 ### **Claims**
 
 Prefix: /api/claims
 
-POST / – Submit a new claim
-GET / – Get all claims (Admin/Internal use)
-GET /my-claims – Get claims made by the current user
-GET /received – Get claims made on the current user's items
-GET /:id – Get details of a specific claim
-PUT /:id/status – Update claim status (Approve/Reject)
+- POST / – Submit a new claim
+- GET / – Get all claims (Admin/Internal use)
+- GET /my-claims – Get claims made by the current user
+- GET /received – Get claims made on the current user's items
+- GET /:id – Get details of a specific claim
+- PUT /:id/status – Update claim status (Approve/Reject)
 
 
 ### **Chats**
 
 Prefix: /api/chats
 
-POST / – Start a new chat
-GET / – Get all chats for the current user
-GET /:id – Get details of a specific chat
+- POST / – Start a new chat
+- GET / – Get all chats for the current user
+- GET /:id – Get details of a specific chat
 
 
 ### **Messages**
 
 Prefix: /api/messages
 
-POST / – Send a message
-GET /:chatId – Get all messages in a specific chat
-GET /unread/count – Get total unread message count
-PUT /:chatId/read – Mark all messages in a chat as read
+- POST / – Send a message
+- GET /:chatId – Get all messages in a specific chat
+- GET /unread/count – Get total unread message count
+- PUT /:chatId/read – Mark all messages in a chat as read
 
 
 ### **AI Services**
 
 Prefix: /api/ai
 
-POST /describe – Generate item description from an image
+- POST /describe – Generate item description from an image
 
 ### **Images**
 
 Prefix: /api/image
 
-POST /upload – Upload an image file
+- POST /upload – Upload an image file
 
 ## 📸 Reporting Flow
 
