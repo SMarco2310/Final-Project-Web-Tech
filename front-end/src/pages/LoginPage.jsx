@@ -85,7 +85,6 @@ export default function LoginPage() {
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
                 title="Must contain at least 8 characters, including uppercase, lowercase, and numbers"
                 placeholder="Enter your password"
                 required
