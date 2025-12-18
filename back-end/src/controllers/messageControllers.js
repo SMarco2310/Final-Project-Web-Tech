@@ -40,6 +40,8 @@ export const sendMessage = async (req, res) => {
     }
 };
 
+
+ //   this returns the messages of a specify chat 
 export const getMessages = async (req, res) => {
     try {
         const { chatId } = req.params;
