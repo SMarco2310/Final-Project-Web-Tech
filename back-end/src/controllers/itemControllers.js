@@ -60,6 +60,16 @@ export const getAllItems = async (req, res) => {
 
 export const getMyItems = async (req, res) => {
   const { user_id } = req.params;
+
+  // Security Check: Ensure authenticated user is accessing their own items
+  if (parseInt(user_id) !== req.user.user_id) {
+    return res.status(403).json({
+      ok: false,
+      status: 403,
+      message: "Unauthorized: You can only view your own items",
+    });
+  }
+
   try {
     const items = await itemRepo
       .createQueryBuilder("item")

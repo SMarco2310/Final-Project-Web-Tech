@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Pencil, Save, X, LogOut, Loader2, Camera } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useImage } from '../hooks/useImage';
 
 export default function ProfileInfoPage() {
@@ -14,6 +14,14 @@ export default function ProfileInfoPage() {
     const [uploadingImage, setUploadingImage] = useState(false);
     const fileInputRef = useRef(null);
     const { id } = useParams();
+    const navigate = useNavigate();
+
+    // Security Check: Redirect if trying to view another user's profile
+    useEffect(() => {
+        if (currentUser && id && parseInt(id) !== currentUser.id) {
+            navigate(`/profile/${currentUser.id}`, { replace: true });
+        }
+    }, [id, currentUser, navigate]);
 
     useEffect(() => {
         const fetchUser = async () => {
