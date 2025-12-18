@@ -1,1 +1,0 @@
- border-slate-700/50
