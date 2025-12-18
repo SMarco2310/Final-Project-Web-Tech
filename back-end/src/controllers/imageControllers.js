@@ -1,5 +1,4 @@
-import cloudinary from "../config/cloudinary.js";
-
+// This is the logic behind the image hosting 
 export const uploadImage = async (req, res) => {
   try {
     if (!req.file) {
