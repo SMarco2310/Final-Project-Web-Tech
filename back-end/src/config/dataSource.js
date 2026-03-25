@@ -13,6 +13,9 @@ dotenv.config();
 const AppDataSource = new DataSource({
   type: "postgres",
   url: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   // load all entity files in src/models
   entities: [UserEntity, ClaimEntity, ItemEntity, ImageEntity, MessageEntity, ChatEntity],
   migrations: ["../migrations/*.js"],
