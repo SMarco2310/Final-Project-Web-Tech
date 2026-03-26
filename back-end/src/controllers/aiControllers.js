@@ -7,7 +7,9 @@ dotenv.config();
 
 // Initialize Groq with the API Key from the .env file
 // The Groq() constructor will automatically look for the GROQ_API_KEY environment variable.
-const groq = new Groq();
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 
 // You would need to add a 'textDescription' field to your request body 
 // since Groq's currently available models cannot process 'imageUrl'.
