@@ -150,6 +150,16 @@ export const loginUser = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   const { id } = req.params;
+
+  // Security Check: Ensure authenticated user is accessing their own profile
+  if (parseInt(id) !== req.user.user_id) {
+    return res.status(403).json({
+      ok: false,
+      status: 403,
+      message: "Unauthorized: You can only view your own profile",
+    });
+  }
+
   try {
     const user = await userRepo
       .createQueryBuilder("user")
